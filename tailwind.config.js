@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      'noto': ['Noto Sans Thai', 'sans-serif']
+    }
   },
   plugins: [],
 }
