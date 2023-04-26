@@ -83,7 +83,7 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 params: { id: announcement.announcementID },
               }"
             >
-              <button class="rounded-md bg-gray-200 px-3 text-xl">view</button>
+              <button class="rounded-md bg-gray-200 px-3 py-1 text-xl">view</button>
             </router-link>
           </td>
         </tr>
