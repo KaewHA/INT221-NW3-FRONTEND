@@ -1,7 +1,7 @@
-
+let api="http://intproj22.sit.kmutt.ac.th:8080/nw3/api/anno"
 async function getAnnouncement() {
     try {
-        const res = await fetch("http://localhost:8080/api/anno/dto")
+        const res = await fetch("http://intproj22.sit.kmutt.ac.th:8080/nw3/api/anno/dto")
         if (res.ok) {
             const announc = res.json()
             return announc
@@ -14,7 +14,7 @@ async function getAnnouncement() {
 
 async function getAnnouncementById(id) {
     try {
-        const res = await fetch(`http://localhost:8080/api/anno/${id}`)
+        const res = await fetch(`${api}/${id}`)
         if (res.ok) {
             const announc = res.json()
             return announc

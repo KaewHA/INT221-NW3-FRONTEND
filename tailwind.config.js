@@ -5,7 +5,11 @@ module.exports = {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'custom-blue': '#4D9DE0'
+      }
+    },
     fontFamily: {
       'noto': ['Noto Sans Thai', 'sans-serif']
     }

@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '../router/index.js'
 import { getAnnouncementById } from '../assets/data.js'
+import Navbar from '../components/Navbar.vue';
 
 const { params } = useRoute()
 const announcement = ref('')
@@ -26,6 +27,7 @@ const dateformat = (date) => {
 
 <template>
     <div class="w-screen h-screen font-noto">
+        <Navbar></Navbar>
         <div class="w-full h-full flex-row justify-center items-center px-4 py-2">
             <h1 class="text-left text-3xl mb-4">Announcement Detail:</h1>
             <div class="border rounded-sm flex justify-center items-center">
