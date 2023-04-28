@@ -16,7 +16,6 @@ async function getAnnouncement() {
 }
 
 async function getAnnouncementById(id) {
-    console.log(id);
     try {
         const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/anno/${id}`)
         if (res.ok) {
