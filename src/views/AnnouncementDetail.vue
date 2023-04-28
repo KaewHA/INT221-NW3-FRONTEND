@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import router from '../router/index.js'
 import { getAnnouncementById } from '../assets/data.js'
 import Navbar from '../components/Navbar.vue';
 
@@ -54,8 +53,8 @@ const dateformat = (date) => {
                     </tr>
                     <tr>
                         <td class="font-bold">Display</td>
-                        <td :class="announcement.annonuncementDisplay == 'Y' ? 'text-green-700' : 'text-red-600'">{{
-                            announcement.annonuncementDisplay }}</td>
+                        <td :class="announcement.announcementDisplay == 'Y' ? 'text-green-700' : 'text-red-600'">{{
+                            announcement.announcementDisplay }}</td>
                     </tr>
                 </table>
             </div>
@@ -67,7 +66,6 @@ const dateformat = (date) => {
 </template>
 
 <style scoped>
-
 tr {
     padding: 10px;
 }
@@ -76,4 +74,3 @@ td {
     padding: 10px;
 }
 </style>
-<!-- localhost:4321/api/anno -->

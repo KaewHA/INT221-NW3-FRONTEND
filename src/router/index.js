@@ -14,7 +14,7 @@ const router = createRouter({
             path: '/:id',
             name: 'AnnouncementDetail',
             component: AnnouncementDetail
-        }  
+        }
         // {
         //     path: '/:notfoundpath(.*)',
         //     name: 'PageNotFound',
