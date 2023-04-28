@@ -57,8 +57,7 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
           </div>
           <div class="w-1/6 flex justify-center items-center">
             <router-link :to="{
-              name: 'AnnouncementDetail',
-              params: { id: announcement.announcementID },
+              path: `/detail/${announcement.announcementID}`,
             }">
               <p class="text-custom-blue font-bold">view >></p>
             </router-link>
