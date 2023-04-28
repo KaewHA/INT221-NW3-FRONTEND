@@ -7,7 +7,6 @@ onBeforeMount(async () => {
   allAnnouncement.value = await getAnnouncement();
   allAnnouncement.value.forEach((x) => testdata.value.push(x));
 });
-
 const testdata = ref([]);
 const allAnnouncement = ref([]);
 const options = {
@@ -16,6 +15,7 @@ const options = {
   year: "numeric",
   hour: "numeric",
   minute: "numeric",
+  hour12: false
 };
 
 const dateformat = (date) => {
@@ -23,9 +23,9 @@ const dateformat = (date) => {
     return "-";
   } else {
     let mydate = new Date(date);
-    let timezone = mydate.getTimezoneOffset() * 60 * 1000;
-    const localDate = new Date(mydate.getTime() - timezone);
-    return localDate.toLocaleDateString("en-US", options);
+   // let timezone = mydate.getTimezoneOffset() * 60 * 1000;
+   // const localDate = new Date(mydate.getTime() - timezone);
+    return mydate.toLocaleDateString("en-US", options);
   }
 };
 const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -45,10 +45,10 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
       <div class="flex flex-col justify-center items-center">
         <div v-for="(announcement, index) in allAnnouncement" :key="index" class="w-1/2 pt-5 flex flex-row border-b">
           <div class="w-full">
-            <p class="font-semibold text-xl">{{ announcement.announcementName }}</p>
+            <p class="font-semibold text-xl">{{ announcement.announcementTitle }}</p>
             <div class="flex space-x-16 my-5">
-              <p class="opacity-50 font-bold w-1/6">{{ announcement.categoryName }}</p>
-              <p class="opacity-50 w-1/4 text-center">{{ dateformat(announcement.publishDate) }}</p>
+              <p class="opacity-50 font-bold w-1/6">{{ announcement.announcementCategory }}</p>
+              <p class="opacity-50 w-1/4 "><span class="absolute">{{ dateformat(announcement.publishDate) }}</span></p>
               <p class="text-center w-1/6">Display :
                 <span class="font-bold" :class="announcement.announcementDisplay === 'Y' ? 'text-green-600' : 'text-red-600'">{{
                   announcement.announcementDisplay }}</span>
@@ -57,7 +57,7 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
           </div>
           <div class="w-1/6 flex justify-center items-center">
             <router-link :to="{
-              path: `/detail/${announcement.announcementID}`,
+              path: `/detail/${announcement.id}`,
             }">
               <p class="text-custom-blue font-bold">view >></p>
             </router-link>

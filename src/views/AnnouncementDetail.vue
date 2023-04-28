@@ -10,15 +10,15 @@ onMounted(async () => {
     announcement.value = await getAnnouncementById(params.id)
 })
 
-const options = { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric' };
+const options = { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false };
 const dateformat = (date) => {
     if (date === null) {
         return "-"
     } else {
         let mydate = new Date(date)
-        let timezone = mydate.getTimezoneOffset() * 60 * 1000;
-        const localDate = new Date(mydate.getTime() - timezone);
-        return localDate.toLocaleDateString('en-US', options)
+      //  let timezone = mydate.getTimezoneOffset() * 60 * 1000;
+     //   const localDate = new Date(mydate.getTime() - timezone);
+        return mydate.toLocaleDateString('en-US', options)
     }
 }
 
@@ -33,15 +33,15 @@ const dateformat = (date) => {
                 <table class="w-full h-full my-2">
                     <tr>
                         <td class="font-bold">Title</td>
-                        <td>{{ announcement.announcementName }}</td>
+                        <td>{{ announcement.announcementTitle }}</td>
                     </tr>
                     <tr>
                         <td class="font-bold">Category</td>
-                        <td>{{ announcement.categoryName }}</td>
+                        <td>{{ announcement.announcementCategory }}</td>
                     </tr>
                     <tr>
                         <td class="font-bold">Description</td>
-                        <td>{{ announcement.announcementDes }}</td>
+                        <td>{{ announcement.announcementDescription }}</td>
                     </tr>
                     <tr>
                         <td class="font-bold">Publish Date</td>

@@ -1,8 +1,7 @@
 // const api = "http://intproj22.sit.kmutt.ac.th:8080/nw3/api/anno"
 
 async function getAnnouncement() {
-    let api=`${import.meta.env.VITE_BASE_URL}/api/anno/dto`
-    console.log(api);
+    let api=`${import.meta.env.VITE_BASE_URL}/api/announcements/`
     try {
         const res = await fetch(api)
         if (res.ok) {
@@ -17,7 +16,7 @@ async function getAnnouncement() {
 
 async function getAnnouncementById(id) {
     try {
-        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/anno/${id}`)
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/announcements/${id}`)
         if (res.ok) {
             const announc = res.json()
             return announc

@@ -15,11 +15,6 @@ const router = createRouter({
             name: 'AnnouncementDetail',
             component: AnnouncementDetail
         }
-        // {
-        //     path: '/:notfoundpath(.*)',
-        //     name: 'PageNotFound',
-        //     component: PageNotFound        
-        // }
     ]
 })
 export default router
