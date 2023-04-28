@@ -1,4 +1,5 @@
 // const api = "http://intproj22.sit.kmutt.ac.th:8080/nw3/api/anno"
+
 async function getAnnouncement() {
     try {
         const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/anno/dto`)

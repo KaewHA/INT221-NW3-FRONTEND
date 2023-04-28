@@ -3,7 +3,7 @@ import Announcement from '../views/Announcement.vue'
 import AnnouncementDetail from '../views/AnnouncementDetail.vue'
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.VITE_BASE_URL),
+    history: createWebHistory(),
     routes: [
         {
             path: '/',
