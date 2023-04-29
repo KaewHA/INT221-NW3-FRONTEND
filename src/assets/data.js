@@ -10,7 +10,7 @@ async function getAnnouncement() {
         }
         else throw new Error('Error, data is error! with DTO')
     } catch (error) {
-        console.log(error);
+        console.error(error)
     }
 }
 
@@ -23,7 +23,7 @@ async function getAnnouncementById(id) {
         }
         else throw new Error('Error, data is error! with ID')
     } catch (error) {
-        console.log(error)
+        return false
     }
 }
 export { getAnnouncement, getAnnouncementById }

@@ -1,13 +1,19 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref,onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
 import { getAnnouncementById } from '../assets/data.js'
 import Navbar from '../components/Navbar.vue';
-
+import router from '../router/index.js'
 const { params } = useRoute()
 const announcement = ref('')
-onMounted(async () => {
+onBeforeMount(async () => {
     announcement.value = await getAnnouncementById(params.id)
+    if(await getAnnouncementById(params.id)===false){
+        alert("'The requested page is not available!")
+        router.push('/admin/announcement')
+    }else{
+        announcement.value = await getAnnouncementById(params.id)
+    }
 })
 
 const options = { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false };
