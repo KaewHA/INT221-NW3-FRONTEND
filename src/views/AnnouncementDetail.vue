@@ -28,9 +28,9 @@ const dateformat = (date) => {
     <div class="w-screen h-screen font-noto">
         <Navbar></Navbar>
         <div class="w-full h-full flex-row justify-center items-center px-4 py-2">
-            <h1 class="text-left text-3xl mb-4">Announcement Detail:</h1>
+            <h1 class="text-left text-3xl mb-4 text-custom-black">Announcement Detail:</h1>
             <div class="border rounded-sm flex justify-center items-center">
-                <table class="w-full h-full my-2">
+                <table class="w-full h-full my-2 text-custom-black">
                     <tr>
                         <td class="font-bold">Title</td>
                         <td>{{ announcement.announcementTitle }}</td>
@@ -58,8 +58,8 @@ const dateformat = (date) => {
                     </tr>
                 </table>
             </div>
-            <router-link :to="{ name: 'Announcement' }">
-                <button class="rounded-md text-center text-lg bg-gray-200 my-2 p-2">Back</button>
+            <router-link :to="{ path: '/admin/announcement/' }">
+                <button class="rounded-md text-center text-lg bg-gray-200 my-2 p-2 text-custom-black">Back</button>
             </router-link>
         </div>
     </div>
