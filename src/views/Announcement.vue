@@ -39,29 +39,44 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
         <span class="font-bold">Date/Time Showintimezone :</span>
         {{ timezoneName }}
       </h1>
-      <div class="flex justify-center items-center mt-10 mb-10">
-        <h1 class="text-center text-5xl font-semibold">ประกาศล่าสุด</h1>
+      <div class="flex justify-center items-center mt-10 mb-10 max-md:mt-8 max-md:mb-4">
+        <h1 class="text-center text-5xl font-semibold max-md:text-3xl">ประกาศล่าสุด</h1>
       </div>
       <div class="flex flex-col justify-center items-center">
-        <div v-for="(announcement, index) in allAnnouncement" :key="index" class="w-1/2 pt-5 flex flex-row border-b">
-          <div class="w-full">
-            <p class="font-semibold text-xl">{{ announcement.announcementTitle }}</p>
+        <div v-for="(announcement, index) in allAnnouncement" :key="index" class="w-1/2 pt-5 flex flex-row border-b max-md:w-full max-md:px-10">
+          <div class="w-full max-md:hidden">
+            <p class="font-semibold text-xl max-md:text-base">{{ announcement.announcementTitle }}</p>
             <div class="flex space-x-16 my-5">
               <p class="opacity-50 font-bold w-1/6">{{ announcement.announcementCategory }}</p>
-              <p class="opacity-50 w-1/4 "><span class="absolute">{{ dateformat(announcement.publishDate) }}</span></p>
+              <p class="opacity-50 w-1/4 text-center"><span class="">{{ dateformat(announcement.publishDate) }}</span></p>
               <p class="text-center w-1/6">Display :
                 <span class="font-bold" :class="announcement.announcementDisplay === 'Y' ? 'text-green-600' : 'text-red-600'">{{
                   announcement.announcementDisplay }}</span>
               </p>
             </div>
           </div>
-          <div class="w-1/6 flex justify-center items-center">
+          <!-- responsive -->
+          <div class="w-full md:hidden">
+            <p class="font-semibold text-xl max-md:text-base">{{ announcement.announcementTitle }}</p>
+            <div class="flex flex-col my-2">
+              <div class="flex flex-row">
+                <p class="opacity-50 w-full font-bold text-sm mb-2">{{ announcement.announcementCategory }}</p>
+                <p class="text-center w-full opacity-80 text-sm">Display :
+                  <span class="font-bold" :class="announcement.announcementDisplay === 'Y' ? 'text-green-600' : 'text-red-600'">{{
+                    announcement.announcementDisplay }}</span>
+                </p>
+              </div>
+              <p class="opacity-50 w-1/2 text-sm mb-2"><span class="">{{ dateformat(announcement.publishDate) }}</span></p>
+            </div>
+          </div>
+          <div class="w-1/12 flex justify-center items-center">
             <router-link :to="{
               path: `/detail/${announcement.id}`,
             }">
               <p class="text-custom-blue font-bold">view >></p>
             </router-link>
           </div>
+          <!--  -->
         </div>
       </div>
     </div>
