@@ -7,7 +7,6 @@ import router from '../router/index.js'
 const { params } = useRoute()
 const announcement = ref('')
 onBeforeMount(async () => {
-    announcement.value = await getAnnouncementById(params.id)
     if(await getAnnouncementById(params.id)===false){
         alert("'The requested page is not available!")
         router.push('/admin/announcement')
