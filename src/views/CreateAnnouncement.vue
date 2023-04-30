@@ -14,7 +14,9 @@ const newAnnouncement = ref({
     title: '',
     category: '',
     display: '',
-    description: ''
+    description: '',
+    publishDate:'',
+    closeDate:''
 })
 
 console.log(newAnnouncement.value);
@@ -58,7 +60,11 @@ console.log(newAnnouncement.value);
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="publishDate" class="text-base font-bold">Publish Date</label>
-                        <input value="2023-04-30T14:30" pattern="MM-DD-YYYY HH:mm" type="datetime-local" class="border rounded-md bg-slate-100 text-lg py-2 px-4">
+                        <input  pattern="MM-DD-YYYY HH:mm" type="datetime-local" class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="publishDate" v-model="newAnnouncement.publishDate">
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <label for="closeDate" class="text-base font-bold">Close Date</label>
+                        <input  pattern="MM-DD-YYYY HH:mm" type="datetime-local" class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate" v-model="newAnnouncement.closeDate">
                     </div>
                 </div>
             </div>
