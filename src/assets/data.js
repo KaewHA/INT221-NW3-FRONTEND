@@ -47,4 +47,25 @@ async function getCategory() {
     }
 }
 
-export { getAnnouncement, getAnnouncementById, getCategory }
+async function addAnnouncement(announcement) {
+    console.log(JSON.stringify(announcement));
+    try {
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/announcements/add`, {
+            method: "POST",
+            headers: {
+          "Content-Type": "application/json",
+            },
+            body: JSON.stringify(announcement)
+          });
+        if (res.ok) {
+            const category = res.json()
+            return category
+        }
+        else {
+            throw new Error('Error, data is error!')
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+export { getAnnouncement, getAnnouncementById, getCategory ,addAnnouncement}

@@ -1,6 +1,6 @@
 <script setup>
 import Navbar from '../components/Navbar.vue';
-import { getCategory } from '../assets/data.js'
+import { getCategory,addAnnouncement } from '../assets/data.js'
 import { onBeforeMount, onMounted, ref } from 'vue';
 
 const category = ref([])
@@ -11,15 +11,26 @@ onMounted(async () => {
 })
 
 const newAnnouncement = ref({
-    title: '',
+    announcementTitle: '',
     category: '',
-    display: '',
-    description: '',
+    announcementDisplay: '',
+    announcementDescription: '',
     publishDate:'',
     closeDate:''
 })
+const createanno=async()=>{
+    let x=category.value.find((x)=>x.categoryName===newAnnouncement.value.category)
+    newAnnouncement.value.category= {categoryID:x.categoryID,categoryName:x.categoryName}
+    let localDate=new Date(newAnnouncement.value.publishDate)
+    const utcDate = new Date(localDate.getTime() + localDate.getTimezoneOffset() * 60000).toISOString();
+    newAnnouncement.value.publishDate=utcDate
+    let localDate2=new Date(newAnnouncement.value.closeDate)
+    const utcDate2 = new Date(localDate2.getTime() + localDate2.getTimezoneOffset() * 60000).toISOString();
+    newAnnouncement.value.closeDate=utcDate2
+    await addAnnouncement(newAnnouncement.value)
+}
 
-console.log(newAnnouncement.value);
+
 </script>
 
 <template>
@@ -31,7 +42,7 @@ console.log(newAnnouncement.value);
                 <div class="w-1/2 border rounded-md px-6 py-4 space-y-4">
                     <div class="w-full flex flex-col">
                         <label for="title" class="text-base font-bold">Announcement Title</label>
-                        <input v-model="newAnnouncement.title" type="text" id="title"
+                        <input v-model="newAnnouncement.announcementTitle" type="text" id="title"
                             class="border rounded-md bg-slate-100 text-lg py-2 px-4" placeholder="Learning Exchanging">
                     </div>
                     <div class="w-full flex flex-row space-x-2">
@@ -39,21 +50,21 @@ console.log(newAnnouncement.value);
                             <label for="category-select" class="text-base font-bold">Category</label>
                             <select v-model="newAnnouncement.category" name="category" id="category-select"
                                 class="border rounded-md bg-slate-100 text-lg py-2 px-4">
-                                <option v-for="item in category" value="">{{ item.categoryName }}</option>
+                                <option v-for="item in category" >{{ item.categoryName }}</option>
                             </select>
                         </div>
                         <div class="w-1/3 flex flex-col">
                             <label for="display-select" class="text-base font-bold">Display</label>
-                            <select v-model="newAnnouncement.display" name="display" id="display-select"
+                            <select v-model="newAnnouncement.announcementDisplay" name="display" id="display-select"
                                 class="border rounded-md bg-slate-100 text-lg py-2 px-4">
-                                <option value="">Yes</option>
-                                <option value="">No</option>
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
                             </select>
                         </div>
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="description" class="text-base font-bold">Description</label>
-                        <textarea v-model="newAnnouncement.description" id="description"
+                        <textarea v-model="newAnnouncement.announcementDescription" id="description"
                             class="border rounded-md bg-slate-100 text-lg py-2 px-4" 
                             placeholder="Imagination is more important than knowledge...">
                         </textarea>
@@ -67,6 +78,7 @@ console.log(newAnnouncement.value);
                         <input  pattern="MM-DD-YYYY HH:mm" type="datetime-local" class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate" v-model="newAnnouncement.closeDate">
                     </div>
                 </div>
+                <button @click="createanno()">Create</button>
             </div>
         </div>
     </div>
