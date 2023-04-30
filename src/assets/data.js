@@ -28,7 +28,7 @@ async function getAnnouncementById(id) {
             throw new Error('Error, data is error! with ID')
         }
     } catch (error) {
-        return false
+        console.error(error)
     }
 }
 export { getAnnouncement, getAnnouncementById }

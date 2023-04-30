@@ -7,12 +7,8 @@ import router from '../router/index.js'
 const { params } = useRoute()
 const announcement = ref('')
 onBeforeMount(async () => {
-    if(await getAnnouncementById(params.id)===false){
-        alert("'The requested page is not available!")
-        router.push('/admin/announcement')
-    }else{
-        announcement.value = await getAnnouncementById(params.id)
-    }
+announcement.value = await getAnnouncementById(params.id)
+
 })
 
 const options = { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false };
