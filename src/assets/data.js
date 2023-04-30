@@ -31,4 +31,20 @@ async function getAnnouncementById(id) {
         console.error(error)
     }
 }
-export { getAnnouncement, getAnnouncementById }
+
+async function getCategory() {
+    try {
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/category/`)
+        if (res.ok) {
+            const category = res.json()
+            return category
+        }
+        else {
+            throw new Error('Error, data is error!')
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export { getAnnouncement, getAnnouncementById, getCategory }

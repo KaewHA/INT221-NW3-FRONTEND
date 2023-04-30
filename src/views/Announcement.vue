@@ -4,10 +4,11 @@ import { getAnnouncement } from "../assets/data.js";
 import Navbar from "../components/Navbar.vue";
 
 onBeforeMount(async () => {
-  allAnnouncement.value = await getAnnouncement();
-  allAnnouncement.value.forEach((x) => testdata.value.push(x));
+  const receivedData = ref([]);
+  receivedData.value = await getAnnouncement();
+  receivedData.value.forEach((x) => allAnnouncement.value.push(x));
 });
-const testdata = ref([]);
+
 const allAnnouncement = ref([]);
 const options = {
   day: "numeric",
@@ -34,33 +35,33 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
 <template>
   <div class="w-screen h-screen">
     <Navbar></Navbar>
-    <div v-if="testdata.length != 0" class="font-noto">
+    <div v-if="allAnnouncement.length != 0" class="font-noto">
       <h1 class="mt-2 mb-3 ml-6 text-custom-black">
-        <span class="font-bold ">Date/Time Showintimezone :</span>
+        <span class="font-bold ">Date/Time Show in Timezone :</span>
         {{ timezoneName }}
       </h1>
       <div class="flex justify-center items-center mt-10 mb-10 max-md:mt-8 max-md:mb-4">
         <h1 class="text-center text-5xl font-semibold max-md:text-3xl text-custom-black">ประกาศล่าสุด</h1>
       </div>
-      <div class="flex flex-col justify-center items-center">
+      <div class="flex flex-col justify-center items-center " >
         <div v-for="(announcement, index) in allAnnouncement" :key="index"
-          class="w-1/2 pt-5 flex flex-row border-b max-md:w-full max-md:px-10">
+          class="w-1/2 pt-5 flex flex-row border-b max-md:w-full max-md:px-10 ann-item">
           <div class="w-full max-md:hidden flex flex-col">
-            <p class="font-semibold text-xl max-md:text-base text-custom-black"><span>#{{ index + 1 }}</span> {{
+            <p class="font-semibold text-xl max-md:text-base text-custom-black ann-title"><span>#{{ index + 1 }}</span> {{
               announcement.announcementTitle }}</p>
             <div class="flex space-x-5 my-5">
-              <p class="opacity-50 w-1/2 text-custom-black"><span class="font-bold">Category : </span>{{
+              <p class="opacity-50 w-1/2 text-custom-black ann-category"><span class="font-bold">Category : </span>{{
                 announcement.announcementCategory }}</p>
-              <p class="w-1/2 text-custom-black"><span class="font-bold opacity-50">Display : </span>
+              <p class="w-1/2 text-custom-black ann-display"><span class="font-bold opacity-50">Display : </span>
                 <span class="font-bold"
                   :class="announcement.announcementDisplay === 'Y' ? 'text-green-600' : 'text-red-600'">{{
                     announcement.announcementDisplay }}</span>
               </p>
             </div>
             <div class="flex mb-5 space-x-5">
-              <p class="opacity-50 text-custom-black w-full"><span class="font-bold">Publish Date : </span><span
+              <p class="opacity-50 text-custom-black w-full ann-publish-date"><span class="font-bold">Publish Date : </span><span
                   class="text-center">{{ dateformat(announcement.publishDate) }}</span></p>
-              <p class="opacity-50 text-custom-black w-full"><span class="font-bold">Close Date : </span><span
+              <p class="opacity-50 text-custom-black w-full ann-close-date"><span class="font-bold">Close Date : </span><span
                   class="text-center">{{ dateformat(announcement.closeDate) }}</span></p>
             </div>
           </div>
@@ -86,16 +87,20 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
             <router-link :to="{
               path: `/admin/announcement/${announcement.id}`
             }">
-              <p class="text-custom-blue font-bold">view >></p>
+              <p class="text-custom-blue font-bold ann-button">view >></p>
             </router-link>
           </div>
           <!--  -->
         </div>
       </div>
-    </div>
+      </div>
     <div v-else>
+      <h1 class="mt-2 mb-3 ml-6 text-custom-black">
+        <span class="font-bold ">Date/Time Show in Timezone :</span>
+        {{ timezoneName }}
+      </h1>
       <h1 class="text-4xl flex w-full items-center justify-center font-noto">
-        No Announcement
+        No Announcements
       </h1>
     </div>
   </div>

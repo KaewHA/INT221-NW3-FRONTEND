@@ -31,28 +31,28 @@ const dateformat = (date) => {
         <div v-if="announcement" class="w-full h-full flex-row justify-center items-center px-4 py-2">
             <h1 class="text-left text-3xl mb-4 text-custom-black">Announcement Detail:</h1>
             <div class="border rounded-sm flex justify-center items-center">
-                <table class="w-full h-full my-2 text-custom-black">
-                    <tr>
+                <table class="w-full h-full my-2 text-custom-black ann-item">
+                    <tr class="ann-title">
                         <td class="font-bold">Title</td>
                         <td>{{ announcement.announcementTitle }}</td>
                     </tr>
-                    <tr>
+                    <tr class="ann-category">
                         <td class="font-bold">Category</td>
                         <td>{{ announcement.announcementCategory }}</td>
                     </tr>
-                    <tr>
+                    <tr class="ann-description">
                         <td class="font-bold">Description</td>
                         <td>{{ announcement.announcementDescription }}</td>
                     </tr>
-                    <tr>
+                    <tr class="ann-publish-date">
                         <td class="font-bold">Publish Date</td>
                         <td>{{ dateformat(announcement.publishDate) }}</td>
                     </tr>
-                    <tr>
+                    <tr class="ann-close-date">
                         <td class="font-bold">Close Date</td>
                         <td>{{ dateformat(announcement.closeDate) }}</td>
                     </tr>
-                    <tr>
+                    <tr class="ann-display">
                         <td class="font-bold">Display</td>
                         <td :class="announcement.announcementDisplay == 'Y' ? 'text-green-700' : 'text-red-600'">{{
                             announcement.announcementDisplay }}</td>
@@ -60,7 +60,7 @@ const dateformat = (date) => {
                 </table>
             </div>
             <router-link :to="{ path: '/admin/announcement/' }">
-                <button class="rounded-md text-center text-lg bg-gray-200 my-2 p-2 text-custom-black">Back</button>
+                <button class="rounded-md text-center text-lg bg-gray-200 my-2 p-2 text-custom-black ann-button">Back</button>
             </router-link>
         </div>
     </div>
