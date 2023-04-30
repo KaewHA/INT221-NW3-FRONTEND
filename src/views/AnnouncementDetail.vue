@@ -18,7 +18,7 @@ const dateformat = (date) => {
         let mydate = new Date(date)
       //  let timezone = mydate.getTimezoneOffset() * 60 * 1000;
      //   const localDate = new Date(mydate.getTime() - timezone);
-        return mydate.toLocaleDateString('en-US', options)
+        return mydate.toLocaleDateString('en-GB', options)
     }
 }
 
@@ -27,7 +27,7 @@ const dateformat = (date) => {
 <template>
     <div class="w-screen h-screen font-noto">
         <Navbar></Navbar>
-        <div class="w-full h-full flex-row justify-center items-center px-4 py-2">
+        <div v-if="announcement" class="w-full h-full flex-row justify-center items-center px-4 py-2">
             <h1 class="text-left text-3xl mb-4 text-custom-black">Announcement Detail:</h1>
             <div class="border rounded-sm flex justify-center items-center">
                 <table class="w-full h-full my-2 text-custom-black">

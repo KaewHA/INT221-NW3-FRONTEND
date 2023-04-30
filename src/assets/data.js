@@ -1,4 +1,5 @@
 // const api = "http://intproj22.sit.kmutt.ac.th:8080/nw3/api/anno"
+import router from '../router/index.js'
 
 async function getAnnouncement() {
     let api=`${import.meta.env.VITE_BASE_URL}/api/announcements/`
@@ -21,7 +22,11 @@ async function getAnnouncementById(id) {
             const announc = res.json()
             return announc
         }
-        else throw new Error('Error, data is error! with ID')
+        else {
+            alert("The requested page is not available!")
+            router.push('/admin/announcement')
+            throw new Error('Error, data is error! with ID')
+        }
     } catch (error) {
         console.log(error)
     }
