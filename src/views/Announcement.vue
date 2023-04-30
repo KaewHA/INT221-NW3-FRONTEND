@@ -70,13 +70,15 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
             <div class="flex flex-col my-2">
               <div class="flex flex-row">
                 <p class="opacity-50 w-full font-bold text-sm mb-2">Category : {{ announcement.announcementCategory }}</p>
-                <p class="text-center w-full opacity-80 text-sm">Display :
+                <p class="text-center w-full opacity-80 text-sm"><span class="font-bold opacity-50">Display : </span>
                   <span class="font-bold"
                     :class="announcement.announcementDisplay === 'Y' ? 'text-green-600' : 'text-red-600'">{{
                       announcement.announcementDisplay }}</span>
                 </p>
               </div>
-              <p class="opacity-50 w-1/2 text-sm mb-2"><span class="">{{ dateformat(announcement.publishDate) }}</span>
+              <p class="opacity-50 w-full text-sm mb-2"><span class="font-bold">Publish Date : </span><span class="">{{ dateformat(announcement.publishDate) }}</span>
+              </p>
+              <p class="opacity-50 w-full text-sm mb-2"><span class="font-bold">Close Date : </span><span class="">{{ dateformat(announcement.closeDate) }}</span>
               </p>
             </div>
           </div>
@@ -106,4 +108,5 @@ th {
 
 td {
   padding: 3rem;
-}</style>
+}
+</style>
