@@ -36,6 +36,7 @@ const router = createRouter({
             name: 'AddAnnouncement',
             component: AddAnnouncement
         },
+
         {
             path: '/admin/announcement/edit/:id',
             name: 'EditAnnouncement',

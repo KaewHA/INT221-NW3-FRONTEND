@@ -1,7 +1,7 @@
 <script setup>
 import { getCategory, addAnnouncement } from '../assets/data.js'
 import { onMounted, ref, computed } from 'vue';
-
+import router from '../router/index.js'
 const categoryAll = ref([])
 onMounted(async () => {
     const receivedData = ref([])
@@ -18,14 +18,12 @@ const publishTime = ref('')
 const closeTime = ref('')
 
 const display = ref('')
-const displayConvert = computed(() => {
-    return display.value == true?'Y':'N'
-})
+
 
 const newAnnouncement = ref({
     announcementTitle: '',
     category: '',
-    announcementDisplay: displayConvert,
+    announcementDisplay: '',
     announcementDescription: '',
     publishDate: '',
     closeDate: ''
@@ -45,11 +43,43 @@ const validateData = () => {
     // console.log(newAnnouncement.value);
     console.log(isoPublishDate.value);
 }
+const createpldate=()=>{
+    let concatpldt=publishDate.value+"T"+publishTime.value
+    let localDate = new Date(concatpldt)
+    const utcDate = new Date(localDate.getTime() + localDate.getTimezoneOffset() * 60000).toISOString();
+    newAnnouncement.value.publishDate = utcDate
+}
+const createcldate=()=>{
+    let concatcldt=closeDate.value+"T"+closeTime.value
+    let localDate2 = new Date(concatcldt)
+    const utcDate2 = new Date(localDate2.getTime() + localDate2.getTimezoneOffset() * 60000).toISOString();
+    newAnnouncement.value.closeDate = utcDate2
+}
+const addnewdata=async()=>{
+    if(publishDate.value!=""&&publishTime.value===""){
+         publishTime.value="00:00"
+         createpldate()
+    }else if(publishDate.value!=""){
+        createpldate()
+    }else{
+        newAnnouncement.value.publishDate=null
+    }
+    if(closeDate.value!=""&&closeTime.value===""){
+         closeTime.value="00:00"
+         createcldate()
+    }else if(closeDate.value!=""){
+        createcldate()
+    }else{
+        newAnnouncement.value.closeDate=null
+    }
+    newAnnouncement.value.announcementDisplay=display.value==true? 'Y':'N'
+    await addAnnouncement(newAnnouncement.value)
+}
 
 </script>
 
 <template>
-    <h1 class="hidden">{{ validateData() }}</h1>
+    <!-- <h1 class="hidden">{{ validateData() }}</h1> -->
     <div class="w-screen h-screen items-center flex flex-col font-noto">
         <h1 class="font-extrabold text-3xl self-center my-4">Add Announcement</h1>
         <div class="w-3/4 h-auto flex flex-col border rounded-md">
@@ -81,18 +111,18 @@ const validateData = () => {
             <div class="flex flex-col w-full px-4 py-2 space-y-1">
                 <label class="text-base font-bold">Publish Date</label>
                 <div class="w-1/3 flex flex-row space-x-4">
-                    <input v-model="publishDate" type="text" placeholder="01/05/2023"
+                    <input v-model="publishDate" type="date" placeholder="01/05/2023"
                         class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="publishDate">
-                    <input v-model="publishTime" type="text" placeholder="12:30"
+                    <input v-model="publishTime" type="time" placeholder="12:30"
                         class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="publishDate">
                 </div>
             </div>
             <div class="flex flex-col w-full px-4 py-2 space-y-1">
                 <label class="text-base font-bold">Close Date</label>
                 <div class="w-1/3 flex flex-row space-x-4">
-                    <input v-model="closeDate" type="text" placeholder="01/05/2023"
+                    <input v-model="closeDate" type="date" placeholder="01/05/2023"
                         class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate">
-                    <input v-model="closeTime" type="text" placeholder="12:30"
+                    <input v-model="closeTime" type="time" placeholder="12:30"
                         class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate">
                 </div>
             </div>
@@ -107,8 +137,8 @@ const validateData = () => {
             </div>
             <div class="w-full flex justify-start p-4 space-x-2">
                 <button :disabled="isDisabled"
-                    class="px-4 py-2 rounded-md bg-green-500 text-white text-base font-bold disabled:bg-zinc-500">Submit</button>
-                <button class="px-4 py-2 rounded-md bg-red-500 text-white text-base font-bold">Cancel</button>
+                    class="px-4 py-2 rounded-md bg-green-500 text-white text-base font-bold disabled:bg-zinc-500" @click="addnewdata()">Submit</button>
+                <button class="px-4 py-2 rounded-md bg-red-500 text-white text-base font-bold" @click="router.push('/admin/announcement')">Cancel</button>
             </div>
         </div>
     </div>

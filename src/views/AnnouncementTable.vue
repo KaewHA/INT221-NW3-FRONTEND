@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import { getAnnouncement } from "../assets/data.js";
-
+import router from '../router/index.js'
 onBeforeMount(async () => {
     const receivedData = ref([]);
     receivedData.value = await getAnnouncement();
@@ -39,7 +39,7 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
                         <span class="font-bold">Date/Time Show in Timezone :</span>
                         {{ timezoneName }}
                     </h1>
-                    <button class="rounded-md bg-gray-200 px-4 py-3 text-sm font-bold">Add Announcement</button>
+                    <button class="rounded-md bg-gray-200 px-4 py-3 text-sm font-bold" @click="router.push('/admin/announcement/add')">Add Announcement</button>
                 </div>
                 <div class="flex flex-col justify-center items-center">
                     <table class="w-full border">

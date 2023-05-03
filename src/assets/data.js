@@ -58,8 +58,8 @@ async function addAnnouncement(announcement) {
             body: JSON.stringify(announcement)
           });
         if (res.ok) {
-            const category = res.json()
-            return category
+            alert("create announcement")
+            router.push('/admin/announcement')
         }
         else {
             throw new Error('Error, data is error!')

@@ -18,6 +18,7 @@ const newAnnouncement = ref({
     closeDate: ''
 })
 const createanno = async () => {
+    
     let x = category.value.find((x) => x.categoryName === newAnnouncement.value.category)
     newAnnouncement.value.category = { categoryID: x.categoryID, categoryName: x.categoryName }
     let localDate = new Date(newAnnouncement.value.publishDate)
