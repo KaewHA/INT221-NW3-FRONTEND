@@ -1,5 +1,4 @@
 <script setup>
-import Navbar from '../components/Navbar.vue';
 import { getCategory,addAnnouncement,getAnnouncementById } from '../assets/data.js'
 import { onBeforeMount, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
@@ -54,7 +53,6 @@ console.log(editAnnouncement.value)
 
 <template>
     <div class="w-screen h-screen font-noto">
-        <Navbar></Navbar>
         <div class="w-full h-full flex justify-center text-custom-black">
             <div class="text-3xl w-full flex flex-col items-center mt-10 space-y-4">
                 <h1 class="font-semibold">Edit Announcement</h1>

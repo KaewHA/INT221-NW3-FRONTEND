@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import { getAnnouncement } from "../assets/data.js";
-import Navbar from "../components/Navbar.vue";
 
 onBeforeMount(async () => {
   const receivedData = ref([]);
@@ -30,11 +29,12 @@ const dateformat = (date) => {
   }
 };
 const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+console.log(allAnnouncement.value);
 </script>
 
 <template>
   <div class="w-screen h-screen">
-    <Navbar></Navbar>
     <div v-if="allAnnouncement.length != 0" class="font-noto">
       <h1 class="mt-2 mb-3 ml-6 text-custom-black">
         <span class="font-bold ">Date/Time Show in Timezone :</span>
@@ -43,7 +43,7 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
       <div class="flex justify-center items-center mt-10 mb-10 max-md:mt-8 max-md:mb-4">
         <h1 class="text-center text-5xl font-semibold max-md:text-3xl text-custom-black">ประกาศล่าสุด</h1>
       </div>
-      <div class="flex flex-col justify-center items-center " >
+      <div class="flex flex-col justify-center items-center ">
         <div v-for="(announcement, index) in allAnnouncement" :key="index"
           class="w-1/2 pt-5 flex flex-row border-b max-md:w-full max-md:px-10 ann-item">
           <div class="w-full max-md:hidden flex flex-col">
@@ -59,10 +59,10 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
               </p>
             </div>
             <div class="flex mb-5 space-x-5">
-              <p class="opacity-50 text-custom-black w-full ann-publish-date"><span class="font-bold">Publish Date : </span><span
-                  class="text-center">{{ dateformat(announcement.publishDate) }}</span></p>
-              <p class="opacity-50 text-custom-black w-full ann-close-date"><span class="font-bold">Close Date : </span><span
-                  class="text-center">{{ dateformat(announcement.closeDate) }}</span></p>
+              <p class="opacity-50 text-custom-black w-full ann-publish-date"><span class="font-bold">Publish Date :
+                </span><span class="text-center">{{ dateformat(announcement.publishDate) }}</span></p>
+              <p class="opacity-50 text-custom-black w-full ann-close-date"><span class="font-bold">Close Date :
+                </span><span class="text-center">{{ dateformat(announcement.closeDate) }}</span></p>
             </div>
           </div>
           <!-- responsive -->
@@ -77,9 +77,11 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
                       announcement.announcementDisplay }}</span>
                 </p>
               </div>
-              <p class="opacity-50 w-full text-sm mb-2"><span class="font-bold">Publish Date : </span><span class="">{{ dateformat(announcement.publishDate) }}</span>
+              <p class="opacity-50 w-full text-sm mb-2"><span class="font-bold">Publish Date : </span><span class="">{{
+                dateformat(announcement.publishDate) }}</span>
               </p>
-              <p class="opacity-50 w-full text-sm mb-2"><span class="font-bold">Close Date : </span><span class="">{{ dateformat(announcement.closeDate) }}</span>
+              <p class="opacity-50 w-full text-sm mb-2"><span class="font-bold">Close Date : </span><span class="">{{
+                dateformat(announcement.closeDate) }}</span>
               </p>
             </div>
           </div>
@@ -93,9 +95,9 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
           <!--  -->
         </div>
       </div>
-      </div>
+    </div>
     <div v-else>
-      <h1 class="mt-2 mb-3 ml-6 text-custom-black">
+      <h1 class="w-full flex mt-2 mb-3 ml-6 text-custom-black font-noto">
         <span class="font-bold ">Date/Time Show in Timezone :</span>
         {{ timezoneName }}
       </h1>

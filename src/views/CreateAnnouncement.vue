@@ -1,5 +1,4 @@
 <script setup>
-import Navbar from '../components/Navbar.vue';
 import { getCategory, addAnnouncement } from '../assets/data.js'
 import { onBeforeMount, onMounted, ref } from 'vue';
 
@@ -35,7 +34,6 @@ const createanno = async () => {
 
 <template>
     <div class="w-screen h-screen font-noto">
-        <Navbar></Navbar>
         <div class="w-full h-full flex justify-center text-custom-black">
             <div class="w-full flex flex-col items-center mt-10 space-y-4">
                 <h1 class="font-semibold text-3xl max-md:text-2xl">Create New Announcement</h1>

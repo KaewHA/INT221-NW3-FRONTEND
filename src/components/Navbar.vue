@@ -19,8 +19,8 @@ const showHam = () => {
                     SIT Announcement System
                 </h2>
                 <!-- responsive -->
-                <img @click="showHam" src="/icons/menu.svg" alt="" class="h-5 w-5 md:hidden self-center mt-2">
-                <ul v-if="isHamToggle" class="flex flex-col w-full h-full justify-center p-4 font-semibold text-center md:hidden">
+                <img v-if="false" @click="showHam" src="/icons/menu.svg" alt="" class="h-5 w-5 md:hidden self-center mt-2">
+                <ul v-if="false" class="flex flex-col w-full h-full justify-center p-4 font-semibold text-center md:hidden">
                     <li class="p-5 w-full h-full text-custom-black hover:text-custom-blue cursor-pointer">ทั่วไป</li>
                     <li class="p-5 w-full h-full text-custom-black hover:text-custom-blue cursor-pointer">ทุนการศึกษา</li>
                     <li class="p-5 w-full h-full text-custom-black hover:text-custom-blue cursor-pointer">หางาน</li>
@@ -28,7 +28,7 @@ const showHam = () => {
                 </ul>
                 <!--  -->
             </div>
-            <ul class="flex w-1/2 h-full justify-center p-4 font-semibold text-center max-md:hidden">
+            <ul v-if="false" class="flex w-1/2 h-full justify-center p-4 font-semibold text-center max-md:hidden">
                 <li class="p-5 w-1/4 h-full text-custom-black hover:text-custom-blue cursor-pointer">ทั่วไป</li>
                 <li class="p-5 w-1/4 h-full text-custom-black hover:text-custom-blue cursor-pointer">ทุนการศึกษา</li>
                 <li class="p-5 w-1/4 h-full text-custom-black hover:text-custom-blue cursor-pointer">หางาน</li>

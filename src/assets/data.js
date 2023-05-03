@@ -2,7 +2,7 @@
 import router from '../router/index.js'
 
 async function getAnnouncement() {
-    let api=`${import.meta.env.VITE_BASE_URL}/api/announcements/`
+    let api=`${import.meta.env.VITE_BASE_URL}/api/announcements`
     try {
         const res = await fetch(api)
         if (res.ok) {
@@ -34,7 +34,7 @@ async function getAnnouncementById(id) {
 
 async function getCategory() {
     try {
-        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/category/`)
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/category`)
         if (res.ok) {
             const category = res.json()
             return category
