@@ -95,7 +95,7 @@ console.log(editAnnouncement.value)
                     </div>
                 </div>
                 <div class="flex  ">
-                    <button @click="createanno()" class="px-4 py-2 rounded-md bg-red-500 text-white text-base font-bold mr-6">Update</button>
+                    <button @click="createanno()" class="px-4 py-2 rounded-md bg-sky-600 text-white text-base font-bold mr-6">Update</button>
                 <button @click="router.push(`/admin/announcement/${params.id}`)" class="px-4 py-2 rounded-md bg-zinc-500 text-white text-base font-bold" >Cancel</button>
             </div>
             </div>
