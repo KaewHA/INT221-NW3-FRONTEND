@@ -4,10 +4,10 @@ import AnnouncementDetail from '../views/AnnouncementDetail.vue'
 import createapp from '../views/create.vue'
 import indexinit from '../views/indexinit.vue'
 import CreateAnnouncement from '../views/CreateAnnouncement.vue'
-import EditAnnouncement from '../views/editAnnouncement.vue'
+import EditAnnouncement from '../views/EditAnnouncement.vue'
 import AnnouncementTable from '../views/AnnouncementTable.vue'
 import AddAnnouncement from '../views/AddAnnouncement.vue'
-
+import deleteannouncement from '../views/deleteannocement.vue'
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -36,9 +36,14 @@ const router = createRouter({
             name: 'AddAnnouncement',
             component: AddAnnouncement
         },
+        {
+            path: '/admin/announcement/:id/delete',
+            name: 'deleteannouncement',
+            component: deleteannouncement
+        },
 
         {
-            path: '/admin/announcement/edit/:id',
+            path: '/admin/announcement/:id/edit',
             name: 'EditAnnouncement',
             component: EditAnnouncement
         }

@@ -81,7 +81,7 @@ const addnewdata=async()=>{
 <template>
     <!-- <h1 class="hidden">{{ validateData() }}</h1> -->
     <div class="w-screen h-screen items-center flex flex-col font-noto">
-        <h1 class="font-extrabold text-3xl self-center my-4">Add Announcement</h1>
+        <h1 class="font-extrabold text-3xl self-center my-4 ">Create Announcement</h1>
         <div class="w-3/4 h-auto flex flex-col border rounded-md">
             <div class="flex px-4 pt-4">
                 <h2 class="font-bold text-2xl">Announcement Detail:</h2>

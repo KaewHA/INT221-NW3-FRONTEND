@@ -39,11 +39,11 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
                         <span class="font-bold">Date/Time Show in Timezone :</span>
                         {{ timezoneName }}
                     </h1>
-                    <button class="rounded-md bg-gray-200 px-4 py-3 text-sm font-bold" @click="router.push('/admin/announcement/add')">Add Announcement</button>
+                    <button class="rounded-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white" @click="router.push('/admin/announcement/add')">Add Announcement</button>
                 </div>
                 <div class="flex flex-col justify-center items-center">
                     <table class="w-full border">
-                        <tr class="sticky top-0 bg-slate-100 border">
+                        <tr class="sticky top-0 bg-cyan-600 border text-white">
                             <th class="text-left">No.</th>
                             <th class="text-left pr-6">Title</th>
                             <th class="text-left">Category</th>
@@ -75,7 +75,12 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
                                 <router-link :to="{
                                     path: `/admin/announcement/${announcement.id}`
                                 }">
-                                    <button class="rounded-md bg-gray-200 px-3 py-1 text-base font-bold">view</button>
+                                    <button class="rounded-md bg-sky-600 px-3 py-1 text-base font-bold mr-3 text-white">view</button>
+                                </router-link>
+                                <router-link :to="{
+                                    path: `/admin/announcement/${announcement.id}/delete`
+                                }">
+                                    <button class="rounded-md bg-red-600 px-3 py-1 text-base font-bold text-white">delete</button>
                                 </router-link>
                             </td>
                         </tr>

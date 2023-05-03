@@ -58,7 +58,10 @@ const dateformat = (date) => {
                 </table>
             </div>
             <router-link :to="{ path: '/admin/announcement/' }">
-                <button class="rounded-md text-center text-lg bg-gray-200 my-2 p-2 text-custom-black ann-button">Back</button>
+                <button class="rounded-md text-center text-lg bg-gray-200 my-2 w-20 h-10 text-custom-black ann-button mr-6">Back</button>
+            </router-link>
+            <router-link :to="{ path: `/admin/announcement/${params.id}/edit` }">
+                <button class="rounded-md text-center text-lg  my-2 w-20 h-10 bg-sky-600 text-white ann-button">Edit</button>
             </router-link>
         </div>
     </div>

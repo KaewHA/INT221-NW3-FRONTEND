@@ -54,7 +54,7 @@ console.log(editAnnouncement.value)
     <div class="w-screen h-screen font-noto">
         <div class="w-full h-full flex justify-center text-custom-black">
             <div class="text-3xl w-full flex flex-col items-center mt-10 space-y-4">
-                <h1 class="font-semibold">Edit Announcement</h1>
+                <h1 class="font-semibold">confirm deletion</h1>
                 <div class="w-1/2 border rounded-md px-6 py-4 space-y-4">
                     <div class="w-full flex flex-col">
                         <label for="title" class="text-base font-bold">Announcement Title</label>
@@ -95,9 +95,10 @@ console.log(editAnnouncement.value)
                     </div>
                 </div>
                 <div class="flex  ">
-                    <button @click="createanno()" class="px-4 py-2 rounded-md bg-red-500 text-white text-base font-bold mr-6">Update</button>
-                <button @click="router.push(`/admin/announcement/${params.id}`)" class="px-4 py-2 rounded-md bg-zinc-500 text-white text-base font-bold" >Cancel</button>
+                    <button @click="createanno()" class="px-4 py-2 rounded-md bg-red-500 text-white text-base font-bold mr-6">Delete</button>
+                <button @click="router.push('/admin/announcement')" class="px-4 py-2 rounded-md bg-zinc-500 text-white text-base font-bold" >Cancel</button>
             </div>
+                
             </div>
         </div>
     </div>
