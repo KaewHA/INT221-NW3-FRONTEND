@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
-import { getAnnouncement } from "../assets/data.js";
+import { getAnnouncement ,deleteannocement} from "../assets/data.js";
 import router from '../router/index.js'
 onBeforeMount(async () => {
     const receivedData = ref([]);
@@ -28,6 +28,15 @@ const dateformat = (date) => {
 };
 const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+const deleteanno=async(id)=>{
+  await deleteannocement(id)
+}
+const cf=(id)=>{
+if (confirm(`You want to delete announcemmnet ID:${id}`) == true) {
+  deleteanno(id)
+  location.reload();
+} 
+}
 </script>
 
 <template>
@@ -77,11 +86,8 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
                                 }">
                                     <button class="rounded-md bg-sky-600 px-3 py-1 text-base font-bold mr-3 text-white hover:bg-sky-700">view</button>
                                 </router-link>
-                                <router-link :to="{
-                                    path: `/admin/announcement/${announcement.id}/delete`
-                                }">
-                                    <button class="rounded-md bg-red-600 px-3 py-1 text-base font-bold text-white hover:bg-red-700">delete</button>
-                                </router-link>
+                                    <button class="rounded-md bg-red-600 px-3 py-1 text-base font-bold text-white hover:bg-red-700" @click="cf(announcement.id)">delete</button>
+                                
                             </td>
                         </tr>
                     </table>
