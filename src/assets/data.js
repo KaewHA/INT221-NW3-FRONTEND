@@ -47,6 +47,22 @@ async function getCategory() {
     }
 }
 
+async function deleteannocement(id) {
+    try {
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/announcements/${id}`,{method:"DELETE"})
+        if (res.ok) {
+            alert("delete complete")
+            router.push('/admin/announcement')
+        }
+        else {
+            throw new Error('Error, data is error!')
+        }
+    } catch (error) {
+        alert("CANT DELETE TRY AGAIN!")
+        router.push('/admin/announcement')
+    }
+}
+
 async function addAnnouncement(announcement) {
     console.log(JSON.stringify(announcement));
     try {
@@ -68,4 +84,4 @@ async function addAnnouncement(announcement) {
         console.log(error)
     }
 }
-export { getAnnouncement, getAnnouncementById, getCategory ,addAnnouncement}
+export { getAnnouncement, getAnnouncementById, getCategory ,addAnnouncement,deleteannocement}
