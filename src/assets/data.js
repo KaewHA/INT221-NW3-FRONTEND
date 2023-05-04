@@ -32,6 +32,23 @@ async function getAnnouncementById(id) {
     }
 }
 
+async function getAnnouncementByIddata(id) {
+    try {
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/announcements/${id}/data`)
+        if (res.ok) {
+            const announc = res.json()
+            return announc
+        }
+        else {
+            alert("The requested page is not available!")
+            router.push('/admin/announcement')
+            throw new Error('Error, data is error! with ID')
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 async function getCategory() {
     try {
         const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/category`)
@@ -86,7 +103,6 @@ async function addAnnouncement(announcement) {
 }
 
 async function updateAnnouncement(announcement,id) {
-    console.log(JSON.stringify(announcement));
     try {
         const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/announcements/${id}`, {
             method: "PUT",
@@ -106,4 +122,4 @@ async function updateAnnouncement(announcement,id) {
         console.log(error)
     }
 }
-export { getAnnouncement, getAnnouncementById, getCategory ,addAnnouncement,deleteannocement,updateAnnouncement}
+export { getAnnouncement, getAnnouncementById, getCategory ,addAnnouncement,deleteannocement,updateAnnouncement,getAnnouncementByIddata}

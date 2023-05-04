@@ -1,10 +1,17 @@
 <script setup>
-import { getCategory, getAnnouncementById, updateAnnouncement } from '../assets/data.js'
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { getCategory,  updateAnnouncement,getAnnouncementByIddata } from '../assets/data.js'
+import { onBeforeMount, onMounted, ref,computed } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '../router';
 const { params } = useRoute()
-const category = ref([])
+const olddata = ref({})
+const publishDate = ref(null)
+const publishTime = ref(null)
+const categoryAll = ref([])
+const closeDate = ref(null)
+const closeTime = ref(null)
+const display = ref('')
+const choosecategory = ref('')
 const options = {
     day: "numeric",
     month: "short",
@@ -14,10 +21,8 @@ const options = {
     hour12: false
 };
 function createdate(data) {
-    let dateString = data;
-    let [dateStr, timeStr] = dateString.split(" ");
+    let dateStr= data;
     let [day, month, year] = dateStr.split("/");
-    let [hours, minutes, seconds] = timeStr.split(":");
     let years = parseInt(year) - 543
     year = years.toString()
     if (month.length === 1) {
@@ -26,34 +31,125 @@ function createdate(data) {
     if (day.length === 1) {
         day = "0" + day
     }
-    const date = year + "-" + month + "-" + day + "T" + hours + ":" + minutes
-    return date
+    
+    return year + "-" + month + "-" + day
+}
+function createtime(H,M) {
+    let hour=H.toString()
+    let min=M.toString()
+    if (hour.length === 1) {
+        hour = "0" + hour
+    }
+    if (min.length === 1) {
+        min = "0" + min
+    }
+    
+    return hour+":"+min
 }
 onBeforeMount(async () => {
-    //get edit announcement
+    //get new announcement
     const receivedAnnouncement = ref()
-    receivedAnnouncement.value = await getAnnouncementById(params.id)
+    receivedAnnouncement.value = await getAnnouncementByIddata(params.id)
     for (const [key, value] of Object.entries(receivedAnnouncement.value)) {
-        if (key.includes("Date") && value != null) {
-            let date = new Date(value).toLocaleString()
-            editAnnouncement.value[key] = createdate(date)
-            //   console.log(date);
-            // console.log(editAnnouncement.value[key]);
-        } else if (key != "id") {
-            if (key.includes("Category")) {
-                editAnnouncement.value["category"] = value
+        if (key.includes("publish") && value != null) {
+             let date = new Date(value)
+             let DATE =date.toLocaleDateString()
+             let timeH= date.getHours()
+             let timeM= date.getMinutes()
+             publishDate.value=createdate(DATE)
+             publishTime.value=createtime(timeH,timeM)
+            // newAnnouncement.value[key] = createdate(date)
+        }else if (key.includes("close") && value != null) {
+            // let date = new Date(value).toLocaleString()
+            // newAnnouncement.value[key] = createdate(date)
+             let date = new Date(value)
+             let DATE =date.toLocaleDateString()
+             let timeH= date.getHours()
+             let timeM= date.getMinutes()
+             closeDate.value=createdate(DATE)
+             closeTime.value=createtime(timeH,timeM)
+        } 
+         else if (key != "announcementID") {
+            if (key.includes("category")) {
+                choosecategory.value=value.categoryName
             }
-            editAnnouncement.value[key] = value
+            if (key.includes("Display")) {
+                if(receivedAnnouncement.value.announcementDisplay=="Y"){
+                   display.value=true
+                }else{
+                    display.value=false
+                }
+            }
+            if(key !="category"){
+                newAnnouncement.value[key] = value
+            }
+            
         }
     }
     //get category announcement
     const receivedCategory = ref([])
     receivedCategory.value = await getCategory()
-    receivedCategory.value.forEach((data) => category.value.push(data))
-    console.log(receivedAnnouncement.value);
+    receivedCategory.value.forEach((data) => categoryAll.value.push(data))
+    for (const [key, value] of Object.entries(receivedAnnouncement.value)) {
+        olddata.value[key]=value
+    }
 })
-
-const editAnnouncement = ref({
+const isDisabled = computed(() => {
+    const checknewdata=()=>{
+        let x = categoryAll.value.find((x) => x.categoryName === choosecategory.value)
+        newAnnouncement.value.category = x
+        newAnnouncement.value.publishDate = convertDate(publishDate.value, publishTime.value)
+        newAnnouncement.value.closeDate = convertDate(closeDate.value, closeTime.value)
+        newAnnouncement.value.announcementDisplay = display.value == true ? 'Y' : 'N'
+        const check=()=>{
+            for (const [key, value] of Object.entries(olddata.value)) {
+            if (key != "announcementID"){
+                if(!key.includes('category')){
+                    if(value!=newAnnouncement.value[key]){
+                    return true
+              }
+                }
+            
+            }
+        }
+        return false
+        }
+        const checkcate=()=>{
+            if(choosecategory.value!=0){
+                if(olddata.value['category']!=undefined){
+                 let oldcate=olddata.value['category'].categoryName
+                 let newcate=newAnnouncement.value.category.categoryName
+                if(oldcate===newcate){
+                    return false
+                }else{
+                    return true
+                }
+            }
+            }
+        return false
+        }
+        let datacheck=check()
+        let catecheck=checkcate()
+        return !(datacheck || catecheck)
+    }
+    let titlenull=false
+    let desnull=false
+    if(newAnnouncement.value.announcementTitle.length==0){
+        titlenull=true
+    }
+    if(newAnnouncement.value.announcementDescription.length==0){
+        desnull=true
+    }
+    return checknewdata() || titlenull || desnull
+})
+const convertDate = (date, time) => {
+    if (date === null) {
+        return null
+    } else {
+        return new Date(date + "T" + (time === null ? '00:00' : time)).toISOString().replace(".000Z", "Z")
+    }
+}
+const newAnnouncement = ref({
     announcementTitle: '',
     category: '',
     announcementDisplay: '',
@@ -62,81 +158,87 @@ const editAnnouncement = ref({
     closeDate: ''
 })
 
-console.log(editAnnouncement.value)
 
 const createanno = async () => {
-    let x = category.value.find((x) => x.categoryName === editAnnouncement.value.category)
-    editAnnouncement.value.category = { categoryID: x.categoryID, categoryName: x.categoryName }
-    console.log(editAnnouncement.value.publishDate);
-    let localDate = new Date(editAnnouncement.value.publishDate)
-    console.log(localDate);
-    const utcDate = new Date(localDate.getTime() + localDate.getTimezoneOffset() * 60000).toISOString();
-    console.log(utcDate);
-    editAnnouncement.value.publishDate = utcDate
-    let localDate2 = new Date(editAnnouncement.value.closeDate)
-    const utcDate2 = new Date(localDate2.getTime() + localDate2.getTimezoneOffset() * 60000).toISOString();
-    editAnnouncement.value.closeDate = utcDate2
-    console.log(editAnnouncement.value)
-    ///await updateAnnouncement(editAnnouncement.value,params.id)
+    
+    await updateAnnouncement(newAnnouncement.value,params.id)
+}
+ function showdata (){
+   ///show something\
+ console.log(olddata.value);
 }
 </script>
 
 <template>
-    <div class="w-screen font-noto">
-        <div class="w-full h-full flex justify-center text-custom-black">
-            <div class="text-3xl w-full flex flex-col items-center mt-10 space-y-4">
-                <h1 class="font-semibold">Edit Announcement</h1>
-                <div class="w-1/2 border rounded-md px-6 py-4 space-y-4">
-                    <div class="w-full flex flex-col">
-                        <label for="title" class="text-base font-bold">Announcement Title</label>
-                        <input v-model="editAnnouncement.announcementTitle" type="text" id="title"
-                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" placeholder="Learning Exchanging">
-                    </div>
-                    <div class="w-full flex flex-row space-x-2">
-                        <div class="w-2/3 flex flex-col">
-                            <label for="category-select" class="text-base font-bold">Category</label>
-                            <select v-model="editAnnouncement.category" name="category" id="category-select"
-                                class="border rounded-md bg-slate-100 text-lg py-2 px-4">
-                                <option v-for="item in category">{{ item.categoryName }}</option>
-                            </select>
-                        </div>
-                        <div class="w-1/3 flex flex-col">
-                            <label for="display-select" class="text-base font-bold">Display</label>
-                            <select v-model="editAnnouncement.announcementDisplay" name="display" id="display-select"
-                                class="border rounded-md bg-slate-100 text-lg py-2 px-4">
-                                <option value="Y">Yes</option>
-                                <option value="N">No</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="description" class="text-base font-bold">Description</label>
-                        <textarea v-model="editAnnouncement.announcementDescription" id="description"
-                            class="border rounded-md bg-slate-100 text-lg py-2 px-4"
-                            placeholder="Imagination is more important than knowledge...">
-                        </textarea>
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="publishDate" class="text-base font-bold">Publish Date</label>
-                        <input pattern="MM-DD-YYYY HH:mm" type="datetime-local"
-                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="publishDate"
-                            v-model="editAnnouncement.publishDate">
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <label for="closeDate" class="text-base font-bold">Close Date</label>
-                        <input pattern="MM-DD-YYYY HH:mm" type="datetime-local"
-                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate"
-                            v-model="editAnnouncement.closeDate">
+    <div class="w-screen">
+        <div class="w-full h-full items-center flex flex-col font-noto">
+            <h1 class="font-extrabold text-3xl self-center my-4 ">Create Announcement</h1>
+            <div class="w-3/4 h-auto flex flex-col border rounded-md">
+                <div class="flex px-4 pt-4">
+                    <h2 class="font-bold text-2xl">Announcement Detail:</h2>
+                </div>
+                <div class="flex flex-col w-full px-4 py-2 space-y-1">
+                    <label for="title" class="text-base font-bold">Title</label>
+                    <input v-model="newAnnouncement.announcementTitle" type="text" id="title"
+                        class="border rounded-md bg-slate-100 text-lg py-2 px-4" placeholder="Learning Exchanging">
+                </div>
+                <div class="flex flex-col w-2/5 px-4 py-2 space-y-1">
+                    <label for="category-select" class="text-base font-bold">Category</label>
+                    <select v-model="choosecategory" name="category" id="category-select"
+                        class="border rounded-md bg-slate-100 text-lg py-2 px-4">
+                        <option value="0" disabled>Select a category</option>
+                        <option v-for="item  in categoryAll" >
+                            {{ item.categoryName }}
+                        </option>
+                    </select>
+                </div>
+                <div class="flex flex-col w-full px-4 py-2 space-y-1">
+                    <label for="description" class="text-base font-bold">Description</label>
+                    <textarea v-model="newAnnouncement.announcementDescription" maxlength="10000" rows="10" id="description"
+                        class="border rounded-md bg-slate-100 text-lg py-2 px-4"
+                        placeholder="Imagination is more important than knowledge...">
+                </textarea>
+                </div>
+                <div class="flex flex-col w-full px-4 py-2 space-y-1">
+                    <label class="text-base font-bold">Publish Date</label>
+                    <div class="w-1/3 flex flex-row space-x-4">
+                        <input v-model="publishDate" type="date" placeholder="01/05/2023"
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="publishDate">
+                        <input :disabled="!publishDate" v-model="publishTime" type="time" placeholder="12:30"
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="publishDate">
                     </div>
                 </div>
-                <div class="flex  ">
-                    <button @click="createanno()"
-                        class="px-4 py-2 rounded-md bg-sky-600 text-white text-base font-bold mr-6">Update</button>
-                    <button @click="router.push(`/admin/announcement/${params.id}`)"
-                        class="px-4 py-2 rounded-md bg-zinc-500 text-white text-base font-bold">Cancel</button>
+                <div class="flex flex-col w-full px-4 py-2 space-y-1">
+                    <label class="text-base font-bold">Close Date</label>
+                    <div class="w-1/3 flex flex-row space-x-4">
+                        <input v-model="closeDate" type="date" placeholder="01/05/2023"
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate">
+                        <input :disabled="!closeDate" v-model="closeTime" type="time" placeholder="12:30"
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate">
+                    </div>
+                </div>
+                <div class="flex flex-col w-full px-4 py-2 space-y-1">
+                    <label class="text-base font-bold">Display</label>
+                    <div class="space-x-2">
+                        <input v-model="display" type="checkbox" id="display"
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4">
+                        <label for="display" class="font-bold text-sm">Check to show this announcement</label>
+                    </div>
+                </div>
+                <div class="w-full flex justify-start p-4 space-x-2">
+                    <button :disabled="isDisabled"
+                        class="px-4 py-2 rounded-md bg-green-500 text-white text-base font-bold disabled:bg-zinc-500"
+                        @click="createanno()">Update</button>
+                    <button class="px-4 py-2 rounded-md bg-red-500 text-white text-base font-bold"
+                        @click="router.push('/admin/announcement')">Cancel</button>
+                        <!-- <button class="px-4 py-2 rounded-md bg-red-500 text-white text-base font-bold"
+                        @click="showdata()">show</button> -->
+                        <!-- <button class="px-4 py-2 rounded-md bg-red-500 text-white text-base font-bold"
+                        @click="createanno()">test</button> -->
                 </div>
             </div>
+        </div>
     </div>
-</div></template>
+</template>
 
 <style scoped></style>

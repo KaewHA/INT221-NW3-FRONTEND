@@ -36,13 +36,16 @@ const newAnnouncement = ref({
 })
 
 const isDisabled = computed(() => {
-    const emptyValue = []
+    const checkfill=()=>{
+        const emptyValue = []
     for (const [key, value] of Object.entries(newAnnouncement.value)) {
         if (!key.includes('Date') && !key.includes('Display') && value == '') {
             emptyValue.push(key)
         }
     }
     return emptyValue.length > 0 ? true : false
+    }
+    return checkfill()
 })
 
 const addnewdata = async () => {

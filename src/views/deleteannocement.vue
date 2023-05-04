@@ -12,7 +12,6 @@ onBeforeMount(async () => {
     for (const [key, value] of Object.entries(receivedAnnouncement.value)) {
         if(key.includes("Date") && value != null) {
             editAnnouncement.value[key] = value.slice(0, 16)
-            console.log(editAnnouncement.value[key]);
         } else if(key != "id") {
             if (key.includes("Category")) {
                 editAnnouncement.value["category"] = value
