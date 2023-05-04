@@ -25,7 +25,7 @@ const dateformat = (date) => {
 </script>
 
 <template>
-    <div class="w-screen h-screen font-noto">
+    <div class="w-screen font-noto">
         <div v-if="announcement" class="w-full h-full flex-row justify-center items-center px-4 py-2">
             <h1 class="text-left text-3xl mb-4 text-custom-black">Announcement Detail:</h1>
             <div class="border rounded-sm flex justify-center items-center">

@@ -1,5 +1,5 @@
 <script setup>
-import { getCategory,getAnnouncementById ,updateAnnouncement} from '../assets/data.js'
+import { getCategory, getAnnouncementById, updateAnnouncement } from '../assets/data.js'
 import { onBeforeMount, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '../router';
@@ -14,32 +14,32 @@ const options = {
     hour12: false
 };
 function createdate(data) {
-let dateString = data;
-let [dateStr, timeStr] = dateString.split(" ");
-let [day, month, year] = dateStr.split("/");
-let [hours, minutes, seconds] = timeStr.split(":");
-let years= parseInt(year)-543
-year=years.toString()
-if(month.length===1){
-    month="0"+month
-}
-if(day.length===1){
-    day="0"+day
-}
-const date = year+"-"+month+"-"+day+"T"+hours+":"+minutes
-return date
+    let dateString = data;
+    let [dateStr, timeStr] = dateString.split(" ");
+    let [day, month, year] = dateStr.split("/");
+    let [hours, minutes, seconds] = timeStr.split(":");
+    let years = parseInt(year) - 543
+    year = years.toString()
+    if (month.length === 1) {
+        month = "0" + month
+    }
+    if (day.length === 1) {
+        day = "0" + day
+    }
+    const date = year + "-" + month + "-" + day + "T" + hours + ":" + minutes
+    return date
 }
 onBeforeMount(async () => {
     //get edit announcement
     const receivedAnnouncement = ref()
     receivedAnnouncement.value = await getAnnouncementById(params.id)
     for (const [key, value] of Object.entries(receivedAnnouncement.value)) {
-        if(key.includes("Date") && value != null) {
-            let date=new Date(value).toLocaleString()
-             editAnnouncement.value[key] = createdate(date)
+        if (key.includes("Date") && value != null) {
+            let date = new Date(value).toLocaleString()
+            editAnnouncement.value[key] = createdate(date)
             //   console.log(date);
             // console.log(editAnnouncement.value[key]);
-        } else if(key != "id") {
+        } else if (key != "id") {
             if (key.includes("Category")) {
                 editAnnouncement.value["category"] = value
             }
@@ -58,31 +58,31 @@ const editAnnouncement = ref({
     category: '',
     announcementDisplay: '',
     announcementDescription: '',
-    publishDate:'',
-    closeDate:''
+    publishDate: '',
+    closeDate: ''
 })
 
 console.log(editAnnouncement.value)
 
-const createanno=async()=>{
-    let x=category.value.find((x)=>x.categoryName===editAnnouncement.value.category)
-    editAnnouncement.value.category= {categoryID:x.categoryID,categoryName:x.categoryName}
+const createanno = async () => {
+    let x = category.value.find((x) => x.categoryName === editAnnouncement.value.category)
+    editAnnouncement.value.category = { categoryID: x.categoryID, categoryName: x.categoryName }
     console.log(editAnnouncement.value.publishDate);
-    let localDate=new Date(editAnnouncement.value.publishDate)
+    let localDate = new Date(editAnnouncement.value.publishDate)
     console.log(localDate);
     const utcDate = new Date(localDate.getTime() + localDate.getTimezoneOffset() * 60000).toISOString();
     console.log(utcDate);
-    editAnnouncement.value.publishDate=utcDate
-    let localDate2=new Date(editAnnouncement.value.closeDate)
+    editAnnouncement.value.publishDate = utcDate
+    let localDate2 = new Date(editAnnouncement.value.closeDate)
     const utcDate2 = new Date(localDate2.getTime() + localDate2.getTimezoneOffset() * 60000).toISOString();
-    editAnnouncement.value.closeDate=utcDate2
+    editAnnouncement.value.closeDate = utcDate2
     console.log(editAnnouncement.value)
-     ///await updateAnnouncement(editAnnouncement.value,params.id)
+    ///await updateAnnouncement(editAnnouncement.value,params.id)
 }
 </script>
 
 <template>
-    <div class="w-screen h-screen font-noto">
+    <div class="w-screen font-noto">
         <div class="w-full h-full flex justify-center text-custom-black">
             <div class="text-3xl w-full flex flex-col items-center mt-10 space-y-4">
                 <h1 class="font-semibold">Edit Announcement</h1>
@@ -97,7 +97,7 @@ const createanno=async()=>{
                             <label for="category-select" class="text-base font-bold">Category</label>
                             <select v-model="editAnnouncement.category" name="category" id="category-select"
                                 class="border rounded-md bg-slate-100 text-lg py-2 px-4">
-                                <option v-for="item in category" >{{ item.categoryName }}</option>
+                                <option v-for="item in category">{{ item.categoryName }}</option>
                             </select>
                         </div>
                         <div class="w-1/3 flex flex-col">
@@ -112,26 +112,31 @@ const createanno=async()=>{
                     <div class="w-full flex flex-col">
                         <label for="description" class="text-base font-bold">Description</label>
                         <textarea v-model="editAnnouncement.announcementDescription" id="description"
-                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" 
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4"
                             placeholder="Imagination is more important than knowledge...">
                         </textarea>
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="publishDate" class="text-base font-bold">Publish Date</label>
-                        <input  pattern="MM-DD-YYYY HH:mm" type="datetime-local" class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="publishDate" v-model="editAnnouncement.publishDate">
+                        <input pattern="MM-DD-YYYY HH:mm" type="datetime-local"
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="publishDate"
+                            v-model="editAnnouncement.publishDate">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="closeDate" class="text-base font-bold">Close Date</label>
-                        <input  pattern="MM-DD-YYYY HH:mm" type="datetime-local" class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate" v-model="editAnnouncement.closeDate">
+                        <input pattern="MM-DD-YYYY HH:mm" type="datetime-local"
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate"
+                            v-model="editAnnouncement.closeDate">
                     </div>
                 </div>
                 <div class="flex  ">
-                    <button @click="createanno()" class="px-4 py-2 rounded-md bg-sky-600 text-white text-base font-bold mr-6">Update</button>
-                <button @click="router.push(`/admin/announcement/${params.id}`)" class="px-4 py-2 rounded-md bg-zinc-500 text-white text-base font-bold" >Cancel</button>
+                    <button @click="createanno()"
+                        class="px-4 py-2 rounded-md bg-sky-600 text-white text-base font-bold mr-6">Update</button>
+                    <button @click="router.push(`/admin/announcement/${params.id}`)"
+                        class="px-4 py-2 rounded-md bg-zinc-500 text-white text-base font-bold">Cancel</button>
+                </div>
             </div>
-            </div>
-        </div>
     </div>
-</template>
+</div></template>
 
 <style scoped></style>

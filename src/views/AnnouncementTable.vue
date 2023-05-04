@@ -31,15 +31,15 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
 </script>
 
 <template>
-    <div class="w-screen h-screen">
-        <div class="h-full flex justify-center">
+    <div class="w-screen">
+        <div class="w-full flex justify-center">
             <div v-if="allAnnouncement.length != 0" class="font-noto w-full p-8">
                 <div class="w-full flex flex-row justify-between mt-2 mb-3">
                     <h1 class="text-custom-black">
                         <span class="font-bold">Date/Time Show in Timezone :</span>
                         {{ timezoneName }}
                     </h1>
-                    <button class="rounded-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white" @click="router.push('/admin/announcement/add')">Add Announcement</button>
+                    <button class="rounded-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white hover:bg-emerald-600" @click="router.push('/admin/announcement/add')">Add Announcement</button>
                 </div>
                 <div class="flex flex-col justify-center items-center">
                     <table class="w-full border">
@@ -75,12 +75,12 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
                                 <router-link :to="{
                                     path: `/admin/announcement/${announcement.id}`
                                 }">
-                                    <button class="rounded-md bg-sky-600 px-3 py-1 text-base font-bold mr-3 text-white">view</button>
+                                    <button class="rounded-md bg-sky-600 px-3 py-1 text-base font-bold mr-3 text-white hover:bg-sky-700">view</button>
                                 </router-link>
                                 <router-link :to="{
                                     path: `/admin/announcement/${announcement.id}/delete`
                                 }">
-                                    <button class="rounded-md bg-red-600 px-3 py-1 text-base font-bold text-white">delete</button>
+                                    <button class="rounded-md bg-red-600 px-3 py-1 text-base font-bold text-white hover:bg-red-700">delete</button>
                                 </router-link>
                             </td>
                         </tr>

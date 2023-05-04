@@ -34,7 +34,7 @@ const createanno = async () => {
 </script>
 
 <template>
-    <div class="w-screen h-screen font-noto">
+    <div class="w-screen font-noto">
         <div class="w-full h-full flex justify-center text-custom-black">
             <div class="w-full flex flex-col items-center mt-10 space-y-4">
                 <h1 class="font-semibold text-3xl max-md:text-2xl">Create New Announcement</h1>

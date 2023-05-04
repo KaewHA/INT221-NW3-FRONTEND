@@ -48,73 +48,75 @@ const isDisabled = computed(() => {
 const addnewdata = async () => {
     newAnnouncement.value.publishDate = convertDate(publishDate.value, publishTime.value)
     newAnnouncement.value.closeDate = convertDate(closeDate.value, closeTime.value)
-    newAnnouncement.value.announcementDisplay=display.value==true? 'Y':'N'
+    newAnnouncement.value.announcementDisplay = display.value == true ? 'Y' : 'N'
     await addAnnouncement(newAnnouncement.value)
 }
 
 </script>
 
 <template>
-    <div class="w-screen h-screen items-center flex flex-col font-noto">
-        <h1 class="font-extrabold text-3xl self-center my-4 ">Create Announcement</h1>
-        <div class="w-3/4 h-auto flex flex-col border rounded-md">
-            <div class="flex px-4 pt-4">
-                <h2 class="font-bold text-2xl">Announcement Detail:</h2>
-            </div>
-            <div class="flex flex-col w-full px-4 py-2 space-y-1">
-                <label for="title" class="text-base font-bold">Title</label>
-                <input v-model="newAnnouncement.announcementTitle" type="text" id="title"
-                    class="border rounded-md bg-slate-100 text-lg py-2 px-4" placeholder="Learning Exchanging">
-            </div>
-            <div class="flex flex-col w-2/5 px-4 py-2 space-y-1">
-                <label for="category-select" class="text-base font-bold">Category</label>
-                <select v-model="newAnnouncement.category" name="category" id="category-select"
-                    class="border rounded-md bg-slate-100 text-lg py-2 px-4">
-                    <option value="" disabled>Select a category</option>
-                    <option v-for="(item, index) in categoryAll" :key="index" :value="item">
-                        {{ item.categoryName }}
-                    </option>
-                </select>
-            </div>
-            <div class="flex flex-col w-full px-4 py-2 space-y-1">
-                <label for="description" class="text-base font-bold">Description</label>
-                <textarea v-model="newAnnouncement.announcementDescription" maxlength="10000" rows="10" id="description"
-                    class="border rounded-md bg-slate-100 text-lg py-2 px-4"
-                    placeholder="Imagination is more important than knowledge...">
-                </textarea>
-            </div>
-            <div class="flex flex-col w-full px-4 py-2 space-y-1">
-                <label class="text-base font-bold">Publish Date</label>
-                <div class="w-1/3 flex flex-row space-x-4">
-                    <input v-model="publishDate" type="date" placeholder="01/05/2023"
-                        class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="publishDate">
-                    <input :disabled="!publishDate" v-model="publishTime" type="time" placeholder="12:30"
-                        class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="publishDate">
+    <div class="w-screen">
+        <div class="w-full h-full items-center flex flex-col font-noto">
+            <h1 class="font-extrabold text-3xl self-center my-4 ">Create Announcement</h1>
+            <div class="w-3/4 h-auto flex flex-col border rounded-md">
+                <div class="flex px-4 pt-4">
+                    <h2 class="font-bold text-2xl">Announcement Detail:</h2>
                 </div>
-            </div>
-            <div class="flex flex-col w-full px-4 py-2 space-y-1">
-                <label class="text-base font-bold">Close Date</label>
-                <div class="w-1/3 flex flex-row space-x-4">
-                    <input v-model="closeDate" type="date" placeholder="01/05/2023"
-                        class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate">
-                    <input :disabled="!closeDate" v-model="closeTime" type="time" placeholder="12:30"
-                        class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate">
+                <div class="flex flex-col w-full px-4 py-2 space-y-1">
+                    <label for="title" class="text-base font-bold">Title</label>
+                    <input v-model="newAnnouncement.announcementTitle" type="text" id="title"
+                        class="border rounded-md bg-slate-100 text-lg py-2 px-4" placeholder="Learning Exchanging">
                 </div>
-            </div>
-            <div class="flex flex-col w-full px-4 py-2 space-y-1">
-                <label class="text-base font-bold">Display</label>
-                <div class="space-x-2">
-                    <input v-model="display" type="checkbox" id="display"
+                <div class="flex flex-col w-2/5 px-4 py-2 space-y-1">
+                    <label for="category-select" class="text-base font-bold">Category</label>
+                    <select v-model="newAnnouncement.category" name="category" id="category-select"
                         class="border rounded-md bg-slate-100 text-lg py-2 px-4">
-                    <label for="display" class="font-bold text-sm">Check to show this announcement</label>
+                        <option value="" disabled>Select a category</option>
+                        <option v-for="(item, index) in categoryAll" :key="index" :value="item">
+                            {{ item.categoryName }}
+                        </option>
+                    </select>
                 </div>
-            </div>
-            <div class="w-full flex justify-start p-4 space-x-2">
-                <button :disabled="isDisabled"
-                    class="px-4 py-2 rounded-md bg-green-500 text-white text-base font-bold disabled:bg-zinc-500"
-                    @click="addnewdata()">Submit</button>
-                <button class="px-4 py-2 rounded-md bg-red-500 text-white text-base font-bold"
-                    @click="router.push('/admin/announcement')">Cancel</button>
+                <div class="flex flex-col w-full px-4 py-2 space-y-1">
+                    <label for="description" class="text-base font-bold">Description</label>
+                    <textarea v-model="newAnnouncement.announcementDescription" maxlength="10000" rows="10" id="description"
+                        class="border rounded-md bg-slate-100 text-lg py-2 px-4"
+                        placeholder="Imagination is more important than knowledge...">
+                </textarea>
+                </div>
+                <div class="flex flex-col w-full px-4 py-2 space-y-1">
+                    <label class="text-base font-bold">Publish Date</label>
+                    <div class="w-1/3 flex flex-row space-x-4">
+                        <input v-model="publishDate" type="date" placeholder="01/05/2023"
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="publishDate">
+                        <input :disabled="!publishDate" v-model="publishTime" type="time" placeholder="12:30"
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="publishDate">
+                    </div>
+                </div>
+                <div class="flex flex-col w-full px-4 py-2 space-y-1">
+                    <label class="text-base font-bold">Close Date</label>
+                    <div class="w-1/3 flex flex-row space-x-4">
+                        <input v-model="closeDate" type="date" placeholder="01/05/2023"
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate">
+                        <input :disabled="!closeDate" v-model="closeTime" type="time" placeholder="12:30"
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate">
+                    </div>
+                </div>
+                <div class="flex flex-col w-full px-4 py-2 space-y-1">
+                    <label class="text-base font-bold">Display</label>
+                    <div class="space-x-2">
+                        <input v-model="display" type="checkbox" id="display"
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4">
+                        <label for="display" class="font-bold text-sm">Check to show this announcement</label>
+                    </div>
+                </div>
+                <div class="w-full flex justify-start p-4 space-x-2">
+                    <button :disabled="isDisabled"
+                        class="px-4 py-2 rounded-md bg-green-500 text-white text-base font-bold disabled:bg-zinc-500"
+                        @click="addnewdata()">Submit</button>
+                    <button class="px-4 py-2 rounded-md bg-red-500 text-white text-base font-bold"
+                        @click="router.push('/admin/announcement')">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
