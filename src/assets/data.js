@@ -84,4 +84,26 @@ async function addAnnouncement(announcement) {
         console.log(error)
     }
 }
-export { getAnnouncement, getAnnouncementById, getCategory ,addAnnouncement,deleteannocement}
+
+async function updateAnnouncement(announcement,id) {
+    console.log(JSON.stringify(announcement));
+    try {
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/announcements/${id}`, {
+            method: "PUT",
+            headers: {
+          "Content-Type": "application/json",
+            },
+            body: JSON.stringify(announcement)
+          });
+        if (res.ok) {
+            alert("UPDATE announcement")
+            router.push('/admin/announcement')
+        }
+        else {
+            throw new Error('Error, data is error!')
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+export { getAnnouncement, getAnnouncementById, getCategory ,addAnnouncement,deleteannocement,updateAnnouncement}

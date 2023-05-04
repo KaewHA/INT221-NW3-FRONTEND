@@ -1,5 +1,5 @@
 <script setup>
-import { getCategory,addAnnouncement,getAnnouncementById } from '../assets/data.js'
+import { getCategory,getAnnouncementById ,updateAnnouncement} from '../assets/data.js'
 import { onBeforeMount, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '../router';
@@ -37,17 +37,17 @@ const editAnnouncement = ref({
 
 console.log(editAnnouncement.value)
 
-// const createanno=async()=>{
-//     let x=category.value.find((x)=>x.categoryName===newAnnouncement.value.category)
-//     newAnnouncement.value.category= {categoryID:x.categoryID,categoryName:x.categoryName}
-//     let localDate=new Date(newAnnouncement.value.publishDate)
-//     const utcDate = new Date(localDate.getTime() + localDate.getTimezoneOffset() * 60000).toISOString();
-//     newAnnouncement.value.publishDate=utcDate
-//     let localDate2=new Date(newAnnouncement.value.closeDate)
-//     const utcDate2 = new Date(localDate2.getTime() + localDate2.getTimezoneOffset() * 60000).toISOString();
-//     newAnnouncement.value.closeDate=utcDate2
-//     await addAnnouncement(newAnnouncement.value)
-// }
+const createanno=async()=>{
+    let x=category.value.find((x)=>x.categoryName===newAnnouncement.value.category)
+    newAnnouncement.value.category= {categoryID:x.categoryID,categoryName:x.categoryName}
+    let localDate=new Date(newAnnouncement.value.publishDate)
+    const utcDate = new Date(localDate.getTime() + localDate.getTimezoneOffset() * 60000).toISOString();
+    newAnnouncement.value.publishDate=utcDate
+    let localDate2=new Date(newAnnouncement.value.closeDate)
+    const utcDate2 = new Date(localDate2.getTime() + localDate2.getTimezoneOffset() * 60000).toISOString();
+    newAnnouncement.value.closeDate=utcDate2
+    await updateAnnouncement(newAnnouncement.value,params.id)
+}
 </script>
 
 <template>
