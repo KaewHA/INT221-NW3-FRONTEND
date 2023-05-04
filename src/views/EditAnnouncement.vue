@@ -5,14 +5,40 @@ import { useRoute } from 'vue-router';
 import router from '../router';
 const { params } = useRoute()
 const category = ref([])
+const options = {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false
+};
+function createdate(data) {
+let dateString = data;
+let [dateStr, timeStr] = dateString.split(" ");
+let [day, month, year] = dateStr.split("/");
+let [hours, minutes, seconds] = timeStr.split(":");
+let years= parseInt(year)-543
+year=years.toString()
+if(month.length===1){
+    month="0"+month
+}
+if(day.length===1){
+    day="0"+day
+}
+const date = year+"-"+month+"-"+day+"T"+hours+":"+minutes
+return date
+}
 onBeforeMount(async () => {
     //get edit announcement
     const receivedAnnouncement = ref()
     receivedAnnouncement.value = await getAnnouncementById(params.id)
     for (const [key, value] of Object.entries(receivedAnnouncement.value)) {
         if(key.includes("Date") && value != null) {
-            editAnnouncement.value[key] = value.slice(0, 16)
-            console.log(editAnnouncement.value[key]);
+            let date=new Date(value).toLocaleString()
+             editAnnouncement.value[key] = createdate(date)
+            //   console.log(date);
+            // console.log(editAnnouncement.value[key]);
         } else if(key != "id") {
             if (key.includes("Category")) {
                 editAnnouncement.value["category"] = value
@@ -24,6 +50,7 @@ onBeforeMount(async () => {
     const receivedCategory = ref([])
     receivedCategory.value = await getCategory()
     receivedCategory.value.forEach((data) => category.value.push(data))
+    console.log(receivedAnnouncement.value);
 })
 
 const editAnnouncement = ref({
@@ -38,15 +65,19 @@ const editAnnouncement = ref({
 console.log(editAnnouncement.value)
 
 const createanno=async()=>{
-    let x=category.value.find((x)=>x.categoryName===newAnnouncement.value.category)
-    newAnnouncement.value.category= {categoryID:x.categoryID,categoryName:x.categoryName}
-    let localDate=new Date(newAnnouncement.value.publishDate)
+    let x=category.value.find((x)=>x.categoryName===editAnnouncement.value.category)
+    editAnnouncement.value.category= {categoryID:x.categoryID,categoryName:x.categoryName}
+    console.log(editAnnouncement.value.publishDate);
+    let localDate=new Date(editAnnouncement.value.publishDate)
+    console.log(localDate);
     const utcDate = new Date(localDate.getTime() + localDate.getTimezoneOffset() * 60000).toISOString();
-    newAnnouncement.value.publishDate=utcDate
-    let localDate2=new Date(newAnnouncement.value.closeDate)
+    console.log(utcDate);
+    editAnnouncement.value.publishDate=utcDate
+    let localDate2=new Date(editAnnouncement.value.closeDate)
     const utcDate2 = new Date(localDate2.getTime() + localDate2.getTimezoneOffset() * 60000).toISOString();
-    newAnnouncement.value.closeDate=utcDate2
-    await updateAnnouncement(newAnnouncement.value,params.id)
+    editAnnouncement.value.closeDate=utcDate2
+    console.log(editAnnouncement.value)
+     ///await updateAnnouncement(editAnnouncement.value,params.id)
 }
 </script>
 
