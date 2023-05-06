@@ -28,7 +28,7 @@ const convertDate = (date, time) => {
 
 const newAnnouncement = ref({
     announcementTitle: '',
-    category: '',
+    categoryId: '',
     announcementDisplay: '',
     announcementDescription: '',
     publishDate: null,
@@ -52,6 +52,10 @@ const addnewdata = async () => {
     newAnnouncement.value.publishDate = convertDate(publishDate.value, publishTime.value)
     newAnnouncement.value.closeDate = convertDate(closeDate.value, closeTime.value)
     newAnnouncement.value.announcementDisplay = display.value == true ? 'Y' : 'N'
+    // let id=newAnnouncement.value.category.categoryID
+    // delete newAnnouncement.value.category
+    // newAnnouncement.value.categoryId=id
+    console.log(newAnnouncement.value);
     await addAnnouncement(newAnnouncement.value)
 }
 
@@ -72,10 +76,10 @@ const addnewdata = async () => {
                 </div>
                 <div class="flex flex-col w-2/5 px-4 py-2 space-y-1">
                     <label for="category-select" class="text-base font-bold">Category</label>
-                    <select v-model="newAnnouncement.category" name="category" id="category-select"
+                    <select v-model="newAnnouncement.categoryId" name="category" id="category-select"
                         class="border rounded-md bg-slate-100 text-lg py-2 px-4">
                         <option value="" disabled>Select a category</option>
-                        <option v-for="(item, index) in categoryAll" :key="index" :value="item">
+                        <option v-for="(item, index) in categoryAll" :key="index" :value="item.categoryID">
                             {{ item.categoryName }}
                         </option>
                     </select>

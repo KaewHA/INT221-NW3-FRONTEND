@@ -97,7 +97,7 @@ onBeforeMount(async () => {
 const isDisabled = computed(() => {
     const checknewdata=()=>{
         let x = categoryAll.value.find((x) => x.categoryName === choosecategory.value)
-        newAnnouncement.value.category = x
+        newAnnouncement.value.categoryId = x
         newAnnouncement.value.publishDate = convertDate(publishDate.value, publishTime.value)
         newAnnouncement.value.closeDate = convertDate(closeDate.value, closeTime.value)
         newAnnouncement.value.announcementDisplay = display.value == true ? 'Y' : 'N'
@@ -118,10 +118,11 @@ const isDisabled = computed(() => {
             if(choosecategory.value!=0){
                 if(olddata.value['category']!=undefined){
                  let oldcate=olddata.value['category'].categoryName
-                 let newcate=newAnnouncement.value.category.categoryName
+                 let newcate=newAnnouncement.value.categoryId.categoryName
                 if(oldcate===newcate){
                     return false
                 }else{
+                    
                     return true
                 }
             }
@@ -130,6 +131,8 @@ const isDisabled = computed(() => {
         }
         let datacheck=check()
         let catecheck=checkcate()
+        let id=newAnnouncement.value.categoryId.categoryID
+        newAnnouncement.value.categoryId=id
         return !(datacheck || catecheck)
     }
     let titlenull=false
@@ -151,7 +154,7 @@ const convertDate = (date, time) => {
 }
 const newAnnouncement = ref({
     announcementTitle: '',
-    category: '',
+    categoryId: '',
     announcementDisplay: '',
     announcementDescription: '',
     publishDate: '',
@@ -160,8 +163,9 @@ const newAnnouncement = ref({
 
 
 const createanno = async () => {
-    
-    await updateAnnouncement(newAnnouncement.value,params.id)
+
+    console.log(newAnnouncement.value);
+   await updateAnnouncement(newAnnouncement.value,params.id)
 }
  function showdata (){
    ///show something\
