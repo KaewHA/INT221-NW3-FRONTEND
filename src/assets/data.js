@@ -72,10 +72,10 @@ async function deleteannocement(id) {
             router.push('/admin/announcement')
         }
         else {
+            console.log(res.status);
             throw new Error('Error, data is error!')
         }
     } catch (error) {
-        alert("CANT DELETE TRY AGAIN!")
         console.log(error);
         router.push('/admin/announcement')
     }
