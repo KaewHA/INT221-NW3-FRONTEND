@@ -76,14 +76,15 @@ async function deleteannocement(id) {
         }
     } catch (error) {
         alert("CANT DELETE TRY AGAIN!")
+        console.log(error);
         router.push('/admin/announcement')
     }
 }
 
 async function addAnnouncement(announcement) {
-    console.log(JSON.stringify(announcement));
+
     try {
-        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/announcements/add`, {
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/announcements`, {
             method: "POST",
             headers: {
           "Content-Type": "application/json",
@@ -122,4 +123,10 @@ async function updateAnnouncement(announcement,id) {
         console.log(error)
     }
 }
+
+
+
+
+
+
 export { getAnnouncement, getAnnouncementById, getCategory ,addAnnouncement,deleteannocement,updateAnnouncement,getAnnouncementByIddata}

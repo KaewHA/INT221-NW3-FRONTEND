@@ -32,7 +32,7 @@ const deleteanno=async(id)=>{
   await deleteannocement(id)
 }
 const cf=(id)=>{
-if (confirm(`You want to delete announcemmnet ID:${id}`) == true) {
+if (confirm(`Do you want to delete announcemmnet ID:${id}`) == true) {
   deleteanno(id)
   location.reload();
 } 
@@ -48,10 +48,10 @@ if (confirm(`You want to delete announcemmnet ID:${id}`) == true) {
                         <span class="font-bold">Date/Time Show in Timezone :</span>
                         {{ timezoneName }}
                     </h1>
-                    <button class="rounded-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white hover:bg-emerald-600" @click="router.push('/admin/announcement/add')">Add Announcement</button>
+                    <button class="rounded-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white hover:bg-emerald-600 ann-button" @click="router.push('/admin/announcement/add')">Add Announcement</button>
                 </div>
                 <div class="flex flex-col justify-center items-center">
-                    <table class="w-full border">
+                    <table class="w-full border ">
                         <tr class="sticky top-0 bg-cyan-600 border text-white">
                             <th class="text-left">No.</th>
                             <th class="text-left pr-6">Title</th>
@@ -61,32 +61,32 @@ if (confirm(`You want to delete announcemmnet ID:${id}`) == true) {
                             <th class="">Display</th>
                             <th class="py-1">Action</th>
                         </tr>
-                        <tr v-for="(announcement, index) in allAnnouncement" :key="index" class="overflow-auto" :class="index%2!==0?'bg-slate-50':'bg-white'">
+                        <tr v-for="(announcement, index) in allAnnouncement" :key="index" class="overflow-auto ann-item" :class="index%2!==0?'bg-slate-50':'bg-white'">
                             <td class="">
                                 {{ index + 1 }}
                             </td>
-                            <td class="">
+                            <td class="ann-title">
                                 {{ announcement.announcementTitle }}
                             </td>
-                            <td class="">
+                            <td class="ann-category">
                                 {{ announcement.announcementCategory }}
                             </td>
-                            <td class="">
+                            <td class="ann-publish-date">
                                 {{ dateformat(announcement.publishDate) }}
                             </td>
-                            <td class="">
+                            <td class="ann-close-date">
                                 {{ dateformat(announcement.closeDate) }}
                             </td>
-                            <td class="text-center">
+                            <td class="text-center ann-display">
                                 {{ announcement.announcementDisplay }}
                             </td>
                             <td class="flex justify-center">
                                 <router-link :to="{
                                     path: `/admin/announcement/${announcement.id}`
                                 }">
-                                    <button class="rounded-md bg-sky-600 px-3 py-1 text-base font-bold mr-3 text-white hover:bg-sky-700">view</button>
+                                    <button class="rounded-md bg-sky-600 px-3 py-1 text-base font-bold mr-3 text-white hover:bg-sky-700 ann-button">view</button>
                                 </router-link>
-                                    <button class="rounded-md bg-red-600 px-3 py-1 text-base font-bold text-white hover:bg-red-700" @click="cf(announcement.id)">delete</button>
+                                    <button class="rounded-md bg-red-600 px-3 py-1 text-base font-bold text-white hover:bg-red-700 ann-button" @click="cf(announcement.id)">delete</button>
                                 
                             </td>
                         </tr>

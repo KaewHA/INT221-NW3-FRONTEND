@@ -12,7 +12,6 @@ onMounted(async () => {
 
 const publishDate = ref(null)
 const publishTime = ref(null)
-
 const closeDate = ref(null)
 const closeTime = ref(null)
 
@@ -45,6 +44,17 @@ const isDisabled = computed(() => {
     }
     return emptyValue.length > 0 ? true : false
     }
+    const lencheck=()=>{
+        if(newAnnouncement.value.announcementTitle.length>200){
+            return true
+        }
+        if(newAnnouncement.value.announcementDescription.length>10000){
+            return true
+        }
+        return false
+    }
+    // console.log(lencheck());
+   // return checkfill() || lencheck()
     return checkfill()
 })
 
@@ -55,10 +65,21 @@ const addnewdata = async () => {
     // let id=newAnnouncement.value.category.categoryID
     // delete newAnnouncement.value.category
     // newAnnouncement.value.categoryId=id
-    console.log(newAnnouncement.value);
     await addAnnouncement(newAnnouncement.value)
 }
+function clearcd (){
+    closeDate.value=""
+   if(closeTime!=null ||closeTime!=""){
+    closeTime.value=""
+   }
+}
 
+function clearpd (){
+   publishDate.value=""
+   if(publishTime!=null ||publishTime!=""){
+    publishTime.value=""
+   }
+}
 </script>
 
 <template>
@@ -72,12 +93,13 @@ const addnewdata = async () => {
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label for="title" class="text-base font-bold">Title</label>
                     <input v-model="newAnnouncement.announcementTitle" type="text" id="title"
-                        class="border rounded-md bg-slate-100 text-lg py-2 px-4" placeholder="Learning Exchanging">
+                        class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-title" placeholder="Learning Exchanging">
+                        <p class="flex justify-end">{{ newAnnouncement.announcementTitle.length }}/200</p>
                 </div>
                 <div class="flex flex-col w-2/5 px-4 py-2 space-y-1">
                     <label for="category-select" class="text-base font-bold">Category</label>
                     <select v-model="newAnnouncement.categoryId" name="category" id="category-select"
-                        class="border rounded-md bg-slate-100 text-lg py-2 px-4">
+                        class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-category">
                         <option value="" disabled>Select a category</option>
                         <option v-for="(item, index) in categoryAll" :key="index" :value="item.categoryID">
                             {{ item.categoryName }}
@@ -86,41 +108,46 @@ const addnewdata = async () => {
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label for="description" class="text-base font-bold">Description</label>
+                    
                     <textarea v-model="newAnnouncement.announcementDescription" maxlength="10000" rows="10" id="description"
-                        class="border rounded-md bg-slate-100 text-lg py-2 px-4"
+                        class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-description"
                         placeholder="Imagination is more important than knowledge...">
                 </textarea>
+                <p class="flex justify-end">{{ newAnnouncement.announcementDescription.length }}/10000</p>
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label class="text-base font-bold">Publish Date</label>
                     <div class="w-1/3 flex flex-row space-x-4">
                         <input v-model="publishDate" type="date" placeholder="01/05/2023"
-                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="publishDate">
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-publish-date" id="publishDate">
                         <input :disabled="!publishDate" v-model="publishTime" type="time" placeholder="12:30"
-                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="publishDate">
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-publish-time" id="publishDate">
+                            <button :disabled="!publishDate" class="px-4 py-2 rounded-md bg-orange-400 text-white text-base font-bold disabled:hidden" @click="clearpd()">clear</button>
                     </div>
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label class="text-base font-bold">Close Date</label>
                     <div class="w-1/3 flex flex-row space-x-4">
                         <input v-model="closeDate" type="date" placeholder="01/05/2023"
-                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate">
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-close-date " id="closeDate">
                         <input :disabled="!closeDate" v-model="closeTime" type="time" placeholder="12:30"
-                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate">
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-close-time" id="closeDate">
+                            <button :disabled="!closeDate" class="px-4 py-2 rounded-md bg-orange-400 text-white text-base font-bold disabled:hidden" @click="clearcd()">clear</button>
+                            
                     </div>
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label class="text-base font-bold">Display</label>
                     <div class="space-x-2">
                         <input v-model="display" type="checkbox" id="display"
-                            class="border rounded-md bg-slate-100 text-lg py-2 px-4">
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-display">
                         <label for="display" class="font-bold text-sm">Check to show this announcement</label>
                     </div>
                 </div>
                 <div class="w-full flex justify-start p-4 space-x-2">
                     <button :disabled="isDisabled"
-                        class="px-4 py-2 rounded-md bg-green-500 text-white text-base font-bold disabled:bg-zinc-500"
-                        @click="addnewdata()">Submit</button>
+                        class="px-4 py-2 rounded-md bg-green-500 text-white text-base font-bold disabled:bg-zinc-500 ann-button"
+                        @click="addnewdata()">submit</button>
                     <button class="px-4 py-2 rounded-md bg-red-500 text-white text-base font-bold"
                         @click="router.push('/admin/announcement')">Cancel</button>
                 </div>
