@@ -12,6 +12,8 @@ const closeDate = ref(null)
 const closeTime = ref(null)
 const display = ref('')
 const choosecategory = ref('')
+const fillcurdatepb=ref(false)
+const fillcurdatecl=ref(false)
 const options = {
     day: "numeric",
     month: "short",
@@ -23,7 +25,7 @@ const options = {
 function createdate(data) {
     let dateStr= data;
     let [day, month, year] = dateStr.split("/");
-    let years = parseInt(year) - 543
+    let years = parseInt(year) 
     year = years.toString()
     if (month.length === 1) {
         month = "0" + month
@@ -32,7 +34,7 @@ function createdate(data) {
         day = "0" + day
     }
     
-    return year + "-" + month + "-" + day
+    return year + "-" + day + "-" + month
 }
 function createtime(H,M) {
     let hour=H.toString()
@@ -53,7 +55,8 @@ onBeforeMount(async () => {
     for (const [key, value] of Object.entries(receivedAnnouncement.value)) {
         if (key.includes("publish") && value != null) {
              let date = new Date(value)
-             let DATE =date.toLocaleDateString()
+             let opt={year: 'numeric', month: 'numeric', day: 'numeric' };
+             let DATE =date.toLocaleDateString("en-US",opt)
              let timeH= date.getHours()
              let timeM= date.getMinutes()
              publishDate.value=createdate(DATE)
@@ -63,7 +66,8 @@ onBeforeMount(async () => {
             // let date = new Date(value).toLocaleString()
             // newAnnouncement.value[key] = createdate(date)
              let date = new Date(value)
-             let DATE =date.toLocaleDateString()
+             let opt={year: 'numeric', month: 'numeric', day: 'numeric' };
+             let DATE =date.toLocaleDateString("en-US",opt)
              let timeH= date.getHours()
              let timeM= date.getMinutes()
              closeDate.value=createdate(DATE)
@@ -99,8 +103,14 @@ const isDisabled = computed(() => {
     const checknewdata=()=>{
         let x = categoryAll.value.find((x) => x.categoryName === choosecategory.value)
         newAnnouncement.value.categoryId = x
-        newAnnouncement.value.publishDate = convertDate(publishDate.value, publishTime.value)
-        newAnnouncement.value.closeDate = convertDate(closeDate.value, closeTime.value)
+        if((publishDate.value!="" && publishDate.value!=null) && (publishTime.value==null || publishTime.value=="")){
+            publishTime.value="06:00"
+         }
+        if((closeDate.value!="" && closeDate.value!=null) && (closeTime.value==null || closeTime.value=="")){
+            closeTime.value="18:00"
+        }
+        newAnnouncement.value.publishDate = convertDate(publishDate.value, publishTime.value,"06:00")
+        newAnnouncement.value.closeDate = convertDate(closeDate.value, closeTime.value,"18:00")
         newAnnouncement.value.announcementDisplay = display.value == true ? 'Y' : 'N'
         const check=()=>{
             for (const [key, value] of Object.entries(olddata.value)) {
@@ -141,6 +151,15 @@ const isDisabled = computed(() => {
         }
         return !(datacheck || catecheck)
     }
+    const lencheck=()=>{
+        if(newAnnouncement.value.announcementTitle.length>200){
+            return true
+        }
+        if(newAnnouncement.value.announcementDescription.length>10000){
+            return true
+        }
+        return false
+    }
     let titlenull=false
     let desnull=false
     if(newAnnouncement.value.announcementTitle.length==0){
@@ -149,15 +168,58 @@ const isDisabled = computed(() => {
     if(newAnnouncement.value.announcementDescription.length==0){
         desnull=true
     }
-    return checknewdata() || titlenull || desnull
+    const datecheckpb=()=>{
+        if(publishDate.value!="" && publishDate.value!=null){
+            let currentdate=Date.now()
+            let mydate=new Date (convertDate(publishDate.value, publishTime.value,"06:00")).getTime()
+            if(currentdate>mydate){
+                fillcurdatepb.value=true
+                return true
+            }else{
+                fillcurdatepb.value=false
+            }
+            return false
+        }
+    }
+    const datecheckcl=()=>{
+        if(publishDate.value=="" || publishDate.value==null){
+            if(closeDate.value!="" && closeDate.value!=null){
+                let currentdate=Date.now()
+                let mydate=new Date (convertDate(closeDate.value, closeTime.value,"06:00")).getTime()
+                if(currentdate>mydate){
+                 fillcurdatecl.value=true
+                 return true
+                }else{
+                 fillcurdatecl.value=false  
+                 return false
+                }
+            }
+        }else{
+            if(closeDate.value!="" && closeDate.value!=null){
+                let currentdate=Date.now()
+                let mydate=new Date (convertDate(closeDate.value, closeTime.value,"18:00")).getTime()
+                let publishdd=new Date (convertDate(publishDate.value,publishTime.value,"06:00")).getTime()
+                if(currentdate<mydate && mydate>publishdd){
+                  fillcurdatecl.value=false
+                  return false
+                }else{
+                 fillcurdatecl.value=true  
+                 return true
+                }
+            }
+        }
+        return false
+    }
+    ///sss
+    return checknewdata() || titlenull || desnull ||lencheck() ||datecheckpb() || datecheckcl()
 })
-const convertDate = (date, time) => {
+const convertDate = (date, time,deftime) => {
 
     if (date === null || date==="") {
         return null
     } else {
         try{
-            return new Date(date + "T" + (time === null ? '00:00' : time)).toISOString().replace(".000Z", "Z")
+            return new Date(date + "T" + (time === null ? deftime : time)).toISOString().replace(".000Z", "Z")
         }
         catch(error){
             console.error(error);
@@ -173,7 +235,6 @@ const newAnnouncement = ref({
     closeDate: ''
 })
 
-
 const createanno = async () => {
 
    await updateAnnouncement(newAnnouncement.value,params.id)
@@ -184,6 +245,7 @@ const createanno = async () => {
 }
 function clearcd (){
     closeDate.value=""
+    fillcurdatecl.value=false
    if(closeTime!=null ||closeTime!=""){
     closeTime.value=""
    }
@@ -191,6 +253,7 @@ function clearcd (){
 
 function clearpd (){
    publishDate.value=""
+   fillcurdatepb.value=false
    if(publishTime!=null ||publishTime!=""){
     publishTime.value=""
    }
@@ -207,7 +270,7 @@ function clearpd (){
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label for="title" class="text-base font-bold">Title</label>
-                    <input v-model="newAnnouncement.announcementTitle" type="text" id="title"
+                    <input v-model="newAnnouncement.announcementTitle" type="text" id="title" axlength="200"
                         class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-title" placeholder="Learning Exchanging">
                 </div>
                 <div class="flex flex-col w-2/5 px-4 py-2 space-y-1">
@@ -232,20 +295,22 @@ function clearpd (){
                     <div class="w-1/3 flex flex-row space-x-4">
                         <input v-model="publishDate" type="date" placeholder="01/05/2023"
                             class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-publish-date" id="publishDate">
-                        <input v-model="publishTime" type="time" placeholder="12:30"
+                        <input  :disabled="!publishDate" v-model="publishTime" type="time" placeholder="12:30"
                             class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-publish-time" id="publishDate">
                             <button :disabled="!publishDate" class="px-4 py-2 rounded-md bg-orange-400 text-white text-base font-bold disabled:hidden" @click="clearpd()">clear</button>
                     </div>
+                    <div class="text-red-500 ml-3" v-show="fillcurdatepb" >Please enter a future date</div>
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label class="text-base font-bold">Close Date</label>
                     <div class="w-1/3 flex flex-row space-x-4">
                         <input v-model="closeDate" type="date" placeholder="01/05/2023"
                             class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-close-date" id="closeDate">
-                        <input  v-model="closeTime" type="time" placeholder="12:30"
+                        <input  :disabled="!closeDate" v-model="closeTime" type="time" placeholder="12:30"
                             class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-close-time" id="closeDate">
                             <button :disabled="!closeDate" class="px-4 py-2 rounded-md bg-orange-400 text-white text-base font-bold disabled:hidden" @click="clearcd()">clear</button>
                     </div>
+                    <div class="text-red-500 ml-3" v-show="fillcurdatecl" >Please enter a future date2</div>
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label class="text-base font-bold">Display</label>
