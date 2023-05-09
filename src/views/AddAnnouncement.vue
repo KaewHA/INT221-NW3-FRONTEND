@@ -14,7 +14,6 @@ const publishDate = ref(null)
 const publishTime = ref(null)
 const closeDate = ref(null)
 const closeTime = ref(null)
-
 const display = ref('')
 
 const convertDate = (date, time) => {
@@ -54,8 +53,8 @@ const isDisabled = computed(() => {
         return false
     }
     // console.log(lencheck());
-   // return checkfill() || lencheck()
-    return checkfill()
+    return checkfill() || lencheck()
+   // return checkfill()
 })
 
 const addnewdata = async () => {
@@ -92,7 +91,7 @@ function clearpd (){
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label for="title" class="text-base font-bold">Title</label>
-                    <input v-model="newAnnouncement.announcementTitle" type="text" id="title"
+                    <input v-model="newAnnouncement.announcementTitle" type="text" id="title" maxlength="200"
                         class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-title" placeholder="Learning Exchanging">
                         <p class="flex justify-end">{{ newAnnouncement.announcementTitle.length }}/200</p>
                 </div>
@@ -155,5 +154,4 @@ function clearpd (){
         </div>
     </div>
 </template>
-
 <style scoped></style>

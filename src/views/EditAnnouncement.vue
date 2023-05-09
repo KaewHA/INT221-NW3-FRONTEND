@@ -23,7 +23,7 @@ const options = {
 function createdate(data) {
     let dateStr= data;
     let [day, month, year] = dateStr.split("/");
-    let years = parseInt(year) - 543
+    let years = parseInt(year) 
     year = years.toString()
     if (month.length === 1) {
         month = "0" + month
@@ -32,7 +32,7 @@ function createdate(data) {
         day = "0" + day
     }
     
-    return year + "-" + month + "-" + day
+    return year + "-" + day + "-" + month
 }
 function createtime(H,M) {
     let hour=H.toString()
@@ -53,7 +53,8 @@ onBeforeMount(async () => {
     for (const [key, value] of Object.entries(receivedAnnouncement.value)) {
         if (key.includes("publish") && value != null) {
              let date = new Date(value)
-             let DATE =date.toLocaleDateString()
+             let opt={year: 'numeric', month: 'numeric', day: 'numeric' };
+             let DATE =date.toLocaleDateString("en-US",opt)
              let timeH= date.getHours()
              let timeM= date.getMinutes()
              publishDate.value=createdate(DATE)
@@ -63,7 +64,8 @@ onBeforeMount(async () => {
             // let date = new Date(value).toLocaleString()
             // newAnnouncement.value[key] = createdate(date)
              let date = new Date(value)
-             let DATE =date.toLocaleDateString()
+             let opt={year: 'numeric', month: 'numeric', day: 'numeric' };
+             let DATE =date.toLocaleDateString("en-US",opt)
              let timeH= date.getHours()
              let timeM= date.getMinutes()
              closeDate.value=createdate(DATE)
@@ -141,6 +143,15 @@ const isDisabled = computed(() => {
         }
         return !(datacheck || catecheck)
     }
+    const lencheck=()=>{
+        if(newAnnouncement.value.announcementTitle.length>200){
+            return true
+        }
+        if(newAnnouncement.value.announcementDescription.length>10000){
+            return true
+        }
+        return false
+    }
     let titlenull=false
     let desnull=false
     if(newAnnouncement.value.announcementTitle.length==0){
@@ -149,7 +160,8 @@ const isDisabled = computed(() => {
     if(newAnnouncement.value.announcementDescription.length==0){
         desnull=true
     }
-    return checknewdata() || titlenull || desnull
+
+    return checknewdata() || titlenull || desnull ||lencheck()
 })
 const convertDate = (date, time) => {
 
@@ -207,7 +219,7 @@ function clearpd (){
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label for="title" class="text-base font-bold">Title</label>
-                    <input v-model="newAnnouncement.announcementTitle" type="text" id="title"
+                    <input v-model="newAnnouncement.announcementTitle" type="text" id="title" axlength="200"
                         class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-title" placeholder="Learning Exchanging">
                 </div>
                 <div class="flex flex-col w-2/5 px-4 py-2 space-y-1">
