@@ -68,7 +68,6 @@ async function deleteannocement(id) {
     try {
         const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/announcements/${id}`,{method:"DELETE"})
         if (res.ok) {
-            alert("delete complete")
             router.push('/admin/announcement')
         }
         else {
