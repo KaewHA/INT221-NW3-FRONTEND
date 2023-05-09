@@ -182,10 +182,11 @@ const isDisabled = computed(() => {
         }
     }
     const datecheckcl=()=>{
+        console.log("sss");
         if(publishDate.value=="" || publishDate.value==null){
             if(closeDate.value!="" && closeDate.value!=null){
                 let currentdate=Date.now()
-                let mydate=new Date (convertDate(closeDate.value, closeTime.value,"06:00")).getTime()
+                let mydate=new Date (convertDate(closeDate.value, closeTime.value,"18:00")).getTime()
                 if(currentdate>mydate){
                  fillcurdatecl.value=true
                  return true
@@ -210,7 +211,6 @@ const isDisabled = computed(() => {
         }
         return false
     }
-    ///sss
     return checknewdata() || titlenull || desnull ||lencheck() ||datecheckpb() || datecheckcl()
 })
 const convertDate = (date, time,deftime) => {

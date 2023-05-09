@@ -15,13 +15,21 @@ const publishTime = ref(null)
 const closeDate = ref(null)
 const closeTime = ref(null)
 const display = ref('')
+const fillcurdatepb=ref(false)
+const fillcurdatecl=ref(false)
 
-const convertDate = (date, time) => {
-    if (date === null) {
-        return null
-    } else {
-        return new Date(date + "T" + (time === null ? '00:00' : time)).toISOString().replace(".000Z", "Z")
+const convertDate = (date, time,deftime) => {
+
+if (date === null || date==="") {
+    return null
+} else {
+    try{
+        return new Date(date + "T" + (time === null ? deftime : time)).toISOString().replace(".000Z", "Z")
     }
+    catch(error){
+        console.error(error);
+    }
+}
 }
 
 const newAnnouncement = ref({
@@ -52,8 +60,56 @@ const isDisabled = computed(() => {
         }
         return false
     }
-    // console.log(lencheck());
-    return checkfill() || lencheck()
+    const datecheckpb=()=>{
+        if(publishDate.value!="" && publishDate.value!=null){
+            let currentdate=Date.now()
+            let mydate=new Date (convertDate(publishDate.value, publishTime.value,"06:00")).getTime()
+            if(currentdate>mydate){
+                fillcurdatepb.value=true
+                return true
+            }else{
+                fillcurdatepb.value=false
+            }
+            return false
+        }
+    }
+    const datecheckcl=()=>{
+        console.log("sss");
+        if(publishDate.value=="" || publishDate.value==null){
+            if(closeDate.value!="" && closeDate.value!=null){
+                let currentdate=Date.now()
+                let mydate=new Date (convertDate(closeDate.value, closeTime.value,"18:00")).getTime()
+                if(currentdate>mydate){
+                 fillcurdatecl.value=true
+                 return true
+                }else{
+                 fillcurdatecl.value=false  
+                 return false
+                }
+            }
+        }else{
+            if(closeDate.value!="" && closeDate.value!=null){
+                let currentdate=Date.now()
+                let mydate=new Date (convertDate(closeDate.value, closeTime.value,"18:00")).getTime()
+                let publishdd=new Date (convertDate(publishDate.value,publishTime.value,"06:00")).getTime()
+                if(currentdate<mydate && mydate>publishdd){
+                  fillcurdatecl.value=false
+                  return false
+                }else{
+                 fillcurdatecl.value=true  
+                 return true
+                }
+            }
+        }
+        return false
+    }
+    if(publishDate.value!=null && publishDate.value!=""){
+        publishTime.value="06:00"
+    }
+    if(closeDate.value!=null && closeDate.value!=""){
+        closeTime.value="18:00"
+    }
+    return checkfill() || lencheck()||datecheckpb() || datecheckcl()
    // return checkfill()
 })
 
@@ -123,6 +179,7 @@ function clearpd (){
                             class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-publish-time" id="publishDate">
                             <button :disabled="!publishDate" class="px-4 py-2 rounded-md bg-orange-400 text-white text-base font-bold disabled:hidden" @click="clearpd()">clear</button>
                     </div>
+                    <div class="text-red-500 ml-3" v-show="fillcurdatepb" >Please enter a future date</div>
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label class="text-base font-bold">Close Date</label>
@@ -134,6 +191,7 @@ function clearpd (){
                             <button :disabled="!closeDate" class="px-4 py-2 rounded-md bg-orange-400 text-white text-base font-bold disabled:hidden" @click="clearcd()">clear</button>
                             
                     </div>
+                    <div class="text-red-500 ml-3" v-show="fillcurdatecl" >Please enter a future date2</div>
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label class="text-base font-bold">Display</label>
