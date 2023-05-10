@@ -51,7 +51,7 @@ async function getAnnouncementByIddata(id) {
 
 async function getCategory() {
     try {
-        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/category`)
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/categories`)
         if (res.ok) {
             const category = res.json()
             return category

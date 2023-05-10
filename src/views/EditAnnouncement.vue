@@ -182,7 +182,6 @@ const isDisabled = computed(() => {
         }
     }
     const datecheckcl=()=>{
-        console.log("sss");
         if(publishDate.value=="" || publishDate.value==null){
             if(closeDate.value!="" && closeDate.value!=null){
                 let currentdate=Date.now()
@@ -200,12 +199,12 @@ const isDisabled = computed(() => {
                 let currentdate=Date.now()
                 let mydate=new Date (convertDate(closeDate.value, closeTime.value,"18:00")).getTime()
                 let publishdd=new Date (convertDate(publishDate.value,publishTime.value,"06:00")).getTime()
-                if(currentdate<mydate && mydate>publishdd){
-                  fillcurdatecl.value=false
-                  return false
+                if(currentdate>mydate || mydate<publishdd){
+                  fillcurdatecl.value=true
+                  return true
                 }else{
-                 fillcurdatecl.value=true  
-                 return true
+                 fillcurdatecl.value=false  
+                 return false
                 }
             }
         }
@@ -258,6 +257,7 @@ function clearpd (){
     publishTime.value=""
    }
 }
+
 </script>
 
 <template>
