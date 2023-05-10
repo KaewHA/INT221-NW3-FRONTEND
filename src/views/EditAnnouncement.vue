@@ -272,6 +272,7 @@ function clearpd (){
                     <label for="title" class="text-base font-bold">Title</label>
                     <input v-model="newAnnouncement.announcementTitle" type="text" id="title" axlength="200"
                         class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-title" placeholder="Learning Exchanging">
+                        <p class="flex justify-end">{{ newAnnouncement.announcementTitle.trim().length }}/200</p>
                 </div>
                 <div class="flex flex-col w-2/5 px-4 py-2 space-y-1">
                     <label for="category-select" class="text-base font-bold">Category</label>
@@ -289,6 +290,7 @@ function clearpd (){
                         class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-description"
                         placeholder="Imagination is more important than knowledge...">
                 </textarea>
+                <p class="flex justify-end">{{ newAnnouncement.announcementDescription.trim().length }}/10000</p>
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label class="text-base font-bold">Publish Date</label>
@@ -320,6 +322,9 @@ function clearpd (){
                         <label for="display" class="font-bold text-sm">Check to show this announcement</label>
                     </div>
                 </div>
+                <p class=" ml-5 flex text-red-600" v-show="newAnnouncement.announcementTitle.trim().length==0">PLESE FILL THE TITLE</p> 
+                <p class=" ml-5 flex text-red-600" v-show="choosecategory=='0'">PLESE Select CATEGORY</p> 
+                <p class=" ml-5 flex text-red-600" v-show="newAnnouncement.announcementDescription.trim().length==0">PLESE FILL THE DESCRIPTION</p> 
                 <div class="w-full flex justify-start p-4 space-x-2">
                     <button :disabled="isDisabled"
                         class="px-4 py-2 rounded-md bg-green-500 text-white text-base font-bold disabled:bg-zinc-500 ann-button"
