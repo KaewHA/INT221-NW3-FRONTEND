@@ -2,7 +2,7 @@
 import router from '../router/index.js'
 
 async function getAnnouncement() {
-    let api=`${import.meta.env.VITE_BASE_URL}/api/announcements`
+    let api=`${import.meta.env.VITE_BASE_URL}/api/announcements?mode=admin`
     try {
         const res = await fetch(api)
         if (res.ok) {
@@ -14,7 +14,19 @@ async function getAnnouncement() {
         console.error(error)
     }
 }
-
+async function getuserAnnouncement(page) {
+    let api=`${import.meta.env.VITE_BASE_URL}/api/announcements/pages?mode=active&page=${page}&size=5`
+    try {
+        const res = await fetch(api)
+        if (res.ok) {
+            const announc = res.json()
+            return announc
+        }
+        else throw new Error('Error, data is error! with DTO')
+    } catch (error) {
+        console.error(error)
+    }
+}
 async function getAnnouncementById(id) {
     try {
         const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/announcements/${id}`)
@@ -128,4 +140,4 @@ async function updateAnnouncement(announcement,id) {
 
 
 
-export { getAnnouncement, getAnnouncementById, getCategory ,addAnnouncement,deleteannocement,updateAnnouncement,getAnnouncementByIddata}
+export { getAnnouncement, getAnnouncementById, getCategory ,addAnnouncement,deleteannocement,updateAnnouncement,getAnnouncementByIddata,getuserAnnouncement}
