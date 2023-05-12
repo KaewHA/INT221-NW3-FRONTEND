@@ -1,99 +1,168 @@
 <script setup>
-import { ref, onBeforeMount,computed } from "vue";
-import { getuserAnnouncement} from "../assets/data.js";
-import router from '../router/index.js'
-const totalpage=ref(0)
-const setofpage=computed(() => {
-    let preset= [1,2,3,4,5,6,7,8,9,10]
-    if(currentpage.value>10 ){
-        let newx=[]
-       preset.forEach((x)=>newx.push(x+(currentpage.value-10)))
-       console.log(newx[newx.length-1]);
-       if(newx[newx.length-1] <=totalpage.value){
-        preset=newx
-       }else{
+import { ref, onBeforeMount, computed } from "vue";
+import { getuserAnnouncement, getCategory } from "../assets/data.js";
+import { useMode } from "../stores/mode.js";
+import router from '../router/index.js';
+import { RouterLink } from "vue-router";
 
-       }
-       
+const totalpage = ref(0);
+const pageSize = ref(0);
+const currentpage = ref(0);
+const allAnnouncement = ref([]);
+const allCategory = ref([])
+const category = ref(0)
+
+const myMode = useMode();
+const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+const setOfPage = computed(() => {
+    const totalPages = totalpage.value;
+    const currentPage = currentpage.value;
+    const range = 10;
+
+    if (totalPages <= range) {
+        return Array.from({ length: totalPages }, (_, i) => i + 1);
     }
-     return preset
 
-})
-const currentpage=ref(0)
-onBeforeMount(async () => {
-    const receivedData = ref([]);
-    receivedData.value = await getuserAnnouncement(0);
-    console.log(receivedData.value);
-    receivedData.value.content.forEach((x) => allAnnouncement.value.push(x));
-     totalpage.value=receivedData.value.totalPages
-     currentpage.value=receivedData.value.page+1
+    let start = Math.max(currentPage - Math.floor(range / 2), 1);
+    let end = start + range - 1;
+
+    if (end > totalPages) {
+        end = totalPages;
+        start = Math.max(end - range + 1, 1);
+    }
+
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 });
 
-const allAnnouncement = ref([]);
-const goToPage=async(page)=>{
-    allAnnouncement.value=[]
-    const receivedData = ref([]);
-    receivedData.value = await getuserAnnouncement(page);
-    receivedData.value.content.forEach((x) => allAnnouncement.value.push(x));
-     totalpage.value=receivedData.value.totalPages
-     currentpage.value=receivedData.value.page+1
+const nextPage = async () => {
+    if (currentpage.value < totalpage.value) {
+        currentpage.value++;
+        await fetchData();
+    }
+};
+
+const previousPage = async () => {
+    if (currentpage.value > 0) {
+        currentpage.value--;
+        await fetchData();
+    }
+};
+
+const goToPage = async (page) => {
+    currentpage.value = page;
+    await fetchData();
+};
+
+const changeMode = async () => {
+    currentpage.value = 0
+    myMode.changeMode();
+    await fetchData();
+};
+
+const changeCategory = async () => {
+    currentpage.value = 0
+    await fetchData()
 }
 
+const fetchData = async () => {
+    allAnnouncement.value = [];
+    const receivedData = await getuserAnnouncement(myMode.mode, currentpage.value, category.value);
+    receivedData.content.forEach((x) => allAnnouncement.value.push(x));
+    pageSize.value = receivedData.size;
+    totalpage.value = receivedData.totalPages;
+};
 
+onBeforeMount(async () => {
+    await fetchData();
+    const receivedCategory = await getCategory()
+    receivedCategory.forEach((category) => allCategory.value.push(category))
+});
 
-const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
 </script>
 
 <template>
     <div class="w-screen">
         <div class="w-full flex justify-center">
-            <div v-if="allAnnouncement.length != 0" class="font-noto w-full p-8">
-                <div class="w-full flex flex-row justify-between mt-2 mb-3">
+            <div class="font-noto w-full p-8">
+                <div class="w-full flex flex-col justify-between mt-2 mb-3">
                     <h1 class="text-custom-black">
                         <span class="font-bold">Date/Time Show in Timezone :</span>
                         {{ timezoneName }}
                     </h1>
-                    <button class="rounded-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white hover:bg-emerald-600 ann-button" @click="">Closed Announcement</button>
+                    <div class="w-full flex flex-row">
+                        <div class="w-full flex flex-row items-center space-x-2">
+                            <p class="font-bold">Choose Category:</p>
+                            <select @change="changeCategory" v-model="category" name="category" id="category-select"
+                                class="border rounded-md bg-slate-100 text-lg ann-category py-2 px-4">
+                                <option value="0" selected>ทั้งหมด</option>
+                                <option v-for="(item, index) in allCategory" :key="index" :value="item.categoryID">
+                                    {{ item.categoryName }}
+                                </option>
+                            </select>
+                        </div>
+                        <button
+                            class="w-auto rounded-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white hover:bg-emerald-600 ann-button"
+                            @click="changeMode">{{ myMode.mode === 'close' ? 'Active Announcement' : 'Closed Announcement'
+                            }}</button>
+                    </div>
                 </div>
                 <div class="flex flex-col justify-center items-center">
-                    <table class="w-full border ">
+                    <table class="w-full border">
                         <tr class="sticky top-0 bg-cyan-600 border text-white">
                             <th class="text-left">No.</th>
                             <th class="text-left pr-6">Title</th>
                             <th class="text-left">Category</th>
                         </tr>
-                        <tr v-for="(announcement, index) in allAnnouncement" :key="index" class="overflow-auto ann-item" :class="index%2!==0?'bg-slate-50':'bg-white'">
+                        <tr v-if="allAnnouncement.length != 0" v-for="(announcement, index) in allAnnouncement" :key="index"
+                            class="overflow-auto ann-item" :class="index % 2 !== 0 ? 'bg-slate-50' : 'bg-white'">
                             <td class="">
-                                {{ index + 1 }}
+                                {{ (index + 1) + currentpage * pageSize}}
                             </td>
                             <td class="ann-title">
-                                {{ announcement.announcementTitle }}
+                                <router-link :to="{path: `/announcement/${announcement.id}`}">
+                                    {{ announcement.announcementTitle }}
+                                </router-link>
                             </td>
                             <td class="ann-category">
                                 {{ announcement.announcementCategory }}
                             </td>
                         </tr>
+                        <div v-else class="flex w-full items-center justify-center">
+                            <h1
+                                class="text-4xl text-center font-noto">
+                                No Announcements
+                            </h1>
+                        </div>
                     </table>
                     <div class="mt-5 flex">
-                        <button class="rounded-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white hover:bg-emerald-600 ann-button">Prev</button>
+                        <button @click="previousPage" :disabled="currentpage === 0"
+                            :class="currentpage === 0 ? 'bg-emerald-500 text-gray-100' : 'bg-emerald-500 text-white'"
+                            class="rounded-l-md bg-emerald-500 px-4 py-3 text-sm font-bold ann-button">Prev</button>
                         <div class="pagination">
-                               <button v-for="value in setofpage" @click="goToPage(value)" class="rounded-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white hover:bg-emerald-600 ann-button">
-                                    {{ value }}
-                                </button>
-                                  </div>
-                        <button class="rounded-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white hover:bg-emerald-600 ann-button">Next</button>
+                            <button v-for="value in setOfPage" @click="goToPage(value - 1)"
+                                :class="value - 1 === currentpage ? 'bg-emerald-500 text-white' : 'bg-gray-300 text-custom-black'"
+                                class="px-4 py-3 text-sm font-bold ann-button">
+                                {{ value }}
+                            </button>
+                        </div>
+                        <button @click="nextPage" :disabled="currentpage === totalpage - 1"
+                            :class="currentpage === totalpage - 1 ? 'bg-emerald-500 text-gray-100' : 'bg-emerald-500 text-white'"
+                            class="rounded-r-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white ann-button">Next</button>
                     </div>
                 </div>
             </div>
-            <div v-else>
-                <h1 class="mt-2 mb-3 ml-6 text-custom-black">
-                    <span class="font-bold ">Date/Time Show in Timezone :</span>
+            <!-- <div v-else>
+                <h1 :class="allAnnouncement.length === 0 ? 'opacity-0' : 'opacity-100'"
+                    class="mt-2 mb-3 ml-6 text-custom-black">
+                    <span class="font-bold">Date/Time Show in Timezone :</span>
                     {{ timezoneName }}
                 </h1>
-                <h1 class="text-4xl flex w-full items-center justify-center font-noto">
+                <h1 :class="allAnnouncement.length === 0 ? 'opacity-0' : 'opacity-100'"
+                    class="text-4xl flex w-full items-center justify-center font-noto">
                     No Announcements
                 </h1>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>

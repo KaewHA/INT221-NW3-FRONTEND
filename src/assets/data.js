@@ -14,8 +14,8 @@ async function getAnnouncement() {
         console.error(error)
     }
 }
-async function getuserAnnouncement(page) {
-    let api=`${import.meta.env.VITE_BASE_URL}/api/announcements/pages?mode=active&page=${page}&size=5`
+async function getuserAnnouncement(mode = 'active', page = 0, category = 0) {
+    let api=`${import.meta.env.VITE_BASE_URL}/api/announcements/pages?mode=${mode}&page=${page}&size=5&category=${category}`
     try {
         const res = await fetch(api)
         if (res.ok) {
