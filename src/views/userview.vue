@@ -11,9 +11,11 @@ const currentpage = ref(0);
 const allAnnouncement = ref([]);
 const allCategory = ref([])
 const category = ref(0)
-
+const newdata=ref([])
 const myMode = useMode();
 const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const lastpage=ref(false)
+const firstpage=ref(false)
 
 const setOfPage = computed(() => {
     const totalPages = totalpage.value;
@@ -34,6 +36,7 @@ const setOfPage = computed(() => {
 
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 });
+
 
 const nextPage = async () => {
     if (currentpage.value < totalpage.value) {
@@ -66,11 +69,15 @@ const changeCategory = async () => {
 }
 
 const fetchData = async () => {
-    allAnnouncement.value = [];
+    newdata.value=[]
     const receivedData = await getuserAnnouncement(myMode.mode, currentpage.value, category.value);
-    receivedData.content.forEach((x) => allAnnouncement.value.push(x));
+    receivedData.content.forEach((x) => newdata.value.push(x));
     pageSize.value = receivedData.size;
     totalpage.value = receivedData.totalPages;
+    lastpage.value=receivedData.last
+    firstpage.value=receivedData.first
+    allAnnouncement.value=newdata.value
+    console.log(lastpage.value);
 };
 
 onBeforeMount(async () => {
@@ -100,26 +107,25 @@ onBeforeMount(async () => {
                                     {{ item.categoryName }}
                                 </option>
                             </select>
-                        </div>
+                        </div>            
                         <button
-                            class="w-auto rounded-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white hover:bg-emerald-600 ann-button"
-                            @click="changeMode">{{ myMode.mode === 'close' ? 'Active Announcement' : 'Closed Announcement'
-                            }}</button>
+                            class="w-auto rounded-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white  ann-button  transition duration-75 "
+                            @click="changeMode" :class="myMode.mode === 'close'? 'bg-emerald-400':'bg-red-500'">{{ myMode.mode === 'close' ? 'Active Announcement' : 'Closed Announcement'}}</button>
                     </div>
                 </div>
                 <div class="flex flex-col justify-center items-center">
-                    <table class="w-full border">
+                    <table class="w-full border" v-if="allAnnouncement.length != 0">
                         <tr class="sticky top-0 bg-cyan-600 border text-white">
-                            <th class="text-left">No.</th>
+                            <th class="text-left w-6">No.</th>
                             <th class="text-left pr-6">Title</th>
                             <th class="text-left">Category</th>
                         </tr>
-                        <tr v-if="allAnnouncement.length != 0" v-for="(announcement, index) in allAnnouncement" :key="index"
-                            class="overflow-auto ann-item" :class="index % 2 !== 0 ? 'bg-slate-50' : 'bg-white'">
+                        <tr  v-for="(announcement, index) in allAnnouncement" :key="index"
+                            class="overflow-auto ann-item " :class="index % 2 !== 0 ? 'bg-slate-50' : 'bg-white'">
                             <td class="">
                                 {{ (index + 1) + currentpage * pageSize}}
                             </td>
-                            <td class="ann-title">
+                            <td class="ann-title font-extrabold">
                                 <router-link :to="{path: `/announcement/${announcement.id}`}">
                                     {{ announcement.announcementTitle }}
                                 </router-link>
@@ -128,27 +134,26 @@ onBeforeMount(async () => {
                                 {{ announcement.announcementCategory }}
                             </td>
                         </tr>
-                        <div v-else class="flex w-full items-center justify-center">
+                    </table>
+                    <div v-else class="flex w-full items-center justify-center bg-sky-600 text-white">
                             <h1
                                 class="text-4xl text-center font-noto">
                                 No Announcements
                             </h1>
                         </div>
-                    </table>
-                    <div class="mt-5 flex">
-                        <button @click="previousPage" :disabled="currentpage === 0"
-                            :class="currentpage === 0 ? 'bg-emerald-500 text-gray-100' : 'bg-emerald-500 text-white'"
-                            class="rounded-l-md bg-emerald-500 px-4 py-3 text-sm font-bold ann-button">Prev</button>
+                    <div class="mt-5 flex" v-if="allAnnouncement.length != 0">
+                        <button @click="previousPage" :disabled="firstpage"
+                            class="rounded-l-md bg-cyan-600 px-4 py-3 text-sm font-bold ann-button disabled:bg-gray-400 text-white mr-6 transition duration-200 active:scale-90">Prev</button>
                         <div class="pagination">
                             <button v-for="value in setOfPage" @click="goToPage(value - 1)"
-                                :class="value - 1 === currentpage ? 'bg-emerald-500 text-white' : 'bg-gray-300 text-custom-black'"
-                                class="px-4 py-3 text-sm font-bold ann-button">
+                                :disabled="value - 1 === currentpage"
+                                :class="value - 1 === currentpage ? 'bg-sky-300 text-white' : ' text-custom-black hover:bg-slate-400 '"
+                                class="px-4 py-3 text-sm font-bold ann-button rounded-full transition duration-200">
                                 {{ value }}
                             </button>
                         </div>
-                        <button @click="nextPage" :disabled="currentpage === totalpage - 1"
-                            :class="currentpage === totalpage - 1 ? 'bg-emerald-500 text-gray-100' : 'bg-emerald-500 text-white'"
-                            class="rounded-r-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white ann-button">Next</button>
+                        <button @click="nextPage" :disabled="lastpage"
+                            class="rounded-r-md bg-cyan-600 px-4 py-3 text-sm font-bold text-white ann-button disabled:bg-gray-400 ml-6 active:scale-90 transition duration-200" >Next</button>
                     </div>
                 </div>
             </div>
