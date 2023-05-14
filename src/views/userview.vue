@@ -57,6 +57,27 @@ const setOfPage = computed(() => {
     return pages;
 });
 
+const setOfpagex =computed(()=>{
+  let range=10
+  let page=currentpage.value+1
+  let pagelist=[]
+  if(totalpage.value>10){
+  if(page<range){
+    for(let i=1;i<=10;i++){
+      pagelist.push(i)
+    }
+  }else if(page>=range){
+    for(let i=1;i<=10;i++){
+      pagelist.push(i+(page-range))
+    }
+  }
+}else{
+  for(let i=1;i<=totalpage.value;i++){
+      pagelist.push(i)
+}
+}
+return pagelist 
+})
 const nextPage = async () => {
   if (currentpage.value < totalpage.value) {
     currentpage.value++;
@@ -107,6 +128,23 @@ onBeforeMount(async () => {
   const receivedCategory = await getCategory();
   receivedCategory.forEach((category) => allCategory.value.push(category));
 });
+const options = {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false
+};
+const dateformat = (date) => {
+  console.log(date);
+    if (date === null) {
+        return "-";
+    } else {
+        let mydate = new Date(date);
+        return mydate.toLocaleDateString("en-GB", options);
+    }
+};
 </script>
 
 <template>
@@ -156,7 +194,8 @@ onBeforeMount(async () => {
             <tr class="sticky top-0 bg-cyan-600 text-white">
               <th class="text-left w-6 rounded-l-full">No.</th>
               <th class="text-left pr-6">Title</th>
-              <th class="text-left rounded-r-full">Category</th>
+              <th class="text-left " :class="myMode.mode === 'close'?'':'rounded-r-full'">Category</th>
+              <th  v-if="myMode.mode === 'close'" class="rounded-r-full">Closedate</th>
             </tr>
             <tr
               v-for="(announcement, index) in allAnnouncement"
@@ -171,8 +210,11 @@ onBeforeMount(async () => {
                   {{ announcement.announcementTitle }}
                 </router-link>
               </td>
-              <td class="ann-category rounded-r-full">
+              <td class="ann-category " :class="myMode.mode === 'close'?'':'rounded-r-full'">
                 {{ announcement.announcementCategory }}
+              </td>
+              <td class="rounded-r-full ann-close-date" v-if="myMode.mode === 'close'">
+                {{ dateformat(announcement.closeDate) }}
               </td>
             </tr>
           </table>
@@ -192,7 +234,7 @@ onBeforeMount(async () => {
             </button>
             <div class="pagination">
               <button
-                v-for="(value, index) in setOfPage"
+                v-for="(value, index) in setOfpagex"
                 :key="index"
                 @click="goToPage(value - 1)"
                 :disabled="value - 1 === currentpage"
