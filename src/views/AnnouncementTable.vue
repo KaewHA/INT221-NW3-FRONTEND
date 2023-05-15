@@ -114,10 +114,13 @@ const cf = (id) => {
 
                 </div>
             </div>
-            <div v-else>
-                <h1 class="text-4xl flex w-full items-center justify-center font-noto">
-                    No Announcements
+            <div v-else class="w-full h-full">
+                <h1 class="text-4xl flex w-full items-center justify-center font-noto mt-9">
+                    No Announcements 
                 </h1>
+                <div class= "w-full   flex justify-center mt-6">
+                <button  @click="router.push('/admin/announcement/add')" class=" w-3/4 rounded-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white hover:bg-emerald-600 flex justify-center noad"><pluss class="e"></pluss> <span class="f">ADD THE FIRST ANNOUNCEMENT</span></button>
+            </div>
             </div>
         </div>
     </div>
@@ -168,6 +171,21 @@ td {
     display: none;
 }
 .add .f{
+    display: inline;
+}
+
+.noad:hover  .e{
+    display: inline;
+}
+
+.noad:hover  .f{
+    display: none;
+}
+
+.noad .e{
+    display: none;
+}
+.noad .f{
     display: inline;
 }
 </style>

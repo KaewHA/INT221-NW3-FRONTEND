@@ -99,6 +99,33 @@ onBeforeMount(async () => {
         olddata.value[key]=value
     }
 })
+let opt={year: 'numeric', month: 'numeric', day: 'numeric' };
+const startdate=computed(()=>{
+    const currentDate = new Date();
+    let DATE =currentDate.toLocaleDateString("en-US",opt)
+    return createdate(DATE)
+})
+const enddate=computed(()=>{
+    if(closeDate.value==""||closeDate.value==null){
+        return ""
+    }
+    const currentDate = new Date(closeDate.value);
+    let DATE =currentDate.toLocaleDateString("en-US",opt)
+    return createdate(DATE)
+})
+const closestartdate=computed(()=>{
+    if(publishDate.value=="" || publishDate.value==null){
+    const currentDate = new Date();
+    let opt={year: 'numeric', month: 'numeric', day: 'numeric' };
+    let DATE =currentDate.toLocaleDateString("en-US",opt)
+    return createdate(DATE)
+    }else{
+    const currentDate = new Date(publishDate.value);
+    let DATE =currentDate.toLocaleDateString("en-US",opt)
+    return createdate(DATE)
+    }
+})
+
 const isDisabled = computed(() => {
     const checknewdata=()=>{
         let x = categoryAll.value.find((x) => x.categoryName === choosecategory.value)
@@ -243,18 +270,18 @@ const createanno = async () => {
  console.log(olddata.value);
 }
 function clearcd (){
-    closeDate.value=""
+    closeDate.value=null
     fillcurdatecl.value=false
    if(closeTime!=null ||closeTime!=""){
-    closeTime.value=""
+    closeTime.value=null
    }
 }
 
 function clearpd (){
-   publishDate.value=""
+   publishDate.value=null
    fillcurdatepb.value=false
    if(publishTime!=null ||publishTime!=""){
-    publishTime.value=""
+    publishTime.value=null
    }
 }
 
@@ -296,24 +323,24 @@ function clearpd (){
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label class="text-base font-bold">Publish Date</label>
                     <div class="w-1/3 flex flex-row space-x-4">
-                        <input v-model="publishDate" type="date" placeholder="01/05/2023"
+                        <input v-model="publishDate" type="date" placeholder="01/05/2023" :min="startdate" :max="enddate"
                             class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-publish-date" id="publishDate">
                         <input  :disabled="!publishDate" v-model="publishTime" type="time" placeholder="12:30"
                             class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-publish-time" id="publishDate">
                             <button :disabled="!publishDate" class="px-4 py-2 rounded-md bg-orange-400 text-white text-base font-bold disabled:hidden" @click="clearpd()">clear</button>
                     </div>
-                    <div class="text-red-500 ml-3" v-show="fillcurdatepb" >Please enter a future date</div>
+                    <div class="text-red-500 ml-3" v-show="fillcurdatepb" >publishdate must be a future</div>
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label class="text-base font-bold">Close Date</label>
                     <div class="w-1/3 flex flex-row space-x-4">
-                        <input v-model="closeDate" type="date" placeholder="01/05/2023"
+                        <input v-model="closeDate" type="date" placeholder="01/05/2023" :min="closestartdate"
                             class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-close-date" id="closeDate">
                         <input  :disabled="!closeDate" v-model="closeTime" type="time" placeholder="12:30"
                             class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-close-time" id="closeDate">
                             <button :disabled="!closeDate" class="px-4 py-2 rounded-md bg-orange-400 text-white text-base font-bold disabled:hidden" @click="clearcd()">clear</button>
                     </div>
-                    <div class="text-red-500 ml-3" v-show="fillcurdatecl" >Please enter a future date2</div>
+                    <div class="text-red-500 ml-3" v-show="fillcurdatecl" >must be later than publish date</div>
                 </div>
 
             </div>
