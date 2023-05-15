@@ -261,12 +261,12 @@ function clearpd (){
 </script>
 
 <template>
-    <div class="w-screen">
+    <div class="w-screen h-screen ">
         <div class="w-full h-full items-center flex flex-col font-noto">
-            <h1 class="font-extrabold text-3xl self-center my-4 ">Create Announcement</h1>
-            <div class="w-3/4 h-auto flex flex-col border rounded-md">
+            <!-- <h1 class="font-extrabold text-3xl self-center my-4 ">Create Announcement</h1> -->
+            <div class="w-3/4 h-auto flex flex-col border rounded-md mt-5 bg-white shadow-xl">
                 <div class="flex px-4 pt-4">
-                    <h2 class="font-bold text-2xl">Announcement Detail:</h2>
+                    <h2 class="font-bold text-2xl">Update Announcement </h2>
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label for="title" class="text-base font-bold">Title</label>
@@ -286,12 +286,13 @@ function clearpd (){
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label for="description" class="text-base font-bold">Description</label>
-                    <textarea v-model="newAnnouncement.announcementDescription" maxlength="10000" rows="10" id="description"
+                    <textarea v-model="newAnnouncement.announcementDescription" maxlength="10000" rows="6" id="description"
                         class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-description"
                         placeholder="Imagination is more important than knowledge...">
                 </textarea>
                 <p class="flex justify-end">{{ newAnnouncement.announcementDescription.trim().length }}/10000</p>
                 </div>
+                <div class="">
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label class="text-base font-bold">Publish Date</label>
                     <div class="w-1/3 flex flex-row space-x-4">
@@ -314,13 +315,19 @@ function clearpd (){
                     </div>
                     <div class="text-red-500 ml-3" v-show="fillcurdatecl" >Please enter a future date2</div>
                 </div>
+
+            </div>
+
+
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
-                    <label class="text-base font-bold">Display</label>
                     <div class="space-x-2">
-                        <input v-model="display" type="checkbox" id="display"
-                            class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-display">
-                        <label for="display" class="font-bold text-sm">Check to show this announcement</label>
+                        <label class="relative inline-flex items-center cursor-pointer">
+  <input type="checkbox" value="" class="sr-only peer" v-model="display">
+  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Display Announcement</span>
+</label>
                     </div>
+                    
                 </div>
                 <p class=" ml-5 flex text-red-600" v-show="newAnnouncement.announcementTitle.trim().length==0">PLESE FILL THE TITLE</p> 
                 <p class=" ml-5 flex text-red-600" v-show="choosecategory=='0'">PLESE Select CATEGORY</p> 
