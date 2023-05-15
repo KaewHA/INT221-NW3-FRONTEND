@@ -261,7 +261,7 @@ function clearpd (){
 </script>
 
 <template>
-    <div class="w-screen h-screen bg-sky-800">
+    <div class="w-screen h-screen ">
         <div class="w-full h-full items-center flex flex-col font-noto">
             <!-- <h1 class="font-extrabold text-3xl self-center my-4 ">Create Announcement</h1> -->
             <div class="w-3/4 h-auto flex flex-col border rounded-md mt-5 bg-white shadow-xl">

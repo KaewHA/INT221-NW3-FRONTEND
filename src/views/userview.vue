@@ -57,27 +57,28 @@ const setOfPage = computed(() => {
     return pages;
 });
 
-const setOfpagex =computed(()=>{
-  let range=10
-  let page=currentpage.value+1
-  let pagelist=[]
-  if(totalpage.value>10){
-  if(page<range){
-    for(let i=1;i<=10;i++){
-      pagelist.push(i)
+const setOfpagex = computed(() => {
+  let range = 10
+  let page = currentpage.value + 1
+  let pagelist = []
+  if (totalpage.value > 10) {
+    if (page < range) {
+      for (let i = 1; i <= 10; i++) {
+        pagelist.push(i)
+      }
+    } else if (page >= range) {
+      for (let i = 1; i <= 10; i++) {
+        pagelist.push(i + (page - range))
+      }
     }
-  }else if(page>=range){
-    for(let i=1;i<=10;i++){
-      pagelist.push(i+(page-range))
+  } else {
+    for (let i = 1; i <= totalpage.value; i++) {
+      pagelist.push(i)
     }
   }
-}else{
-  for(let i=1;i<=totalpage.value;i++){
-      pagelist.push(i)
-}
-}
-return pagelist 
+  return pagelist
 })
+
 const nextPage = async () => {
   if (currentpage.value < totalpage.value) {
     currentpage.value++;
@@ -129,22 +130,23 @@ onBeforeMount(async () => {
   receivedCategory.forEach((category) => allCategory.value.push(category));
 });
 const options = {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    hour12: false
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  hour12: false
 };
 const dateformat = (date) => {
   console.log(date);
-    if (date === null) {
-        return "-";
-    } else {
-        let mydate = new Date(date);
-        return mydate.toLocaleDateString("en-GB", options);
-    }
+  if (date === null) {
+    return "-";
+  } else {
+    let mydate = new Date(date);
+    return mydate.toLocaleDateString("en-GB", options);
+  }
 };
+
 </script>
 
 <template>
@@ -156,52 +158,35 @@ const dateformat = (date) => {
           <div class="w-full flex flex-row">
             <div class="w-full flex flex-row items-center space-x-2">
               <p class="font-bold">Choose Category:</p>
-              <select
-                @change="changeCategory"
-                v-model="category"
-                name="category"
-                id="category-select"
-                class="border rounded-md bg-slate-100 text-lg ann-category py-2 px-4"
-              >
+              <select @change="changeCategory" v-model="category" name="category" id="category-select"
+                class="border rounded-md bg-slate-100 text-lg ann-category-filter py-2 px-4">
                 <option value="0" selected>ทั้งหมด</option>
-                <option
-                  v-for="(item, index) in allCategory"
-                  :key="index"
-                  :value="item.categoryID"
-                >
+                <option v-for="(item, index) in allCategory" :key="index" :value="item.categoryID">
                   {{ item.categoryName }}
                 </option>
               </select>
             </div>
             <button
               class="w-auto rounded-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white ann-button transition duration-75"
-              @click="changeMode"
-              :class="myMode.mode === 'close' ? 'bg-emerald-400' : 'bg-red-500'"
-            >
+              @click="changeMode" :class="myMode.mode === 'close' ? 'bg-emerald-400' : 'bg-red-500'">
               {{
                 myMode.mode === "close"
-                  ? "Active Announcement"
-                  : "Closed Announcement"
+                ? "Active Announcement"
+                : "Closed Announcement"
               }}
             </button>
           </div>
         </div>
         <div class="flex flex-col justify-center items-center">
-          <table
-            class="w-full rounded-lg border-separate border-spacing-y-8"
-            v-if="allAnnouncement.length != 0"
-          >
+          <table class="w-full rounded-lg border-separate border-spacing-y-8" v-if="allAnnouncement.length != 0">
             <tr class="sticky top-0 bg-cyan-600 text-white">
               <th class="text-left w-6 rounded-l-full">No.</th>
               <th class="text-left pr-6">Title</th>
-              <th class="text-left " :class="myMode.mode === 'close'?'':'rounded-r-full'">Category</th>
-              <th  v-if="myMode.mode === 'close'" class="rounded-r-full">Closedate</th>
+              <th class="text-left " :class="myMode.mode === 'close' ? '' : 'rounded-r-full'">Category</th>
+              <th v-if="myMode.mode === 'close'" class="rounded-r-full">Closedate</th>
             </tr>
-            <tr
-              v-for="(announcement, index) in allAnnouncement"
-              :key="index"
-              class="bg-slate-50 rounded-full shadow-inner ann-item"
-            >
+            <tr v-for="(announcement, index) in allAnnouncement" :key="index"
+              class="bg-slate-50 rounded-full shadow-inner ann-item">
               <td class="rounded-l-full">
                 {{ index + 1 + currentpage * pageSize }}
               </td>
@@ -210,7 +195,7 @@ const dateformat = (date) => {
                   {{ announcement.announcementTitle }}
                 </router-link>
               </td>
-              <td class="ann-category " :class="myMode.mode === 'close'?'':'rounded-r-full'">
+              <td class="ann-category " :class="myMode.mode === 'close' ? '' : 'rounded-r-full'">
                 {{ announcement.announcementCategory }}
               </td>
               <td class="rounded-r-full ann-close-date" v-if="myMode.mode === 'close'">
@@ -218,41 +203,25 @@ const dateformat = (date) => {
               </td>
             </tr>
           </table>
-          <div
-            v-else
-            class="flex w-full items-center justify-center bg-sky-600 text-white"
-          >
+          <div v-else class="flex w-full items-center justify-center bg-sky-600 text-white">
             <h1 class="text-4xl text-center font-noto">No Announcements</h1>
           </div>
-          <div class="mt-5 flex" v-if="allAnnouncement.length != 0">
-            <button
-              @click="previousPage"
-              :disabled="firstpage"
-              class="rounded-l-md bg-cyan-600 px-4 py-3 text-sm font-bold ann-button disabled:bg-gray-400 text-white mr-6 transition duration-200 active:scale-90 ann-page-prev"
-            >
+          <div class="mt-5 flex" v-if="allAnnouncement.length != 0 && totalpage > 1">
+            <button @click="previousPage" :disabled="firstpage"
+              class="rounded-l-md bg-cyan-600 px-4 py-3 text-sm font-bold ann-button disabled:bg-gray-400 text-white mr-6 transition duration-200 active:scale-90 ann-page-prev">
               Prev
             </button>
             <div class="pagination">
-              <button
-                v-for="(value, index) in setOfpagex"
-                :key="index"
-                @click="goToPage(value - 1)"
-                :disabled="value - 1 === currentpage"
-                :class="
-                  value - 1 === currentpage
+              <button v-for="(value, index) in setOfpagex" :key="index" @click="goToPage(value - 1)"
+                :disabled="value - 1 === currentpage" :class="value - 1 === currentpage
                     ? `bg-sky-300 text-white ann-page-${index}`
                     : `text-custom-black hover:bg-slate-400 ann-page-${index}`
-                "
-                class="px-4 py-3 text-sm font-bold ann-button rounded-full transition duration-200"
-              >
+                  " class="px-4 py-3 text-sm font-bold ann-button rounded-full transition duration-200">
                 {{ value }}
               </button>
             </div>
-            <button
-              @click="nextPage"
-              :disabled="lastpage"
-              class="rounded-r-md bg-cyan-600 px-4 py-3 text-sm font-bold text-white ann-button disabled:bg-gray-400 ml-6 active:scale-90 transition duration-200 ann-page-next"
-            >
+            <button @click="nextPage" :disabled="lastpage"
+              class="rounded-r-md bg-cyan-600 px-4 py-3 text-sm font-bold text-white ann-button disabled:bg-gray-400 ml-6 active:scale-90 transition duration-200 ann-page-next">
               Next
             </button>
           </div>

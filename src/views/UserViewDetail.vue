@@ -30,10 +30,10 @@ const dateformat = (date) => {
             <h1 class="text-left text-3xl mb-4 text-custom-black">Announcement Detail:</h1>
             <div class="border rounded-md flex flex-col justify-center w-5/6">
                 <div class="p-4">
-                    <h1 class="font-bold text-xl">{{ announcement.announcementTitle }}</h1>
+                    <h1 class="font-bold text-xl ann-title">{{ announcement.announcementTitle }}</h1>
                     <div class="flex flex-row justify-between">
-                        <p class="text-gray-400 font-bold text-base">{{ announcement.announcementCategory }}</p>
-                        <p v-if="announcement.closeDate" class="text-gray-400">
+                        <p class="text-gray-400 font-bold text-base ann-category">{{ announcement.announcementCategory }}</p>
+                        <p v-if="announcement.closeDate" class="text-gray-400 ann-close-date">
                             <span class="text-red-500 font-bold">Closed on : </span>
                             {{ dateformat(announcement.closeDate) }}
                         </p>
@@ -41,7 +41,7 @@ const dateformat = (date) => {
                 </div>
                 <hr>
                 <div class="p-4">
-                    <p class="font-bold text-sm">{{ announcement.announcementDescription }}</p>
+                    <p class="font-bold text-sm ann-description">{{ announcement.announcementDescription }}</p>
                 </div>
                 <hr>
                 <button @click="router.push('/announcement')"

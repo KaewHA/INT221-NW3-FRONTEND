@@ -5,7 +5,6 @@ import { RouterView } from 'vue-router'
 
 <template>
   <div class="w-screen h-screen ">
-   
     <router-view>
     </router-view>
   </div>
