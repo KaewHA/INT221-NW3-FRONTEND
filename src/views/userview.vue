@@ -190,8 +190,8 @@ const dateformat = (date) => {
               <td class="rounded-l-full">
                 {{ index + 1 + currentpage * pageSize }}
               </td>
-              <td class="ann-title font-extrabold">
-                <router-link :to="{ path: `/announcement/${announcement.id}` }">
+              <td class="ann-title font-extrabold  ">
+                <router-link :to="{ path: `/announcement/${announcement.id}` }" class="hover:text-sky-700">
                   {{ announcement.announcementTitle }}
                 </router-link>
               </td>
