@@ -30,7 +30,7 @@ async function getuserAnnouncement(mode = "active", page = 0, category = 0) {
 async function getAnnouncementById(id) {
   try {
     const res = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/announcements/${id}`
+      `${import.meta.env.VITE_BASE_URL}/api/announcements/${id}?mode=admin`
     );
     if (res.ok) {
       const announc = res.json();
@@ -162,7 +162,19 @@ async function updateAnnouncement(announcement, id) {
     console.log(error);
   }
 }
-
+async function getcount(id) {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/count/${id}`);
+      if (res.ok) {
+        const count = res.json();
+        return count;
+      } else {
+        throw new Error("Error, data is error!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 export {
   getAnnouncement,
   getAnnouncementById,
@@ -172,5 +184,6 @@ export {
   updateAnnouncement,
   getAnnouncementByIddata,
   getuserAnnouncement,
-  getAnnouncementByIduser
+  getAnnouncementByIduser,
+  getcount
 };
