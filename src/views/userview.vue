@@ -198,7 +198,7 @@ const dateformat = (date) => {
               <td class="ann-category " :class="myMode.mode === 'close' ? '' : 'rounded-r-full'">
                 {{ announcement.announcementCategory }}
               </td>
-              <td class="rounded-r-full ann-close-date" v-if="myMode.mode === 'close'">
+              <td class="rounded-r-full ann-close-date flex justify-center" v-if="myMode.mode === 'close'">
                 {{ dateformat(announcement.closeDate) }}
               </td>
             </tr>
