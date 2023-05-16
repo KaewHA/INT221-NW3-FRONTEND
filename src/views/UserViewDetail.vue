@@ -60,7 +60,7 @@ const dateformat = (date) => {
                 <div class="flex justify-start w-full items-center ">
                 <div class="w-full flex justify-center">
                     <div class="w-full flex justify-start items-center ml-5">
-                    <button class=" rounded-md text-center text-lg bg-sky-600 border  my-2 w-20 h-10 text-white ann-button -mt-7 " @click="router.go(-1)"><back class="x"></back><span class="y">Back</span></button>
+                    <button class=" rounded-md text-center text-lg bg-sky-600 border  my-2 w-20 h-10 text-white ann-button -mt-7 hover:bg-sky-400" @click="router.go(-1)"><back class="x"></back><span class="y">Back</span></button>
                     <div class="w-full flex justify-center">
                     <h1 class="text-left text-3xl mb-4 -ml-8 text-white">Announcement Detail</h1>
                 </div>
