@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
-import { getAnnouncementByIduser,getcount } from '../assets/data.js'
+import { getAnnouncementByIduser} from '../assets/data.js'
 import router from '../router/index.js'
 import cdate from '../components/icon/TeenyiconsCalendarNoAccessOutline.vue'
 import categoryico from '../components/icon/MdiListBox.vue'
@@ -9,10 +9,8 @@ import back from '../components/icon/back.vue'
 import views from '../components/icon/IcBaselineRemoveRedEye.vue'
 const { params } = useRoute()
 const announcement = ref('')
-const count=ref('')
 onBeforeMount(async () => {
     announcement.value = await getAnnouncementByIduser(params.id)
-    count.value=await getcount(params.id)
 })
 
 const options = { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false };
@@ -75,7 +73,7 @@ const dateformat = (date) => {
             <div class="border-2  flex justify-center items-center w-3/4 h-3/4 rounded-2xl  shadow-2xl">
                 <div class="ann-item w-full">
                     <div class="flex-row justify-end mt-5 pl-4 " >
-                        <div class="flex text-black justify-end mr-10"><views class="mt-1 mr-3"></views>VIEW : {{ count.count }}</div>
+                        <div class="flex text-black justify-end mr-10 ann-counter"><views class="mt-1 mr-3"></views>VIEW : {{ announcement.viewCount }}</div>
                         <div class="flex text-white justify-end" v-if="announcement.closeDate"><spam class="bg-red-400 flex rounded-3xl w-72 border ann-close-date"><cdate class=" ml-3 mt-1 mr-3"></cdate><div class="font-extrabold">Close On : </div>{{  dateformat(announcement.closeDate) }} </spam></div>
                     </div>
                     <div class="ann-category  flex justify-center -mt-2 text-xl"><span class="bg-sky-400 flex rounded-3xl p-1 text-white"><categoryico></categoryico><span>{{ announcement.announcementCategory }}</span></span></div>
