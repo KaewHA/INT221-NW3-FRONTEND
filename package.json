@@ -10,6 +10,7 @@
     "cypress:open": "cypress open"
   },
   "dependencies": {
+    "@vueup/vue-quill": "^1.2.0",
     "daisyui": "^2.51.6",
     "flowbite": "^1.6.5",
     "pinia": "^2.0.36",

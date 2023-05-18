@@ -1,6 +1,8 @@
 <script setup>
 import { getCategory, addAnnouncement } from '../assets/data.js'
 import { onMounted, ref, computed } from 'vue';
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import router from '../router/index.js'
 const categoryAll = ref([])
 
@@ -219,11 +221,11 @@ function clearpd() {
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label for="description" class="text-base font-bold">Description</label>
-
-                    <textarea v-model="newAnnouncement.announcementDescription" maxlength="10000" rows="6" id="description"
+                    <!-- <textarea v-model="newAnnouncement.announcementDescription" maxlength="10000" rows="6" id="description"
                         class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-description"
                         placeholder="Imagination is more important than knowledge...">
-                </textarea>
+                    </textarea> -->
+                    <QuillEditor v-model:content="newAnnouncement.announcementDescription" theme="snow" toolbar="full" contentType="html"></QuillEditor>
                     <p class="flex justify-end">{{ newAnnouncement.announcementDescription.trim().length }}/10000</p>
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
