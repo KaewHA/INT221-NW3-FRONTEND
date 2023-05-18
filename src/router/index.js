@@ -8,6 +8,7 @@ import AddAnnouncement from '../views/AddAnnouncement.vue'
 import deleteannouncement from '../views/deleteannocement.vue'
 import userview from '../views/userview.vue'
 import UserViewDetail from '../views/UserViewDetail.vue'
+import show from '../views/paginashow.vue'
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -50,6 +51,11 @@ const router = createRouter({
             path: '/announcement/:id',
             name: 'UserViewDetail',
             component: UserViewDetail
+        },
+        {
+            path: '/ui/announcement/',
+            name: 'userview PAGE',
+            component: show
         },
         {
             path: '/admin/announcement/:id/edit',

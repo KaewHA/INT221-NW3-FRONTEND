@@ -1,16 +1,16 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
-import { getAnnouncementById } from '../assets/data.js'
+import { getAnnouncementByIduser} from '../assets/data.js'
 import router from '../router/index.js'
 import cdate from '../components/icon/TeenyiconsCalendarNoAccessOutline.vue'
 import categoryico from '../components/icon/MdiListBox.vue'
 import back from '../components/icon/back.vue'
+import views from '../components/icon/IcBaselineRemoveRedEye.vue'
 const { params } = useRoute()
 const announcement = ref('')
 onBeforeMount(async () => {
-    announcement.value = await getAnnouncementById(params.id)
-
+    announcement.value = await getAnnouncementByIduser(params.id)
 })
 
 const options = { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false };
@@ -60,7 +60,7 @@ const dateformat = (date) => {
                 <div class="flex justify-start w-full items-center ">
                 <div class="w-full flex justify-center">
                     <div class="w-full flex justify-start items-center ml-5">
-                    <button class=" rounded-md text-center text-lg bg-sky-600 border  my-2 w-20 h-10 text-white ann-button -mt-7 " @click="router.go(-1)"><back class="x"></back><span class="y">Back</span></button>
+                    <button class=" rounded-md text-center text-lg bg-sky-600 border  my-2 w-20 h-10 text-white ann-button -mt-7 hover:bg-sky-400" @click="router.go(-1)"><back class="x"></back><span class="y">Back</span></button>
                     <div class="w-full flex justify-center">
                     <h1 class="text-left text-3xl mb-4 -ml-8 text-white">Announcement Detail</h1>
                 </div>
@@ -73,7 +73,8 @@ const dateformat = (date) => {
             <div class="border-2  flex justify-center items-center w-3/4 h-3/4 rounded-2xl  shadow-2xl">
                 <div class="ann-item w-full">
                     <div class="flex-row justify-end mt-5 pl-4 " >
-                        <div class="flex text-white justify-end" v-if="announcement.closeDate"><spam class="bg-red-400 flex rounded-3xl w-56 border ann-close-date"><cdate class=" ml-3 mt-1 mr-3"></cdate> {{  dateformat(announcement.closeDate) }} </spam></div>
+                        <div class="flex text-black justify-end mr-10 ann-counter"><views class="mt-1 mr-3"></views>VIEW : {{ announcement.viewCount }}</div>
+                        <div class="flex text-white justify-end" v-if="announcement.closeDate"><spam class="bg-red-400 flex rounded-3xl w-72 border ann-close-date"><cdate class=" ml-3 mt-1 mr-3"></cdate><div class="font-extrabold">Close On : </div>{{  dateformat(announcement.closeDate) }} </spam></div>
                     </div>
                     <div class="ann-category  flex justify-center -mt-2 text-xl"><span class="bg-sky-400 flex rounded-3xl p-1 text-white"><categoryico></categoryico><span>{{ announcement.announcementCategory }}</span></span></div>
                     <div class="text-3xl flex justify-center  ann-title   mt-4"><h1>{{  announcement.announcementTitle  }}</h1></div>

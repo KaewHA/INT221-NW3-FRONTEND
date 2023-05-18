@@ -198,7 +198,7 @@ const dateformat = (date) => {
               <td class="ann-category " :class="myMode.mode === 'close' ? '' : 'rounded-r-full'">
                 {{ announcement.announcementCategory }}
               </td>
-              <td class="rounded-r-full ann-close-date flex justify-center" v-if="myMode.mode === 'close'">
+              <td class="rounded-r-full ann-close-date" v-if="myMode.mode === 'close'">
                 {{ dateformat(announcement.closeDate) }}
               </td>
             </tr>
@@ -212,7 +212,7 @@ const dateformat = (date) => {
               Prev
             </button>
             <div class="pagination">
-              <button v-for="(value, index) in setOfpagex" :key="index" @click="goToPage(value - 1)"
+              <button v-for="(value, index) in setOfPage" :key="index" @click="goToPage(value - 1)"
                 :disabled="value - 1 === currentpage" :class="value - 1 === currentpage
                     ? `bg-sky-300 text-white ann-page-${index}`
                     : `text-custom-black hover:bg-slate-400 ann-page-${index}`

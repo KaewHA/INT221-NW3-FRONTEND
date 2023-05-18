@@ -1,11 +1,13 @@
 <script setup>
 import { ref,onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
-import { getAnnouncementById } from '../assets/data.js'
+import { getAnnouncementById} from '../assets/data.js'
 import router from '../router/index.js'
 import categoryico from '../components/icon/MdiListBox.vue'
 import cdate from '../components/icon/TeenyiconsCalendarNoAccessOutline.vue'
 import pdate from '../components/icon/TeenyiconsCalendarTickOutline.vue'
+import views from '../components/icon/IcBaselineRemoveRedEye.vue'
+
 const { params } = useRoute()
 const announcement = ref('')
 onBeforeMount(async () => {
@@ -55,14 +57,18 @@ const dateformat = (date) => {
                 </div>
             </div>
         </div>
-        <div class=" fixed bottom-0 left-0 flex justify-between p-4 ">
-                <button class=" rounded-md text-center text-lg bg-gray-200 my-2 w-20 h-10 text-custom-black ann-button " @click="router.go(-1)">Back</button>
+                <div class=" fixed bottom-0 left-0 flex justify-between p-4 ">
+                <button class=" rounded-md text-center text-lg bg-gray-200 my-2 w-20 h-10 text-custom-black ann-button  " @click="router.go(-1)">Back</button>
                 </div>
                 <div class="fixed bottom-0 right-0 flex justify-between p-4">
                   <router-link :to="{ path: `/admin/announcement/${params.id}/edit` }">
-                <button class="rounded-md text-center text-lg  my-2 w-20 h-10 bg-sky-600 text-white ann-button mr-6">Edit</button>
+                <button class="rounded-md text-center text-lg  my-2 w-20 h-10 bg-sky-600 text-white ann-button hover:bg-sky-400">Edit</button>
                   </router-link>
         </div>
+                <div class=" fixed flex bottom-0  right-52 left-52  justify-center p-4 ann-counter ">
+                    <views class="mt-1 mr-3"></views>VIEW : {{ announcement.viewCount }}
+                </div>
+               
         </div>
     </div>
 </template>
