@@ -1,6 +1,8 @@
 <script setup>
 import { getCategory, addAnnouncement } from '../assets/data.js'
 import { onMounted, ref, computed } from 'vue';
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import router from '../router/index.js'
 const categoryAll = ref([])
 
@@ -42,9 +44,9 @@ const newAnnouncement = ref({
 })
 
 function createdate(data) {
-    let dateStr= data;
+    let dateStr = data;
     let [day, month, year] = dateStr.split("/");
-    let years = parseInt(year) 
+    let years = parseInt(year)
     year = years.toString()
     if (month.length === 1) {
         month = "0" + month
@@ -52,35 +54,35 @@ function createdate(data) {
     if (day.length === 1) {
         day = "0" + day
     }
-    
+
     return year + "-" + day + "-" + month
 }
 
-let opt={year: 'numeric', month: 'numeric', day: 'numeric' };
+let opt = { year: 'numeric', month: 'numeric', day: 'numeric' };
 
-const startdate=computed(()=>{
+const startdate = computed(() => {
     const currentDate = new Date();
-    let DATE =currentDate.toLocaleDateString("en-US",opt)
+    let DATE = currentDate.toLocaleDateString("en-US", opt)
     return createdate(DATE)
 })
-const enddate=computed(()=>{
-    if(closeDate.value==""||closeDate.value==null){
+const enddate = computed(() => {
+    if (closeDate.value == "" || closeDate.value == null) {
         return ""
     }
     const currentDate = new Date(closeDate.value);
-    let DATE =currentDate.toLocaleDateString("en-US",opt)
+    let DATE = currentDate.toLocaleDateString("en-US", opt)
     return createdate(DATE)
 })
-const closestartdate=computed(()=>{
-    if(publishDate.value=="" || publishDate.value==null){
-    const currentDate = new Date();
-    let opt={year: 'numeric', month: 'numeric', day: 'numeric' };
-    let DATE =currentDate.toLocaleDateString("en-US",opt)
-    return createdate(DATE)
-    }else{
-    const currentDate = new Date(publishDate.value);
-    let DATE =currentDate.toLocaleDateString("en-US",opt)
-    return createdate(DATE)
+const closestartdate = computed(() => {
+    if (publishDate.value == "" || publishDate.value == null) {
+        const currentDate = new Date();
+        let opt = { year: 'numeric', month: 'numeric', day: 'numeric' };
+        let DATE = currentDate.toLocaleDateString("en-US", opt)
+        return createdate(DATE)
+    } else {
+        const currentDate = new Date(publishDate.value);
+        let DATE = currentDate.toLocaleDateString("en-US", opt)
+        return createdate(DATE)
     }
 })
 
@@ -95,13 +97,25 @@ const isDisabled = computed(() => {
         return emptyValue.length > 0 ? true : false
     }
     const lencheck = () => {
+
+        if (newAnnouncement.value.announcementTitle.trim().length == 0) { return true }
+
+        if (newAnnouncement.value.announcementDescription.trim().length == 0) { return true }
+
         if (newAnnouncement.value.announcementTitle.length > 200) {
+
             return true
+
         }
+
         if (newAnnouncement.value.announcementDescription.length > 10000) {
+
             return true
+
         }
+
         return false
+
     }
     const datecheckpb = () => {
         if (publishDate.value != "" && publishDate.value != null) {
@@ -145,10 +159,10 @@ const isDisabled = computed(() => {
         }
         return false
     }
-    if (publishDate.value != null && publishDate.value != ""  &&publishTime.value==null) {
+    if (publishDate.value != null && publishDate.value != "" && publishTime.value == null) {
         publishTime.value = "06:00"
     }
-    if (closeDate.value != null && closeDate.value != "" &&   closeTime.value==null) {
+    if (closeDate.value != null && closeDate.value != "" && closeTime.value == null) {
         closeTime.value = "18:00"
     }
     return checkfill() || lencheck() || datecheckpb() || datecheckcl()
@@ -207,11 +221,11 @@ function clearpd() {
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <label for="description" class="text-base font-bold">Description</label>
-
-                    <textarea v-model="newAnnouncement.announcementDescription" maxlength="10000" rows="6" id="description"
+                    <!-- <textarea v-model="newAnnouncement.announcementDescription" maxlength="10000" rows="6" id="description"
                         class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-description"
                         placeholder="Imagination is more important than knowledge...">
-                </textarea>
+                    </textarea> -->
+                    <QuillEditor v-model:content="newAnnouncement.announcementDescription" theme="snow" toolbar="full" contentType="html"></QuillEditor>
                     <p class="flex justify-end">{{ newAnnouncement.announcementDescription.trim().length }}/10000</p>
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
@@ -239,7 +253,7 @@ function clearpd() {
                             @click="clearcd()">clear</button>
 
                     </div>
-                    <div class="text-red-500 ml-3" v-show="fillcurdatecl"><span >must be later than publish date</span></div>
+                    <div class="text-red-500 ml-3" v-show="fillcurdatecl"><span>must be later than publish date</span></div>
                 </div>
                 <div class="flex flex-col w-full px-4 py-2 space-y-1">
                     <div class="space-x-2">
