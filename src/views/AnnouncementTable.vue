@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeMount,computed } from "vue";
+import { ref, onBeforeMount, computed } from "vue";
 import { getAnnouncement, deleteannocement, getCategory } from "../assets/data.js";
 import router from '../router/index.js'
 import Navbar from "../components/Navbar.vue";
@@ -7,6 +7,7 @@ import AkarIconsEye from '../components/icon/AkarIconsEye.vue'
 import Trash from '../components/icon/Trash.vue'
 import pluss from '../components/icon/IcRoundAddCircle.vue'
 import search from '../components/icon/search.vue'
+
 onBeforeMount(async () => {
     const receivedData = ref([]);
     receivedData.value = await getAnnouncement();
@@ -18,7 +19,7 @@ const category = ref(0);
 const newdata = ref([]);
 const allCategory = ref([]);
 const allAnnouncement = ref([]);
-const searchkeyword=ref('')
+const searchkeyword = ref('')
 const options = {
     day: "numeric",
     month: "short",
@@ -40,13 +41,15 @@ const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 const deleteanno = async (id) => {
     await deleteannocement(id)
+    changeAlertToggle()
+    location.reload()
 }
-const cf = (id) => {
-    if (confirm(`Do you want to delete announcemmnet ID:${id}`) == true) {
-        deleteanno(id)
-        location.reload();
-    }
-}
+// const cf = (id) => {
+//     if (confirm(`Do you want to delete announcemmnet ID:${id}`) == true) {
+//         deleteanno(id)
+//         location.reload();
+//     }
+// }
 
 const changeCategory = async () => {
     await fetchData();
@@ -67,21 +70,28 @@ const fetchData = async () => {
     } else {
         allAnnouncement.value = newdata.value;
     }
-
 };
 
-const searchtitle =computed(()=>{
-
-    if(searchkeyword.value==""){
+const searchtitle = computed(() => {
+    if (searchkeyword.value == "") {
         return 'Search...'
-    }else{
+    } else {
         return ''
     }
 })
 
-const searchvalue=computed(()=>{
-      return allAnnouncement.value.filter((x)=>x.announcementTitle.toLowerCase().includes(searchkeyword.value.toLowerCase()))
+const searchvalue = computed(() => {
+    return allAnnouncement.value.filter((x) => x.announcementTitle.toLowerCase().includes(searchkeyword.value.toLowerCase()))
 })
+
+const isAlertToggle = ref(false)
+
+const changeAlertToggle = (id) => {
+    id !== null ? deleteId.value = id : deleteId.value = 0
+    isAlertToggle.value = !isAlertToggle.value
+}
+
+const deleteId = ref(0)
 </script>
 
 <template>
@@ -96,9 +106,11 @@ const searchvalue=computed(()=>{
                             <input type="search" v-model="searchkeyword"
                                 class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200  [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                 id="exampleSearch2" placeholder="Type query" />
-                                
+
                             <label for="exampleSearch2"
-                                class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.4rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none "><div class="flex" v-html="searchtitle" ></div></label>
+                                class="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.4rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none ">
+                                <div class="flex" v-html="searchtitle"></div>
+                            </label>
                         </div>
                         <div class="w-full flex flex-row items-center space-x-2">
                             <p class="font-bold">Choose Category:</p>
@@ -113,7 +125,7 @@ const searchvalue=computed(()=>{
                         <button
                             class=" w-32 h-14 mr-10 rounded-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white hover:bg-emerald-600 ann-button border-2 flex justify-center items-center add"
                             @click="router.push('/admin/announcement/add')"><span class="f">Add Announcement</span>
-                            <pluss class="e "></pluss>
+                            <pluss class="e"></pluss>
                         </button>
                     </div>
                 </div>
@@ -167,7 +179,7 @@ const searchvalue=computed(()=>{
                                         </button>
                                         <button
                                             class="flex justify-center items-center rounded-md bg-red-600 px-3 py-1 text-base font-bold w-20 h-10 text-white hover:bg-red-700 ann-button delete"
-                                            @click="cf(announcement.id)">
+                                            @click="changeAlertToggle(announcement.id)">
                                             <span class="c">delete</span>
                                             <Trash class="d"></Trash>
                                         </button>
@@ -176,11 +188,9 @@ const searchvalue=computed(()=>{
                             </tr>
                         </tbody>
                     </table>
-
                 </div>
             </div>
             <div v-else class="w-full h-full">
-
                 <h1 class="text-4xl flex w-full items-center justify-center font-noto mt-9">
                     No Announcements
                 </h1>
@@ -189,6 +199,28 @@ const searchvalue=computed(()=>{
                         class=" w-3/4 rounded-md bg-emerald-500 px-4 py-3 text-sm font-bold text-white hover:bg-emerald-600 flex justify-center noad">
                         <pluss class="e"></pluss> <span class="f">ADD THE FIRST ANNOUNCEMENT</span>
                     </button>
+                </div>
+            </div>
+            <div v-if="isAlertToggle" class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-75">
+                <div class="max-w-2xl p-6 w-96 bg-white shadow-xl overflow-y-auto flex flex-col items-center rounded-lg">
+                    <div class="flex items-center">
+                        <img src="/icons/warning.svg" alt="">
+                    </div>
+                    <div class="flex items-center justify-between my-2">
+                        <h3 class="text-xl">Want to delete announcement?</h3>
+                    </div>
+                    <div class="mt-4 space-x-4">
+                        <button
+                            class="px-4 py-2 border border-red-600 bg-white text-red-600 rounded hover:bg-red-600 hover:text-white duration-100 font-bold"
+                            @click="deleteanno(deleteId)">
+                            Yes, delete it!
+                        </button>
+                        <button
+                            class="px-4 py-2 border border-emerald-500 bg-white text-emerald-500 rounded hover:bg-emerald-500 hover:text-white duration-100 font-bold"
+                            @click="changeAlertToggle">
+                            No, keep it!
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -259,6 +291,4 @@ td {
 .noad .f {
     display: inline;
 }
-
-
 </style>

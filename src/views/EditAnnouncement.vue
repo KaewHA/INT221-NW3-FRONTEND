@@ -5,6 +5,7 @@ import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import { useRoute } from 'vue-router';
 import router from '../router';
+import AlertModal from '../components/AlertModal.vue';
 const { params } = useRoute()
 const olddata = ref({})
 const publishDate = ref(null)
@@ -171,9 +172,6 @@ const isDisabled = computed(() => {
         }
         let datacheck = check()
         let catecheck = checkcate()
-        // console.log(newAnnouncement.value.categoryId.categoryID);
-        // if(newAnnouncement.value.categoryId.categoryID!=undefined){
-        // }
         if (newAnnouncement.value.categoryId != undefined) {
             let id = newAnnouncement.value.categoryId.categoryID
             newAnnouncement.value.categoryId = id
@@ -181,25 +179,16 @@ const isDisabled = computed(() => {
         return !(datacheck || catecheck)
     }
     const lencheck = () => {
-
         if (newAnnouncement.value.announcementTitle.trim().length == 0) { return true }
-
         if (newAnnouncement.value.announcementDescription.trim().length == 0) { return true }
-
         if (newAnnouncement.value.announcementTitle.length > 200) {
 
             return true
-
         }
-
         if (newAnnouncement.value.announcementDescription.length > 10000) {
-
             return true
-
         }
-
         return false
-
     }
     let titlenull = false
     let desnull = false
@@ -276,11 +265,12 @@ const newAnnouncement = ref({
 })
 
 const createanno = async () => {
-
     await updateAnnouncement(newAnnouncement.value, params.id)
+    status.value = await updateAnnouncement(newAnnouncement.value, params.id)
+    changeAlertToggle()
 }
 function showdata() {
-    ///show something\
+    ///show something
     console.log(olddata.value);
 }
 function clearcd() {
@@ -299,6 +289,13 @@ function clearpd() {
     }
 }
 
+const isAlertToggle = ref(false)
+
+const changeAlertToggle = () => {
+    isAlertToggle.value = !isAlertToggle.value
+}
+
+const status = ref(true)
 </script>
 
 <template>
@@ -332,7 +329,8 @@ function clearpd() {
                         class="border rounded-md bg-slate-100 text-lg py-2 px-4 ann-description"
                         placeholder="Imagination is more important than knowledge...">
                     </textarea> -->
-                    <QuillEditor v-model:content="newAnnouncement.announcementDescription" theme="snow" toolbar="full" contentType="html"></QuillEditor>
+                    <QuillEditor v-model:content="newAnnouncement.announcementDescription" theme="snow" toolbar="full"
+                        contentType="html"></QuillEditor>
                     <p class="flex justify-end">{{ newAnnouncement.announcementDescription.trim().length }}/10000</p>
                 </div>
                 <div class="">
@@ -382,7 +380,7 @@ function clearpd() {
                 </div>
                 <p class=" ml-5 flex text-red-600" v-show="newAnnouncement.announcementTitle.trim().length == 0">PLESE FILL
                     THE TITLE</p>
-                <p class=" ml-5 flex text-red-600" v-show="choosecategory == '0'">PLESE Select CATEGORY</p>
+                <p class=" ml-5 flex text-red-600" v-show="choosecategory == '0'">PLEASE Select CATEGORY</p>
                 <p class=" ml-5 flex text-red-600" v-show="newAnnouncement.announcementDescription.trim().length == 0">PLESE
                     FILL THE DESCRIPTION</p>
                 <div class="w-full flex justify-start p-4 space-x-2">
@@ -391,12 +389,9 @@ function clearpd() {
                         @click="createanno()">Update</button>
                     <button class="px-4 py-2 rounded-md bg-red-500 text-white text-base font-bold"
                         @click="router.push('/admin/announcement')">Cancel</button>
-                    <!-- <button class="px-4 py-2 rounded-md bg-red-500 text-white text-base font-bold"
-                        @click="showdata()">show</button> -->
-                    <!-- <button class="px-4 py-2 rounded-md bg-red-500 text-white text-base font-bold"
-                        @click="createanno()">test</button> -->
                 </div>
             </div>
+            <AlertModal v-if="isAlertToggle" :action="'edit'" @changeToggle="changeAlertToggle" :status="status"></AlertModal>
         </div>
     </div>
 </template>

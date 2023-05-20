@@ -5,7 +5,6 @@ import indexinit from '../views/indexinit.vue'
 import EditAnnouncement from '../views/EditAnnouncement.vue'
 import AnnouncementTable from '../views/AnnouncementTable.vue'
 import AddAnnouncement from '../views/AddAnnouncement.vue'
-import deleteannouncement from '../views/deleteannocement.vue'
 import userview from '../views/userview.vue'
 import UserViewDetail from '../views/UserViewDetail.vue'
 import show from '../views/paginashow.vue'
@@ -36,11 +35,6 @@ const router = createRouter({
             path: '/admin/announcement/add',
             name: 'AddAnnouncement',
             component: AddAnnouncement
-        },
-        {
-            path: '/admin/announcement/:id/delete',
-            name: 'deleteannouncement',
-            component: deleteannouncement
         },
         {
             path: '/announcement',

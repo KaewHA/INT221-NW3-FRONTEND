@@ -106,14 +106,16 @@ async function deleteannocement(id) {
       { method: "DELETE" }
     );
     if (res.ok) {
-      router.push("/admin/announcement");
+      return true
+      // router.push("/admin/announcement");
     } else {
       console.log(res.status);
-      throw new Error("Error, data is error!");
+      // throw new Error("Error, data is error!");
+      return false
     }
   } catch (error) {
     console.log(error);
-    router.push("/admin/announcement");
+    return false
   }
 }
 
@@ -130,13 +132,14 @@ async function addAnnouncement(announcement) {
       }
     );
     if (res.ok) {
-      alert("create announcement");
-      router.push("/admin/announcement");
+      // alert("create announcement");
+      // router.push("/admin/announcement");
     } else {
       throw new Error("Error, data is error!");
     }
   } catch (error) {
     console.log(error);
+    return false
   }
 }
 
@@ -153,13 +156,14 @@ async function updateAnnouncement(announcement, id) {
       }
     );
     if (res.ok) {
-      alert("UPDATE announcement");
-      router.push("/admin/announcement");
+      // alert("UPDATE announcement");
+      // router.push("/admin/announcement");
     } else {
       throw new Error("Error, data is error!");
     }
   } catch (error) {
     console.log(error);
+    return false
   }
 }
 async function getcount(id) {
