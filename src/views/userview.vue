@@ -221,7 +221,7 @@ const dateformat = (date) => {
               </button>
             </div>
             <button @click="nextPage" :disabled="lastpage"
-              class="rounded-r-md bg-cyan-600 px-4 py-3 text-sm font-bold text-white ann-button disabled:bg-gray-400 ml-6 active:scale-90 transition duration-200 ann-page-next">
+              class="rounded-r-md  bg-cyan-600 px-4 py-3 text-sm font-bold text-white ann-button disabled:bg-gray-400 ml-6 active:scale-90 transition duration-200 ann-page-next">
               Next
             </button>
           </div>
