@@ -8,6 +8,8 @@ import AddAnnouncement from '../views/AddAnnouncement.vue'
 import userview from '../views/userview.vue'
 import UserViewDetail from '../views/UserViewDetail.vue'
 import show from '../views/paginashow.vue'
+import PageNotFound from '../views/PageNotFound.vue'
+
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -55,6 +57,11 @@ const router = createRouter({
             path: '/admin/announcement/:id/edit',
             name: 'EditAnnouncement',
             component: EditAnnouncement
+        },        
+        {
+            path: '/:notfoundpath(.*)',
+            name: 'PageNotFound',
+            component: PageNotFound        
         }
     ]
 })
