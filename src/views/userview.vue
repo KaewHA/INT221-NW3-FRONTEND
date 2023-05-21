@@ -190,9 +190,9 @@ const dateformat = (date) => {
               <td class="rounded-l-full">
                 {{ index + 1 + currentpage * pageSize }}
               </td>
-              <td class="ann-title font-extrabold  ">
+              <td class="ann-title font-extrabold overflow-hidden w-8/12">
                 <router-link :to="{ path: `/announcement/${announcement.id}` }" class="hover:text-sky-700">
-                  {{ announcement.announcementTitle }}
+                  <p class="w-auto overflow-hidden">{{ announcement.announcementTitle }}</p>
                 </router-link>
               </td>
               <td class="ann-category " :class="myMode.mode === 'close' ? '' : 'rounded-r-full'">

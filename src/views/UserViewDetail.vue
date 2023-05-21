@@ -91,11 +91,11 @@ const dateformat = (date) => {
                                 class="bg-sky-400 flex rounded-3xl p-1 text-white">
                                 <categoryico></categoryico><span>{{ announcement.announcementCategory }}</span>
                             </span></div>
-                        <div class="text-3xl flex justify-center ann-title mt-4">
+                        <div class="text-3xl flex justify-center ann-title mt-4 overflow-x-auto">
                             <h1>{{ announcement.announcementTitle }}</h1>
                         </div>
                         <div
-                            class="ann-description text-xl flex justify-center mt-10 h-96 overflow-y-auto bg-slate-200 rounded-2xl">
+                            class="ann-description text-xl flex justify-center mt-10 h-96 overflow-y-auto bg-slate-200 rounded-2xl ql-editor">
                             <h1 class="mt-3" v-html="announcement.announcementDescription"></h1>
                         </div>
 

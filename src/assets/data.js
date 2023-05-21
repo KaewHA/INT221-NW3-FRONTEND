@@ -1,7 +1,7 @@
 // const api = "http://intproj22.sit.kmutt.ac.th:8080/nw3/api/anno"
 import router from "../router/index.js";
 
-async function getAnnouncement(mode = "admin",  category = 0) {
+async function getAnnouncement(mode = "admin", category = 0) {
   let api = `${import.meta.env.VITE_BASE_URL}/api/announcements?mode=${mode}&category=${category}`;
   try {
     const res = await fetch(api);
@@ -14,9 +14,8 @@ async function getAnnouncement(mode = "admin",  category = 0) {
   }
 }
 async function getuserAnnouncement(mode = "active", page = 0, category = 0) {
-  let api = `${
-    import.meta.env.VITE_BASE_URL
-  }/api/announcements/pages?mode=${mode}&page=${page}&size=5&category=${category}`;
+  let api = `${import.meta.env.VITE_BASE_URL
+    }/api/announcements/pages?mode=${mode}&page=${page}&size=5&category=${category}`;
   try {
     const res = await fetch(api);
     if (res.ok) {
@@ -167,18 +166,18 @@ async function updateAnnouncement(announcement, id) {
   }
 }
 async function getcount(id) {
-    try {
-      const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/count/${id}`);
-      if (res.ok) {
-        const count = res.json();
-        return count;
-      } else {
-        throw new Error("Error, data is error!");
-      }
-    } catch (error) {
-      console.log(error);
+  try {
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/count/${id}`);
+    if (res.ok) {
+      const count = res.json();
+      return count;
+    } else {
+      throw new Error("Error, data is error!");
     }
+  } catch (error) {
+    console.log(error);
   }
+}
 export {
   getAnnouncement,
   getAnnouncementById,
