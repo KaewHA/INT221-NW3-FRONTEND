@@ -4,6 +4,8 @@ import { onMounted, ref, computed } from 'vue';
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import router from '../router/index.js'
+import AlertModal from '../components/AlertModal.vue';
+
 const categoryAll = ref([])
 
 onMounted(async () => {
@@ -97,25 +99,15 @@ const isDisabled = computed(() => {
         return emptyValue.length > 0 ? true : false
     }
     const lencheck = () => {
-
         if (newAnnouncement.value.announcementTitle.trim().length == 0) { return true }
-
         if (newAnnouncement.value.announcementDescription.trim().length == 0) { return true }
-
         if (newAnnouncement.value.announcementTitle.length > 200) {
-
             return true
-
         }
-
         if (newAnnouncement.value.announcementDescription.length > 10000) {
-
             return true
-
         }
-
         return false
-
     }
     const datecheckpb = () => {
         if (publishDate.value != "" && publishDate.value != null) {
@@ -173,10 +165,8 @@ const addnewdata = async () => {
     newAnnouncement.value.publishDate = convertDate(publishDate.value, publishTime.value)
     newAnnouncement.value.closeDate = convertDate(closeDate.value, closeTime.value)
     newAnnouncement.value.announcementDisplay = display.value == true ? 'Y' : 'N'
-    // let id=newAnnouncement.value.category.categoryID
-    // delete newAnnouncement.value.category
-    // newAnnouncement.value.categoryId=id
-    await addAnnouncement(newAnnouncement.value)
+    status.value = await addAnnouncement(newAnnouncement.value)
+    changeAlertToggle()
 }
 function clearcd() {
     closeDate.value = null
@@ -193,6 +183,14 @@ function clearpd() {
         publishTime.value = null
     }
 }
+
+const isAlertToggle = ref(false)
+
+const changeAlertToggle = () => {
+    isAlertToggle.value = !isAlertToggle.value
+}
+
+const status = ref(true)
 </script>
 
 <template>
@@ -267,10 +265,10 @@ function clearpd() {
                         </label>
                     </div>
                 </div>
-                <p class=" ml-5 flex text-red-600" v-show="newAnnouncement.announcementTitle.trim().length == 0">PLESE FILL
+                <p class=" ml-5 flex text-red-600" v-show="newAnnouncement.announcementTitle.trim().length == 0">PLEASE FILL
                     THE TITLE</p>
-                <p class=" ml-5 flex text-red-600" v-show="newAnnouncement.categoryId == ''">PLESE Select CATEGORY</p>
-                <p class=" ml-5 flex text-red-600" v-show="newAnnouncement.announcementDescription.trim().length == 0">PLESE
+                <p class=" ml-5 flex text-red-600" v-show="newAnnouncement.categoryId == ''">PLEASE Select CATEGORY</p>
+                <p class=" ml-5 flex text-red-600" v-show="newAnnouncement.announcementDescription.trim().length == 0">PLEASE
                     FILL THE DESCRIPTION</p>
                 <div class="w-full flex justify-start p-4 space-x-2">
                     <button :disabled="isDisabled"
@@ -280,6 +278,7 @@ function clearpd() {
                         @click="router.push('/admin/announcement')">Cancel</button>
                 </div>
             </div>
+            <AlertModal v-if="isAlertToggle" :action="'add'" :status="status" @changeToggle="changeAlertToggle"></AlertModal>
         </div>
     </div>
 </template>

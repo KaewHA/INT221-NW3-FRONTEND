@@ -1,5 +1,5 @@
 <script setup>
-import { deleteannocement,getAnnouncementById ,getCategory} from '../assets/data.js'
+import { deleteannocement, getAnnouncementById, getCategory } from '../assets/data.js'
 import { onBeforeMount, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '../router';
@@ -10,9 +10,9 @@ onBeforeMount(async () => {
     const receivedAnnouncement = ref()
     receivedAnnouncement.value = await getAnnouncementById(params.id)
     for (const [key, value] of Object.entries(receivedAnnouncement.value)) {
-        if(key.includes("Date") && value != null) {
+        if (key.includes("Date") && value != null) {
             editAnnouncement.value[key] = value.slice(0, 16)
-        } else if(key != "id") {
+        } else if (key != "id") {
             if (key.includes("Category")) {
                 editAnnouncement.value["category"] = value
             }
@@ -30,13 +30,13 @@ const editAnnouncement = ref({
     category: '',
     announcementDisplay: '',
     announcementDescription: '',
-    publishDate:'',
-    closeDate:''
+    publishDate: '',
+    closeDate: ''
 })
 
 
-const deleteanno=async()=>{
-  await deleteannocement(params.id)
+const deleteanno = async () => {
+    await deleteannocement(params.id)
 }
 </script>
 
@@ -56,7 +56,7 @@ const deleteanno=async()=>{
                             <label for="category-select" class="text-base font-bold">Category</label>
                             <select v-model="editAnnouncement.category" name="category" id="category-select"
                                 class="border rounded-md bg-slate-100 text-lg py-2 px-4">
-                                <option v-for="item in category" >{{ item.categoryName }}</option>
+                                <option v-for="item in category">{{ item.categoryName }}</option>
                             </select>
                         </div>
                         <div class="w-1/3 flex flex-col">
@@ -71,27 +71,32 @@ const deleteanno=async()=>{
                     <div class="w-full flex flex-col">
                         <label for="description" class="text-base font-bold">Description</label>
                         <textarea v-model="editAnnouncement.announcementDescription" id="description"
-                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" 
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4"
                             placeholder="Imagination is more important than knowledge...">
                         </textarea>
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="publishDate" class="text-base font-bold">Publish Date</label>
-                        <input  pattern="MM-DD-YYYY HH:mm" type="datetime-local" class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="publishDate" v-model="editAnnouncement.publishDate">
+                        <input pattern="MM-DD-YYYY HH:mm" type="datetime-local"
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="publishDate"
+                            v-model="editAnnouncement.publishDate">
                     </div>
                     <div class="w-full flex flex-col">
                         <label for="closeDate" class="text-base font-bold">Close Date</label>
-                        <input  pattern="MM-DD-YYYY HH:mm" type="datetime-local" class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate" v-model="editAnnouncement.closeDate">
+                        <input pattern="MM-DD-YYYY HH:mm" type="datetime-local"
+                            class="border rounded-md bg-slate-100 text-lg py-2 px-4" id="closeDate"
+                            v-model="editAnnouncement.closeDate">
                     </div>
                 </div>
-                <div class="flex  ">
-                    <button @click="deleteanno()" class="px-4 py-2 rounded-md bg-red-500 text-white text-base font-bold mr-6">Delete</button>
-                <button @click="router.push('/admin/announcement')" class="px-4 py-2 rounded-md bg-zinc-500 text-white text-base font-bold" >Cancel</button>
+                <div class="flex">
+                    <button @click="deleteanno()"
+                        class="px-4 py-2 rounded-md bg-red-500 text-white text-base font-bold mr-6">Delete</button>
+                    <button @click="router.push('/admin/announcement')"
+                        class="px-4 py-2 rounded-md bg-zinc-500 text-white text-base font-bold">Cancel</button>
+                </div>
+
             </div>
-                
-            </div>
-        </div>
     </div>
-</template>
+</div></template>
 
 <style scoped></style>
