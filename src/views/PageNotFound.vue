@@ -6,7 +6,7 @@ import router from '../router';
 <template>
     <div class="w-screen h-screen flex justify-center items-center flex-col space-y-8">
         <img src="" alt="">
-        <h1 class="text-9xl text-center font-extrabold animate-pulse fof">
+        <h1 class="text-9xl text-center font-extrabold animate-pulse">
             <span class="text-sky-600">4</span>
             <span class="text-sky-300">0</span>
             <span class="text-sky-600">4</span>
@@ -20,10 +20,6 @@ import router from '../router';
 </template>
  
 <style scoped>
-.fof {
-    
-}
-
 .but .b {
     display: none;
 }

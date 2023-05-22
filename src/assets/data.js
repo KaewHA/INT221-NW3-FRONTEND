@@ -35,9 +35,10 @@ async function getAnnouncementById(id) {
       const announc = res.json();
       return announc;
     } else {
-      alert("The requested page is not available!");
-      router.push("/admin/announcement");
-      throw new Error("Error, data is error! with ID");
+      // alert("The requested page is not available!");
+      // router.push("/admin/announcement");
+      return false
+      // throw new Error("Error, data is error! with ID");
     }
   } catch (error) {
     console.error(error);
@@ -53,8 +54,8 @@ async function getAnnouncementByIddata(id) {
       const announc = res.json();
       return announc;
     } else {
-      alert("The requested page is not available!");
-      router.push("/admin/announcement");
+      // alert("The requested page is not available!");
+      // router.push("/admin/announcement");
       throw new Error("Error, data is error! with ID");
     }
   } catch (error) {
@@ -73,11 +74,10 @@ async function getAnnouncementByIduser(id) {
 
       return announc;
     } else {
-      alert("The requested page is not available!");
-
-      router.push("/announcement");
-
-      throw new Error("Error, data is error! with ID");
+      // alert("The requested page is not available!");
+      // router.push("/announcement");
+      return false
+      // throw new Error("Error, data is error! with ID");
     }
   } catch (error) {
     console.error(error);
