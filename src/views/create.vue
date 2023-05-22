@@ -5,7 +5,7 @@ import back from '../components/icon/next.vue'
 </script>
  
 <template>
-<div class="w-screen h-screen bg-sky-600">
+<div class="w-screen h-screen bg-sky-600 font-noto">
 <div class="w-full h-full border flex justify-center items-center">
     <div class="flex-col">
     <div class="flex justify-center items-center ">
@@ -20,9 +20,9 @@ import back from '../components/icon/next.vue'
     <button class=" rounded-md text-center text-lg bg-sky-600 border  my-2 w-20 h-10 text-white ann-button  hover:bg-sky-400" @click="router.push('/announcement')">
         <back class="x"></back><span class="y">User </span>
     </button>
-    <button class=" rounded-md text-center text-lg bg-sky-600 border  my-2 w-20 h-10 text-white ann-button  hover:bg-sky-400" @click="router.push('/ui/announcement')">
+    <!-- <button class=" rounded-md text-center text-lg bg-sky-600 border  my-2 w-20 h-10 text-white ann-button  hover:bg-sky-400" @click="router.push('/ui/announcement')">
         <back class="x"></back><span class="y">User2</span>
-    </button>
+    </button> -->
 </div>
 </div>
 </div>

@@ -19,42 +19,42 @@ const lastpage = ref(false);
 const firstpage = ref(false);
 
 const setOfPage = computed(() => {
-    const totalPages = totalpage.value;
-    const currentPage = currentpage.value;
-    const range = 10
+  const totalPages = totalpage.value;
+  const currentPage = currentpage.value;
+  const range = 10
 
-    if (totalPages <= range) {
-        const pages = [];
-        for (let i = 1; i <= totalPages; i++) {
-            pages.push(i);
-        }
-        return pages;
-    }
-
-    let start = Math.max(currentPage - Math.floor(range / 2), 1);
-    let end = start + range - 1;
-
-    if (end > totalPages) {
-        end = totalPages;
-        start = Math.max(end - range + 1, 1);
-    }
-
-    // Adjust start and end if currentPage is greater than range/2
-    if (currentPage > Math.floor(range / 2)) {
-        start = currentPage - Math.floor(range / 2);
-        end = start + range - 1;
-
-        if (end > totalPages) {
-            end = totalPages;
-            start = Math.max(end - range + 1, 1);
-        }
-    }
-
+  if (totalPages <= range) {
     const pages = [];
-    for (let i = start; i <= end; i++) {
-        pages.push(i);
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
     }
     return pages;
+  }
+
+  let start = Math.max(currentPage - Math.floor(range / 2), 1);
+  let end = start + range - 1;
+
+  if (end > totalPages) {
+    end = totalPages;
+    start = Math.max(end - range + 1, 1);
+  }
+
+  // Adjust start and end if currentPage is greater than range/2
+  if (currentPage > Math.floor(range / 2)) {
+    start = currentPage - Math.floor(range / 2);
+    end = start + range - 1;
+
+    if (end > totalPages) {
+      end = totalPages;
+      start = Math.max(end - range + 1, 1);
+    }
+  }
+
+  const pages = [];
+  for (let i = start; i <= end; i++) {
+    pages.push(i);
+  }
+  return pages;
 });
 
 const setOfpagex = computed(() => {
@@ -214,14 +214,14 @@ const dateformat = (date) => {
             <div class="pagination">
               <button v-for="(value, index) in setOfpagex" :key="index" @click="goToPage(value - 1)"
                 :disabled="value - 1 === currentpage" :class="value - 1 === currentpage
-                    ? `bg-sky-300 text-white ann-page-${index}`
-                    : `text-custom-black hover:bg-slate-400 ann-page-${index}`
+                  ? `bg-sky-300 text-white ann-page-${index}`
+                  : `text-custom-black hover:bg-slate-400 ann-page-${index}`
                   " class="px-4 py-3 text-sm font-bold ann-button rounded-full transition duration-200">
                 {{ value }}
               </button>
             </div>
             <button @click="nextPage" :disabled="lastpage"
-              class="rounded-r-md bg-cyan-600 px-4 py-3 text-sm font-bold text-white ann-button disabled:bg-gray-400 ml-6 active:scale-90 transition duration-200 ann-page-next">
+              class="rounded-r-md  bg-cyan-600 px-4 py-3 text-sm font-bold text-white ann-button disabled:bg-gray-400 ml-6 active:scale-90 transition duration-200 ann-page-next">
               Next
             </button>
           </div>
