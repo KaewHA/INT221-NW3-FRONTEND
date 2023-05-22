@@ -35,7 +35,7 @@ const dateformat = (date) => {
             <div class="w-full flex justify-center bg-sky-600 pt-7 ">
                 <div class="flex justify-start w-full items-center ">
                     <div class="w-full flex justify-center">
-                        <h1 class="text-left text-3xl mb-4 text-white">Announcement Detail</h1>
+                        <span class="text-left text-3xl mb-4 text-white">Announcement Detail</span>
                     </div>
                 </div>
 
@@ -67,11 +67,11 @@ const dateformat = (date) => {
                                 <categoryico></categoryico><span>{{ announcement.announcementCategory }}</span>
                             </span></div>
                         <div class="text-3xl flex justify-center ann-title mt-4 overflow-x-auto">
-                            <h1>{{ announcement.announcementTitle }}</h1>
+                            <span>{{ announcement.announcementTitle }}</span>
                         </div>
                         <div
                             class="ann-description text-xl flex justify-center mt-10 h-96 overflow-y-auto bg-slate-200 rounded-2xl ql-editor">
-                            <h1 class="mt-3" v-html="announcement.announcementDescription"></h1>
+                            <span class="mt-3" v-html="announcement.announcementDescription"></span>
                         </div>
 
                     </div>
@@ -118,4 +118,27 @@ tr {
 
 td {
     padding: 10px;
-}</style>
+}
+
+
+h1{
+
+font-size: 2em;
+}
+
+h2{
+    font-size: 1.5em;
+}
+h3{
+    font-size: 1.5em;
+}
+h4{
+    font-size: 1.17em;
+}
+h5{
+    font-size: .83em;
+}
+h6{
+    font-size: .67em;
+}
+</style>

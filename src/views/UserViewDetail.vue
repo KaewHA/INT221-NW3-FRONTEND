@@ -30,10 +30,10 @@ const dateformat = (date) => {
 <template>
     <!-- <div class="w-screen font-noto">
         <div v-if="announcement" class="w-full h-full flex flex-col justify-center items-center px-4 py-2">
-            <h1 class="text-left text-3xl mb-4 text-custom-black">Announcement Detail:</h1>
+            <span class="text-left text-3xl mb-4 text-custom-black">Announcement Detail:</span>
             <div class="border rounded-md flex flex-col justify-center w-5/6">
                 <div class="p-4">
-                    <h1 class="font-bold text-xl ann-title">{{ announcement.announcementTitle }}</h1>
+                    <span class="font-bold text-xl ann-title">{{ announcement.announcementTitle }}</span>
                     <div class="flex flex-row justify-between">
                         <p class="text-gray-400 font-bold text-base ann-category">{{ announcement.announcementCategory }}</p>
                         <p v-if="announcement.closeDate" class="text-gray-400 ann-close-date">
@@ -66,7 +66,7 @@ const dateformat = (date) => {
                                 <back class="x"></back><span class="y">Back</span>
                             </button>
                             <div class="w-full flex justify-center">
-                                <h1 class="text-left text-3xl mb-4 -ml-8 text-white">Announcement Detail</h1>
+                                <span class="text-left text-3xl mb-4 -ml-8 text-white">Announcement Detail</span>
                             </div>
                         </div>
                     </div>
@@ -92,11 +92,11 @@ const dateformat = (date) => {
                                 <categoryico></categoryico><span>{{ announcement.announcementCategory }}</span>
                             </span></div>
                         <div class="text-3xl flex justify-center ann-title mt-4 overflow-x-auto">
-                            <h1>{{ announcement.announcementTitle }}</h1>
+                            <span>{{ announcement.announcementTitle }}</span>
                         </div>
                         <div
                             class="ann-description text-xl flex justify-center mt-10 h-96 overflow-y-auto bg-slate-200 rounded-2xl ql-editor">
-                            <h1 class="mt-3" v-html="announcement.announcementDescription"></h1>
+                            <span class="mt-3" v-html="announcement.announcementDescription"></span>
                         </div>
 
                     </div>
@@ -149,5 +149,26 @@ td {
 
 .ann-button .y {
     display: inline;
+}
+
+h1{
+
+font-size: 2em;
+}
+
+h2{
+    font-size: 1.5em;
+}
+h3{
+    font-size: 1.5em;
+}
+h4{
+    font-size: 1.17em;
+}
+h5{
+    font-size: .83em;
+}
+h6{
+    font-size: .67em;
 }
 </style>
