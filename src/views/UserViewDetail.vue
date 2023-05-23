@@ -106,18 +106,17 @@ const dateformat = (date) => {
             </div>
         </div>
         <div v-if="announcement === false" class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-75">
-            <div class="max-w-2xl p-6 w-96 bg-white shadow-xl overflow-y-auto flex flex-col items-center rounded-lg">
+            <div class="max-w-2xl p-6 w-96 shadow-xl overflow-y-auto flex flex-col items-center rounded-lg bg-red-600 text-white">
                 <div class="flex items-center">
                     <img src="/icons/no-results.png" alt="" class="">
                 </div>
-                <div class="flex items-center justify-between my-2">
-                    <h3 class="text-xl font-bold">Announcement id <span class="text-white font-bold text-2xl">{{ params.id
-                    }}</span> is not exist!</h3>
+                <div class="flex flex-col items-center justify-between my-2">
+                    <p class="text-xl font-bold text-center">Announcement is not exist!</p>
                 </div>
                 <div class="mt-4 space-x-4">
                     <button
                         class="px-4 py-2 border border-red-400 bg-white text-red-400 rounded hover:bg-red-500 hover:text-white duration-100 font-bold"
-                        @click="router.push('/admin/announcement')">
+                        @click="router.push('/announcement')">
                         Okay!
                     </button>
                 </div>
